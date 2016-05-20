@@ -38,7 +38,6 @@ public class InlogGUI extends JFrame {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		accounts.addAccount(new Account("Rico", "ksw334mw", 99999));
 	}
 	
 	public void makeFrame() {
