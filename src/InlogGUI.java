@@ -9,7 +9,6 @@ import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.FileSystemNotFoundException;
-import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -24,15 +23,19 @@ public class InlogGUI extends JFrame {
 	private JTextField user, pass;
 	private AccountBase accounts;
 	
+	// Main 
 	public static void main(String s[]) {
 		new InlogGUI();
 	}
 	
+	// Constructor
 	public InlogGUI() {
 		super("Log in");
 		setSize(300, 140);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		makeFrame();
+//		accounts = new AccountBase();
+//		accounts.addAccount(new Account("admin", "admin", 10000));
 		try {
 			accounts = loadAccounts();
 		} catch (FileNotFoundException e) {
@@ -40,6 +43,7 @@ public class InlogGUI extends JFrame {
 		}
 	}
 	
+	// Make frame 
 	public void makeFrame() {
 		
 		JPanel content = new JPanel(new BorderLayout());
@@ -123,9 +127,15 @@ public class InlogGUI extends JFrame {
 		}
 		if(temp == null) 
 			JOptionPane.showMessageDialog(null, "Wachtwoord en/of username klopt niet", "Error", JOptionPane.INFORMATION_MESSAGE);
-		else if(temp.getPass().equals(pass.getText()))
+		else if(temp.getPass().equals(pass.getText())) {
 			System.out.println("Ingelogd");
-		else  
+			JFrame frame = new JFrame("ShopGUI");
+			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+			JPanel panel = new ShopGUI(temp);
+			frame.getContentPane().add(panel);
+			frame.pack();
+			frame.setVisible(true);
+		} else  
 			JOptionPane.showMessageDialog(null, "Wachtwoord en/of username klopt niet", "Error", JOptionPane.INFORMATION_MESSAGE);
 	}
 	
