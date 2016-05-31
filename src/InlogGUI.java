@@ -23,6 +23,7 @@ public class InlogGUI extends JFrame {
 	private JTextField user, pass;
 	private AccountBase accounts;
 	private Account account = null;
+	private boolean ready = false;
 	
 	// Main 
 	public static void main(String s[]) {
@@ -131,6 +132,8 @@ public class InlogGUI extends JFrame {
 		else if(temp.getPass().equals(pass.getText())) {
 			System.out.println("Ingelogd");
 			account = temp;
+			ready = true;
+			dispose();
 		} else  
 			JOptionPane.showMessageDialog(null, "Wachtwoord en/of username klopt niet", "Error", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -171,6 +174,10 @@ public class InlogGUI extends JFrame {
 	
 	public Account getAccount() {
 		return account;
+	}
+	
+	public boolean ready() {
+		return ready;
 	}
 	
 }

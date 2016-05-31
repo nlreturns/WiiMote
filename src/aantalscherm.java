@@ -170,15 +170,17 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
             // A
             if (e.isButtonAPressed()) {
             	if(x == 0) {
-            		aantal = 1;
-            	}
-            	if(x == 1) {
             		aantal = 2;
             	}
-            	if(x == 2) {
+            	if(x == 1) {
             		aantal = 3;
             	}
+            	if(x == 2) {
+            		aantal = 4;
+            	}
             	System.out.println(aantal);
+            	inlogScreens(aantal);
+            	
             }
             if (e.isButtonAHeld())
                 aHeld = true;
@@ -281,9 +283,15 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		for(int i=0; i < aantal; i++) {
 			InlogGUI temp = new InlogGUI();
-			while(temp.getAccount() == null);
+			boolean ready = false;
+			while(ready == false) {
+				ready = temp.ready();
+				System.out.println("poep");
+			}
 			accounts.add(temp.getAccount());
 		}
+		System.out.println(accounts.size());
+		return accounts;
 	}
 	
 }
