@@ -273,4 +273,14 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 		// TODO Auto-generated method stub
 		
 	}
+	
+	public ArrayList<Account> inlogScreens(int aantal) {
+		ArrayList<Account> accounts = new ArrayList<Account>();
+		for(int i=0; i < aantal; i++) {
+			InlogGUI temp = new InlogGUI();
+			while(temp.getAccount() == null);
+			accounts.add(temp.getAccount());
+		}
+	}
+	
 }
