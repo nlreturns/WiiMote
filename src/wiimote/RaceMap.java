@@ -37,11 +37,11 @@ import wiiusej.wiiusejevents.wiiuseapievents.NunchukInsertedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
-public class SpeedTest extends JFrame {
+public class RaceMap extends JFrame {
 
 	public static void main(String args[]) {
-		JFrame frame = new JFrame("Opdracht 2");
-		JPanel panel = new TestPanel();
+		JFrame frame = new JFrame("Need For Beast");
+		JPanel panel = new RacePanel(4);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(panel);
@@ -49,13 +49,13 @@ public class SpeedTest extends JFrame {
 		frame.setVisible(true);
 	}
 
-	public SpeedTest() {
+	public RaceMap() {
 
 	}
 
 }
 
-class TestPanel extends JPanel implements WiimoteListener, ActionListener {
+class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 	Wiimote[] wiimotes;
 	AccelerationPanel aPanel;
 	Wiimote wiimote;
@@ -76,12 +76,18 @@ class TestPanel extends JPanel implements WiimoteListener, ActionListener {
 	Image img;
 	Image imgPlayer;
 	Image imgPlayer2;
+	Image hurdle;
 	ArrayList<Image> horse;
 	ArrayList<Image> horseGray;
 	int horseTimer;
 	int repaintTimer;
+	int minimalSpeed = 1;
+	ArrayList<Player> players;
 
-	public TestPanel() {
+	int playerAmount;
+
+	public RacePanel(int playerAmount) {
+		players = new ArrayList<>();
 		horse = new ArrayList<>();
 		horseGray = new ArrayList<>();
 		xTurned = false;
@@ -102,6 +108,7 @@ class TestPanel extends JPanel implements WiimoteListener, ActionListener {
 		rawAcc = new RawAcceleration();
 		values.add(rawAcc);
 		try {
+			hurdle = ImageIO.read(new File("src/wiimote/hurdle.png"));
 			img = ImageIO.read(new File("src/wiimote/lol.png"));
 			horseGray.add(ImageIO.read(new File("src/wiimote/spriteGrijsPaard.png")));
 			horseGray.add(ImageIO.read(new File("src/wiimote/spriteGrijsPaard2.png")));
@@ -114,10 +121,12 @@ class TestPanel extends JPanel implements WiimoteListener, ActionListener {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		for (int i = 0; i < playerAmount; i++) {
+			players.add(new Player(horse.get(0), i));
+		}
 		horseTimer = 0;
 		imgPlayer = horse.get(horseTimer);
 		imgPlayer2 = horseGray.get(horseTimer);
-
 	}
 
 	public void paintComponent(Graphics g) {
@@ -126,28 +135,45 @@ class TestPanel extends JPanel implements WiimoteListener, ActionListener {
 		Graphics2D g2 = (Graphics2D) g;
 		// System.out.println(xTurns + " " + yTurns + " " + zTurns);
 		RawAcceleration rAcc = values.get(values.size() - 1);
-		int player1 = (xTurns * 3);
-		int player2 = (yTurns * 3);
-		int player3 = (zTurns * 3);
-		int player4 = (xTurns + yTurns + zTurns);
 
-		// Shape s = new Ellipse2D.Double(player1, 100, 5, 5);
-		g2.drawImage(imgPlayer, player1, 100, null);
-		// Shape s2 = new Ellipse2D.Double(player2, 300, 5, 5);
-		g2.drawImage(imgPlayer2, player2, 250, null);
-		// Shape s3 = new Ellipse2D.Double(player3, 500, 5, 5);
-		g2.drawImage(imgPlayer, player3, 400, null);
-		// Shape s4 = new Ellipse2D.Double(player4, 700, 5, 5);
-		g2.drawImage(imgPlayer2, player4, 550, null);
+		int loop = 0;
+		for (Player p : players) {
+			g2.drawImage(p.getSkin(), p.getMovement(), p.getJump(), null);
+			if (loop == 0) {
+				int player1 = (xTurns * 3) + minimalSpeed;
+				p.setMovement(player1);
+			} else if (loop == 1) {
+				int player2 = (yTurns * 3) + minimalSpeed;
+				p.setMovement(player2);
+			} else if (loop == 2) {
+				int player3 = (zTurns * 3) + minimalSpeed;
+				p.setMovement(player3);
+			} else {
+				int player4 = (xTurns + yTurns + zTurns) + minimalSpeed;
+				p.setMovement(player4);
 
-		// g2.setColor(Color.RED);
-		// g2.fill(s);
-		// g2.setColor(Color.YELLOW);
-		// g2.fill(s2);
-		// g2.setColor(Color.BLUE);
-		// g2.fill(s3);
-		// g2.setColor(Color.GREEN);
-		// g2.fill(s4);
+			}
+			loop++;
+		}
+
+		// for (Player p : players) {
+		// if (repaintTimer % 3 == 0) {
+		// for (int i = 0; i < 10; i++) {
+		// minimalSpeed++;
+		// p.setMinimalspeed(minimalSpeed);
+		// }
+		// }
+		// }
+
+		for (Player p : players) {
+			int jump = p.getJump();
+			if (jump <= p.maxHeight() + 70) {
+				System.out.println(jump + " " + p.maxHeight() + " 1");
+				jump = p.getJump() + 5;
+				p.setJump(jump);
+			}
+		}
+
 		short xShort = rAcc.getX();
 		if (xTurned) {
 			if (xShort > 165) {
@@ -194,9 +220,11 @@ class TestPanel extends JPanel implements WiimoteListener, ActionListener {
 		}
 
 		repaintTimer++;
-
 		if (repaintTimer > 25) {
 			horseTimer++;
+			for (Player p : players) {
+				p.setSkin(horse.get(horseTimer));
+			}
 			imgPlayer = horse.get(horseTimer);
 			imgPlayer2 = horseGray.get(horseTimer);
 			if (horseTimer >= (horse.size() - 1)) {
@@ -204,11 +232,26 @@ class TestPanel extends JPanel implements WiimoteListener, ActionListener {
 			}
 			repaintTimer = 0;
 		}
+
+	}
+
+	public void makeHurdles(Graphics2D g2) {
+
 	}
 
 	@Override
 	public void onButtonsEvent(WiimoteButtonsEvent arg0) {
+		if (arg0.isButtonTwoJustPressed() || arg0.isButtonAJustPressed()) {
+			for (Player p : players) {
+				int jump = p.getJump();
+				for (int i = 0; jump > p.maxHeight(); i++)
+					jump--;
+				System.out.println(jump + " " + p.maxHeight() + " 2");
+				p.setJump(jump);
+			}
+			repaint();
 
+		}
 	}
 
 	@Override
