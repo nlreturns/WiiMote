@@ -6,23 +6,33 @@ public class Player {
 	int yTurns;
 	Image skin;
 	int jump;
+	int raceHeight;
 	int minimalSpeed = 1;
 	int movement;
 	int player;
 	int maxHeight;
+	String name;
+	boolean isFinished;
+	String place;
 
 	public Player(Image skin, int player) {
+		name = "Player " + (player + 1);
+		isFinished = false;
 		if (player == 0) {
 			jump = 100;
+			raceHeight = 100;
 			maxHeight = 100 - 70;
 		} else if (player == 1) {
 			jump = 250;
+			raceHeight = 250;
 			maxHeight = 250 - 70;
 		} else if (player == 2) {
 			jump = 400;
+			raceHeight = 400;
 			maxHeight = 400 - 70;
 		} else {
 			jump = 550;
+			raceHeight = 550;
 			maxHeight = 550 - 70;
 		}
 	}
@@ -67,8 +77,32 @@ public class Player {
 		return player;
 	}
 
-	public int maxHeight() {
+	public int getMaxHeight() {
 		return maxHeight;
+	}
+
+	public int getRaceHeight() {
+		return raceHeight;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public boolean isFinished() {
+		return isFinished;
+	}
+
+	public void setFinished(boolean finished) {
+		isFinished = finished;
+	}
+
+	public void setPlace(String endPlace) {
+		place = endPlace;
+	}
+
+	public String getPlace() {
+		return place;
 	}
 
 }

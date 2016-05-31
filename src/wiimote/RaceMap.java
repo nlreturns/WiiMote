@@ -70,6 +70,7 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 	int xTurns;
 	int yTurns;
 	int zTurns;
+	int place;
 	boolean xTurned;
 	boolean yTurned;
 	boolean zTurned;
@@ -83,6 +84,7 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 	int repaintTimer;
 	int minimalSpeed = 1;
 	ArrayList<Player> players;
+	ArrayList<String> placement;
 
 	int playerAmount;
 
@@ -90,6 +92,12 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 		players = new ArrayList<>();
 		horse = new ArrayList<>();
 		horseGray = new ArrayList<>();
+		placement = new ArrayList<>();
+		placement.add("eerste");
+		placement.add("tweede");
+		placement.add("derde");
+		placement.add("vierde");
+		place = 0;
 		xTurned = false;
 		yTurned = false;
 		zTurned = false;
@@ -140,35 +148,32 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 		for (Player p : players) {
 			g2.drawImage(p.getSkin(), p.getMovement(), p.getJump(), null);
 			if (loop == 0) {
-				int player1 = (xTurns * 3) + minimalSpeed;
+				player1 = (xTurns * 3) + minimalSpeed;
 				p.setMovement(player1);
 			} else if (loop == 1) {
-				int player2 = (yTurns * 3) + minimalSpeed;
+				player2 = (yTurns * 3) + minimalSpeed;
 				p.setMovement(player2);
 			} else if (loop == 2) {
-				int player3 = (zTurns * 3) + minimalSpeed;
+				player3 = (zTurns * 3) + minimalSpeed;
 				p.setMovement(player3);
 			} else {
-				int player4 = (xTurns + yTurns + zTurns) + minimalSpeed;
+				player4 = (xTurns + yTurns + zTurns) + minimalSpeed;
 				p.setMovement(player4);
 
 			}
 			loop++;
 		}
 
-		// for (Player p : players) {
-		// if (repaintTimer % 3 == 0) {
-		// for (int i = 0; i < 10; i++) {
-		// minimalSpeed++;
-		// p.setMinimalspeed(minimalSpeed);
-		// }
-		// }
-		// }
+		for (Player p : players) {
+			if (repaintTimer % 3 == 0) {
+				minimalSpeed++;
+				p.setMinimalspeed(minimalSpeed);
+			}
+		}
 
 		for (Player p : players) {
 			int jump = p.getJump();
-			if (jump <= p.maxHeight() + 70) {
-				System.out.println(jump + " " + p.maxHeight() + " 1");
+			if (jump <= p.getRaceHeight()) {
 				jump = p.getJump() + 5;
 				p.setJump(jump);
 			}
@@ -208,17 +213,6 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 			}
 		}
 
-		g2.setColor(Color.RED);
-		if (player1 > getWidth()) {
-			g2.drawString("Player 1 wint", getWidth() / 2, getHeight() / 2);
-		} else if (player2 > getWidth()) {
-			g2.drawString("Player 2 wint", getWidth() / 2, getHeight() / 2);
-		} else if (player3 > getWidth()) {
-			g2.drawString("Player 3 wint", getWidth() / 2, getHeight() / 2);
-		} else if (player4 > getWidth()) {
-			g2.drawString("Player 4 wint", getWidth() / 2, getHeight() / 2);
-		}
-
 		repaintTimer++;
 		if (repaintTimer > 25) {
 			horseTimer++;
@@ -233,6 +227,21 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 			repaintTimer = 0;
 		}
 
+		winner(g2);
+	}
+
+	public void winner(Graphics2D g2) {
+		g2.setColor(Color.RED);
+		for (Player p : players) {
+			if (p.getMovement() > getWidth() && p.isFinished == false) {
+				p.setPlace(placement.get(place));
+				p.setFinished(true);
+				place++;
+			}
+			if (p.isFinished()) {
+				g2.drawString(p.getName() + " is " + p.getPlace(), getWidth() / 2, p.getRaceHeight());
+			}
+		}
 	}
 
 	public void makeHurdles(Graphics2D g2) {
@@ -244,9 +253,8 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 		if (arg0.isButtonTwoJustPressed() || arg0.isButtonAJustPressed()) {
 			for (Player p : players) {
 				int jump = p.getJump();
-				for (int i = 0; jump > p.maxHeight(); i++)
+				for (int i = 0; jump >= p.getMaxHeight(); i++)
 					jump--;
-				System.out.println(jump + " " + p.maxHeight() + " 2");
 				p.setJump(jump);
 			}
 			repaint();
