@@ -47,7 +47,7 @@ public class aantalscherm extends JFrame {
     }
 
     public aantalscherm(){
-        super("Opgave 1");
+        super("Selecteer aantal spelers");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
         panel2 = new Panel2();
@@ -64,7 +64,8 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 
    private Wiimote wiimote, wiimote2;
     private int x = 0, y = 0;
-    private ArrayList<Integer> movelist = new ArrayList<Integer>();
+    private int aantal;
+   
 
     private Random random = new Random();
     private boolean leftUp, rightUp, leftDown, rightDown, aHeld, bHeld, changeColors;
@@ -168,14 +169,16 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 
             // A
             if (e.isButtonAPressed()) {
-                if (y == 0 && x == 0)
-                    leftUp = true;
-                if (y == 1 && x == 0)
-                    leftDown = true;
-                if (y == 0 && x == 1)
-                    rightUp = true;
-                if (y == 1 && x == 1)
-                    rightDown = true;
+            	if(x == 0) {
+            		aantal = 1;
+            	}
+            	if(x == 1) {
+            		aantal = 2;
+            	}
+            	if(x == 2) {
+            		aantal = 3;
+            	}
+            	System.out.println(aantal);
             }
             if (e.isButtonAHeld())
                 aHeld = true;
