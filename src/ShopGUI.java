@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
@@ -14,7 +15,12 @@ public class ShopGUI extends JPanel implements ActionListener {
 	private ArrayList<Skin> skins;
 	
 	public static void main(String s[]) {
-		new ShopGUI();
+		JFrame frame = new JFrame("ShopGUI");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		JPanel panel = new ShopGUI();
+		frame.getContentPane().add(panel);
+		frame.pack();
+		frame.setVisible(true);
 	}
 
 	public ShopGUI() {
@@ -37,6 +43,7 @@ public class ShopGUI extends JPanel implements ActionListener {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D)g;
 		
+		g2d.drawRect(100, 100, 150, 150);
 		AffineTransform skin1 = new AffineTransform();
 		skin1.translate(100, 100);
 		g2d.drawImage(skins.get(0).getSkinImage(), skin1, null);
