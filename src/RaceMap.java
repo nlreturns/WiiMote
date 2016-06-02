@@ -1,6 +1,4 @@
 
-package wiimote;
-
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
@@ -125,16 +123,16 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 		rawAcc = new RawAcceleration();
 		values.add(rawAcc);
 		try {
-			hurdle = ImageIO.read(new File("src/wiimote/hurdle.png"));
-			img = ImageIO.read(new File("src/wiimote/lol.png"));
-			horseGray.add(ImageIO.read(new File("src/wiimote/spriteGrijsPaard.png")));
-			horseGray.add(ImageIO.read(new File("src/wiimote/spriteGrijsPaard2.png")));
-			horseGray.add(ImageIO.read(new File("src/wiimote/spriteGrijsPaard3.png")));
-			horseGray.add(ImageIO.read(new File("src/wiimote/spriteGrijsPaard4.png")));
-			horse.add(ImageIO.read(new File("src/wiimote/spriteBruinPaard.png")));
-			horse.add(ImageIO.read(new File("src/wiimote/spriteBruinPaard2.png")));
-			horse.add(ImageIO.read(new File("src/wiimote/spriteBruinPaard3.png")));
-			horse.add(ImageIO.read(new File("src/wiimote/spriteBruinPaard4.png")));
+			hurdle = ImageIO.read(new File("src/hurdle.png"));
+			img = ImageIO.read(new File("src/lol.png"));
+			horseGray.add(ImageIO.read(new File("src/spriteGrijsPaard.png")));
+			horseGray.add(ImageIO.read(new File("src/spriteGrijsPaard2.png")));
+			horseGray.add(ImageIO.read(new File("src/spriteGrijsPaard3.png")));
+			horseGray.add(ImageIO.read(new File("src/spriteGrijsPaard4.png")));
+			horse.add(ImageIO.read(new File("src/spriteBruinPaard.png")));
+			horse.add(ImageIO.read(new File("src/spriteBruinPaard2.png")));
+			horse.add(ImageIO.read(new File("src/spriteBruinPaard3.png")));
+			horse.add(ImageIO.read(new File("src/spriteBruinPaard4.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

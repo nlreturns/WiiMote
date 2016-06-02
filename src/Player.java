@@ -1,4 +1,3 @@
-package wiimote;
 
 import java.awt.Image;
 
