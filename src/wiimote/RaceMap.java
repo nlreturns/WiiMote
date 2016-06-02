@@ -41,7 +41,7 @@ public class RaceMap extends JFrame {
 
 	public static void main(String args[]) {
 		JFrame frame = new JFrame("Need For Beast");
-		JPanel panel = new RacePanel(4);
+		JPanel panel = new RacePanel(2);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(panel);
@@ -63,6 +63,9 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 	RawAcceleration rawAcc;
 	Timer timer = new Timer(1, this);
 	ArrayList<RawAcceleration> values;
+	ArrayList<RawAcceleration> values1;
+	ArrayList<RawAcceleration> values2;
+	ArrayList<RawAcceleration> values3;
 	int player1;
 	int player2;
 	int player3;
@@ -107,11 +110,17 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 		setPreferredSize(new Dimension(1366, 768));
 		timer.start();
 		System.loadLibrary("WiiuseJ");
-		wiimotes = WiiUseApiManager.getWiimotes(1, false);
-		wiimote = wiimotes[0];
+		wiimotes = WiiUseApiManager.getWiimotes(playerAmount, false);
+		for (int i = 0; i > playerAmount; i++) {
+			wiimote = wiimotes[i];
+			wiimote.activateMotionSensing();
+			wiimote.addWiiMoteEventListeners(this);
+		}
+
 		values = new ArrayList<>();
-		wiimote.activateMotionSensing();
-		wiimote.addWiiMoteEventListeners(this);
+		values1 = new ArrayList<>();
+		values2 = new ArrayList<>();
+		values3 = new ArrayList<>();
 		aPanel = new AccelerationWiimoteEventPanel();
 		rawAcc = new RawAcceleration();
 		values.add(rawAcc);
@@ -179,17 +188,6 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 			}
 		}
 
-		short xShort = rAcc.getX();
-		if (xTurned) {
-			if (xShort > 165) {
-				xTurns++;
-				xTurned = false;
-			}
-		} else {
-			if (xShort > 85) {
-				xTurned = true;
-			}
-		}
 		short yShort = rAcc.getY();
 		if (yTurned) {
 			if (yShort > 150) {
@@ -210,6 +208,17 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 		} else {
 			if (zShort > 100) {
 				zTurned = true;
+			}
+		}
+		short xShort = rAcc.getX();
+		if (xTurned) {
+			if (xShort > 165) {
+				xTurns++;
+				xTurned = false;
+			}
+		} else {
+			if (xShort > 85) {
+				xTurned = true;
 			}
 		}
 
@@ -251,12 +260,13 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 	@Override
 	public void onButtonsEvent(WiimoteButtonsEvent arg0) {
 		if (arg0.isButtonTwoJustPressed() || arg0.isButtonAJustPressed()) {
-			for (Player p : players) {
-				int jump = p.getJump();
-				for (int i = 0; jump >= p.getMaxHeight(); i++)
-					jump--;
-				p.setJump(jump);
-			}
+			int wiimoteID = arg0.getWiimoteId();
+			Player p = players.get(wiimoteID);
+			int jump = p.getJump();
+			for (int i = 0; jump >= p.getMaxHeight(); i++)
+				jump--;
+			p.setJump(jump);
+
 			repaint();
 
 		}
@@ -319,16 +329,48 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 	}
 
 	private void draw(GenericEvent arg0) {
-		if (values.size() >= getWidth()) {
-			values.clear();
-		}
-		RawAcceleration rawAcceleration = aPanel.getRawAccelerationValue(arg0);
+		int wiimoteID = arg0.getWiimoteId();
+		if (wiimoteID == 0) {
+			if (values.size() >= getWidth()) {
+				values.clear();
+			}
+			RawAcceleration rawAcceleration = aPanel.getRawAccelerationValue(arg0);
 
-		if (rawAcceleration != null) {
-			values.add(rawAcceleration);
-		}
+			if (rawAcceleration != null) {
+				values.add(rawAcceleration);
+			} else if (wiimoteID == 1) {
+				if (values1.size() >= getWidth()) {
+					values1.clear();
+				}
+				RawAcceleration rawAcceleration1 = aPanel.getRawAccelerationValue(arg0);
 
-		repaint();
+				if (rawAcceleration1 != null) {
+					values1.add(rawAcceleration1);
+				}
+			} else if (wiimoteID == 2) {
+				if (values2.size() >= getWidth()) {
+					values2.clear();
+				}
+				RawAcceleration rawAcceleration2 = aPanel.getRawAccelerationValue(arg0);
+
+				if (rawAcceleration2 != null) {
+					values2.add(rawAcceleration2);
+				}
+
+			} else {
+				if (values3.size() >= getWidth()) {
+					values3.clear();
+				}
+				RawAcceleration rawAcceleration3 = aPanel.getRawAccelerationValue(arg0);
+
+				if (rawAcceleration3 != null) {
+					values3.add(rawAcceleration3);
+				}
+
+			}
+
+			repaint();
+		}
 	}
 
 	@Override
