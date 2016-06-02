@@ -230,8 +230,7 @@ class Panel extends JPanel implements ActionListener, MouseListener, WiimoteList
 	            	Wissel swt = new Wissel(waarde);
 	            	SwingUtilities.getWindowAncestor(this).dispose();
 	            	apres = true;
-	            	
-	            
+	            	   
 	            }
 	}
 	       

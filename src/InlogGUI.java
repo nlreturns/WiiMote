@@ -22,6 +22,8 @@ public class InlogGUI extends JFrame {
 	
 	private JTextField user, pass;
 	private AccountBase accounts;
+	private Account account = null;
+	private boolean ready = false;
 	
 	// Main 
 	public static void main(String s[]) {
@@ -129,12 +131,9 @@ public class InlogGUI extends JFrame {
 			JOptionPane.showMessageDialog(null, "Wachtwoord en/of username klopt niet", "Error", JOptionPane.INFORMATION_MESSAGE);
 		else if(temp.getPass().equals(pass.getText())) {
 			System.out.println("Ingelogd");
-			JFrame frame = new JFrame("ShopGUI");
-			frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-			JPanel panel = new ShopGUI(temp);
-			frame.getContentPane().add(panel);
-			frame.pack();
-			frame.setVisible(true);
+			account = temp;
+			ready = true;
+			dispose();
 		} else  
 			JOptionPane.showMessageDialog(null, "Wachtwoord en/of username klopt niet", "Error", JOptionPane.INFORMATION_MESSAGE);
 	}
@@ -171,6 +170,14 @@ public class InlogGUI extends JFrame {
 			ex.printStackTrace();
 		}
 		return null;
+	}
+	
+	public Account getAccount() {
+		return account;
+	}
+	
+	public boolean ready() {
+		return ready;
 	}
 	
 }
