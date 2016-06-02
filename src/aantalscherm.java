@@ -94,7 +94,7 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
             
             g2D.setColor(Color.RED);
             wiimote2.setLeds(true,true,true,true);
-        }else
+        } else
             g2D.setColor(Color.RED);
         
         g2D.fillRect(100, 100, 250, 100);
