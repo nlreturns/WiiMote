@@ -62,21 +62,25 @@ public class aantalscherm extends JFrame {
 
 class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteListener{
 
-   private Wiimote wiimote, wiimote2;
+   private Wiimote wiimote, wiimote2, wiimote3, wiimote4;
     private int x = 0, y = 0;
     private int aantal;
+    private Wiimote[] wiimotes;
    
 
     private Random random = new Random();
     private boolean leftUp, rightUp, leftDown, rightDown, aHeld, bHeld, changeColors;
 
     public Panel2(){
-        Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, true);
+        wiimotes = WiiUseApiManager.getWiimotes(2, true);
         this.wiimote = wiimotes[0];
-      //  this.wiimote2 = wiimotes[1];
+     //   this.wiimote2 = wiimotes[1];
+
+        
+   
 
         wiimotes[0].addWiiMoteEventListeners(this);
-    //    wiimotes[1].addWiiMoteEventListeners(this);
+
 
         addMouseListener(this);
     }
@@ -85,20 +89,9 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D)g;
 
-        //* draw backgrounds
-//        g2D.setColor(new Color(163, 54, 67));
-//        g2D.fillRect(0,0,getWidth()/2,getHeight()/2);
-//        g2D.setColor(new Color(170, 148, 57));
-//        g2D.fillRect(getWidth()/2,0,getWidth()/2,getHeight()/2);
-//        g2D.setColor(new Color(60, 49, 118));
-//        g2D.fillRect(0,getHeight()/2,getWidth()/2,getHeight()/2);
-//        g2D.setColor(new Color(68, 143, 48));
-//        g2D.fillRect(getWidth()/2,getHeight()/2,getWidth()/2,getHeight()/2);
-        //*
-
 
         if(changeColors) {
-            //g2D.setColor(new Color((int) Math.random() * 255, (int) Math.random() * 255, (int) Math.random() * 255));
+            
             g2D.setColor(Color.RED);
             wiimote2.setLeds(true,true,true,true);
         }else
@@ -116,8 +109,7 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
         g2D.drawString("4 Spelers", 850, 150);
         g2D.setStroke(new BasicStroke(5));
 
-        
-        
+
         if(x==0)
             g2D.drawRect(100, 100, 250, 100);
         if(x==1)
@@ -126,21 +118,10 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
             g2D.drawRect(800, 100, 250, 100);
     }
 
-
-
-   
-
- 
-
     @Override
     public void actionPerformed(ActionEvent e) {
 
     }
-
-  
-
-
-    
 
     @Override
     public void mousePressed(MouseEvent e) {
@@ -171,15 +152,26 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
             if (e.isButtonAPressed()) {
             	if(x == 0) {
             		aantal = 2;
+            		this.wiimote2 = wiimotes[1];
             	}
             	if(x == 1) {
             		aantal = 3;
+ 
             	}
             	if(x == 2) {
             		aantal = 4;
+
+            	 
             	}
-            	System.out.println(aantal);
+            	while(wiimotes.length < aantal){
+            		System.out.println("Sluit controller aan");
+            	}
+            	
             	inlogScreens(aantal);
+            	System.out.println(wiimotes.length);
+            	
+
+            	
             	
             }
             if (e.isButtonAHeld())
