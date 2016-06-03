@@ -26,18 +26,21 @@ public class Player {
 			raceHeight = 250;
 			maxHeight = 250 - 70;
 		} else if (player == 2) {
-			jump = 400;
-			raceHeight = 400;
-			maxHeight = 400 - 70;
+			jump = 420;
+			raceHeight = 420;
+			maxHeight = 420 - 70;
 		} else {
-			jump = 550;
-			raceHeight = 550;
-			maxHeight = 550 - 70;
+			jump = 560;
+			raceHeight = 560;
+			maxHeight = 560 - 70;
 		}
 	}
 
 	public void setMovement(int newMovement) {
 		movement = newMovement;
+		if (movement > 4610) {
+			movement = 4610;
+		}
 	}
 
 	public int getMovement() {
