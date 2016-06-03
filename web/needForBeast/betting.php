@@ -1,6 +1,8 @@
 <?php
-require_once "Database.php";
-require_once "User.php";
+require_once "classes/Database.php";
+require_once "classes/User.php";
+require_once "classes/Bet.php";
+require_once "classes/Check.php";
 ?>
 
 
@@ -9,49 +11,61 @@ require_once "User.php";
     <head>
     </head>
     <body>
-        <!--
-        - check gebruiker bestaat
-        - check gebruiker heeft genoeg money
-        - haal geld van gebruiker zijn account
-        - sla sessie op van zijn bet, $_SESSION['bet'] = {amount,horse};
-        
-        - values die ik moet krijgen; user_id(session), bet amount($_GET['v']
-          user_score(session), horse($_GET['p']
-        
-        -->
         <?php
         session_start();
 
+        $db = new Database();
+        $user = new User();
+        $bet = new Bet();
+        $check = new Check();
+
         $user_id = $_SESSION['user_id'];
-        $user_score = $_SESSION['user_score'];
+        $user->setUserId($user_id);
+        $user->viewUser();
+
+        $user_score = $user->getUserScore();
 
         $player = $_GET['p'];
         $value = intval($_GET['v']);
 
-        $db = new Database();
-        $user = new User();
+        $bet->setUserId($user_id);
+        
+        
+        $check->viewWinner();
 
-        $user->setUserId($user_id);
-        if (!isset($_SESSION['bet'])) {
-            if ($user->viewUser()) {
-                if ($value > $user_score) {
-                    echo "Niet genoeg geld!";
+        if ($check->getWinner() == 0 || $check->getWinner() == 1 || $check->getWinner() == 2 || $check->getWinner() == 3 || $check->getWinner() == 4 ) {
+            echo "Race is al bezig!";
+        } else {
+            if (!$bet->userBet()) {
+                if ($user->viewUser()) {
+                    if ($value > $user->getUserScore()) {
+                        echo "Niet genoeg geld!";
+                    } elseif ($value < 0) {
+                        echo "Echt dikke cheaters jullie";
+                    } elseif ($value == 0){
+                        echo "Niet echt nuttig om 0 in te zetten.";
+                    } else {
+                        $user->setUserScore($user_score - $value);
+                        $user->editUser();
+                        echo "Je hebt " . $value . " ingezet op Speler " . $player;
+                        // zet de bet in de database
+                        $bet->setUserId($user_id);
+                        if ($bet->userBet()) {
+                            $bet->deleteBet();
+                        }
+                        $bet->setBetPlayer($player);
+                        $bet->setBetValue($value);
+                        $bet->addBet();
+                    }
                 } else {
-                    $user->setUserScore($user_score - $value);
-                    $user->editUser();
-                    $_SESSION['bet'] = [$value, $player];
-                    $_SESSION['score'] = $user->getUserScore();
-                    echo "Je hebt " . $value . " ingezet op " . $player;
-                    //@TODO database bet zetten(?)
+                    echo "Er is iets fout gegaan met uw account. ";
+                    ?>
+                    <a href="login.php">Log hier opnieuw in</a>
+                    <?php
                 }
             } else {
-                echo "Er is iets fout gegaan met uw account. ";
-                ?>
-                <a href="login.php">Log hier opnieuw in</a>
-                <?php
+                echo "Je hebt al " . $bet->getBetValue() . " ingezet op " . $bet->getBetPlayer();
             }
-        } else {
-            echo "Je hebt al " . $_SESSION['bet'][0] . " ingezet op " . $_SESSION['bet'][1];
         }
         ?>
     </body>

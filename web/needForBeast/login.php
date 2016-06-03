@@ -1,6 +1,6 @@
 
 <?php
-require_once "User.php";
+require_once "classes/User.php";
 
 session_start();
 
@@ -16,7 +16,6 @@ if (isset($_POST["username"]) && isset($_POST["password"])) {
     $login->login();
     header('Location: index.php');
 }
-
 
 ?>
 

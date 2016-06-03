@@ -12,9 +12,8 @@
  * 0.3  - 30.10.2014  Jan-Willem Dooms <janwillem.dooms@gmail.com>  MySQL to MySQLi conversion
  *
  */
-
-require_once "Config.php";
-require_once "Error.php";
+require_once "classes/Config.php";
+require_once "classes/Error.php";
 
 class Database {
 
@@ -77,9 +76,9 @@ class Database {
      * @return bool TRUE if Ok | FALSE check error array
      */
     protected function dbquery($query) {
-        
+
         $this->query_result = $this->connection->query($query);
-        
+
         return $this->query_result;
     }
 
@@ -91,11 +90,13 @@ class Database {
      */
     protected function dbOutArray($data_array) {
         //var_dump($data_array);
-        foreach ($data_array as $field => $value) {
-            if (is_numeric($value)) {
-                continue;
-            } else if (is_string($value)) {
-                $data_array[$field] = $this->dbOutString($value);
+        if ($data_array) {
+            foreach ($data_array as $field => $value) {
+                if (is_numeric($value)) {
+                    continue;
+                } else if (is_string($value)) {
+                    $data_array[$field] = $this->dbOutString($value);
+                }
             }
         }
         return $data_array;
@@ -110,9 +111,9 @@ class Database {
      * @return FALSE No data was found.
      */
     protected function dbFetchArray($query) {
-        
+
         $result = $this->connection->query($query);
-        
+
         //TODO: add error check.	
         $data_array = $result->fetch_array(MYSQLI_ASSOC);
 
@@ -145,9 +146,9 @@ class Database {
      * @return FALSE No succesfull query was found.
      */
     protected function dbFetchAll() {
-        
+
         //@@TODO RESOURCE CHECK IS_A ?
-        
+
         $return_array = array();
 
         while ($row = $this->query_result->fetch_array(MYSQLI_ASSOC)) {
@@ -240,7 +241,7 @@ class Database {
      */
     private function isMySqliResource($res) {
         $res_type = is_resource($res) ? get_resource_type($res) : gettype($res);
-        
+
         if (!is_a($res_type, 'Mysqli')) {
             $this->error->setError('Invalid resource type: ' . $res_type);
             return FALSE;
@@ -257,8 +258,8 @@ class Database {
 
         //echo "<br />". __FILE__ . ' ' . __LINE__ . ' '. "<strong>CLOSE DB #". $this->connection ."</strong><br />";
     }
-    
-    public function lastId(){
+
+    public function lastId() {
         return $this->connection->insert_id;
     }
 

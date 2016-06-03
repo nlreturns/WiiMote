@@ -48,7 +48,7 @@ class DbBet extends Database {
         if (!$this->db->dbquery($query)) {
             return false;
         } else {
-            echo "Bet aangemaakt.";
+            //echo "Bet aangemaakt.";
         }
     }
 
@@ -120,7 +120,7 @@ class DbBet extends Database {
             $page *= 30;
         }
         //build query
-        $query = "SELECT * FROM `bets` ORDER BY `bet_value` ASC LIMIT " . $limit . " OFFSET " . $page;
+        $query = "SELECT * FROM `bets` ORDER BY `bet_value` DESC LIMIT " . $limit . " OFFSET " . $page;
         
         // check for data
         if (!$this->db->dbquery($query)) {
@@ -129,11 +129,25 @@ class DbBet extends Database {
         // fetch data
         if(!($result = $this->db->dbFetchAll())){
             // set error.
-            echo TXT_NO_DATA;
+            //echo TXT_NO_DATA;
             return FALSE;
         }
         // return
         return $result;
+    }
+    
+    public function userBet($user_id){
+        //build query
+        $query = "SELECT * FROM `bets` WHERE user_id = " . $user_id;
+        
+        // fetch query
+        $data = $this->db->dbFetchArray($query);
+        
+        // check data
+        if ( $data == NULL) {
+            return FALSE;
+        }
+        return $data;
     }
 
 }
