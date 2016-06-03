@@ -34,19 +34,19 @@ import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
 
-public class aantalscherm extends JFrame {
+public class Aantalscherm extends JFrame {
 
     private JPanel panel2;
 
     public static void main(String[] args) {
 
-        new aantalscherm();
+        new Aantalscherm();
 
         System.loadLibrary("WiiuseJ");
 
     }
 
-    public aantalscherm(){
+    public Aantalscherm(){
         super("Selecteer aantal spelers");
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
