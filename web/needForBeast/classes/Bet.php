@@ -161,6 +161,15 @@ class Bet extends DbBet {
         
         return $data;
     }
+    
+    public function userBet(){
+        $data = $this->bet_db->userBet($this->user_id);
+        $this->bet_id = $data['bet_id'];
+        $this->bet_value = $data['bet_value'];
+        $this->bet_player = $data['bet_player'];
+        
+        return $data;
+    }
 
     /**
      * @access public

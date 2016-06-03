@@ -1,6 +1,6 @@
 <?php
-require_once "Database.php";
-require_once "User.php";
+require_once "classes/Database.php";
+require_once "classes/User.php";
 
 session_start();
 
@@ -9,4 +9,4 @@ $user->setUserId($_SESSION['user_id']);
 $user->viewUser();
 $db = new Database();
 
-echo "Huidig puntenaantal: " . $user->getUserScore();
+echo "Uw huidig puntenaantal: " . $user->getUserScore();

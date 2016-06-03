@@ -135,6 +135,32 @@ class DbUser extends Database {
         // return
         return $result;
     }
+    
+    /**
+     * @access public
+     */
+    public function viewAllUsers2($page, $limit) {
+        if($page == 0){
+            
+        }else{
+            $page *= $limit;
+        }
+        //build query
+        $query = "SELECT * FROM `user` ORDER BY `user_score` DESC LIMIT " . $limit . " OFFSET " . $page;
+        
+        // check for data
+        if (!$this->db->dbquery($query)) {
+            return false;
+        }
+        // fetch data
+        if(!($result = $this->db->dbFetchAll())){
+            // set error.
+            echo TXT_NO_DATA;
+            return FALSE;
+        }
+        // return
+        return $result;
+    }
 
     /**
      * @access public
