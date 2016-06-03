@@ -1,3 +1,7 @@
+import java.util.ArrayList;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 public class Wissel {
 	private int waarde;
@@ -14,7 +18,16 @@ public class Wissel {
                  break;
         case 2:  Aantalscherm aantal = new Aantalscherm();
                  break;
-        case 3: 
+        case 3:  JFrame frame = new JFrame("ShopGUI");
+				 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+				 ArrayList<Account> temp = new ArrayList<Account>();
+				 temp.add(new Account("Rico", "pass", 500));
+				 temp.add(new Account("Justin", "pass", 500));
+				 temp.add(new Account("Jairo", "pass", 500));
+				 JPanel panel = new ShopGUI(temp);
+				 frame.getContentPane().add(panel);
+				 frame.pack();
+				 frame.setVisible(true);
                  break;
         case 4: 
                  break;

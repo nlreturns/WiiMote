@@ -6,6 +6,7 @@ public class Account implements Serializable {
 	private String user, pass;
 	private int points;
 	private ArrayList<Skin> skins;
+	private Skin selectedSkin;
 	
 	public Account(String user, String pass, int points) {
 		this.user = user;
@@ -13,6 +14,7 @@ public class Account implements Serializable {
 		this.points = points;
 		skins = new ArrayList<Skin>();
 		addSkin(new Skin("Paard", 0, "src/spriteGrijsPaard.png"));
+		selectedSkin = skins.get(0);
 	}
 	
 	public String getUser() {
@@ -41,6 +43,14 @@ public class Account implements Serializable {
 	
 	public void addSkin(Skin skin) {
 		skins.add(skin);
+	}
+	
+	public Skin getSelectedSkin() {
+		return selectedSkin;
+	}
+	
+	public void setSelectedSkin(Skin skin) {
+		selectedSkin = skin;
 	}
 	
 }
