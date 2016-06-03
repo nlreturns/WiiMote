@@ -81,6 +81,7 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 	Image hurdle;
 	ArrayList<Image> horse;
 	ArrayList<Image> horseGray;
+	ArrayList<Image> drake;
 	int horseTimer;
 	int repaintTimer;
 	int minimalSpeed = 1;
@@ -93,6 +94,7 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 		players = new ArrayList<>();
 		horse = new ArrayList<>();
 		horseGray = new ArrayList<>();
+		drake = new ArrayList<>();
 		placement = new ArrayList<>();
 		placement.add("eerste");
 		placement.add("tweede");
@@ -133,6 +135,10 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 			horse.add(ImageIO.read(new File("src/spriteBruinPaard2.png")));
 			horse.add(ImageIO.read(new File("src/spriteBruinPaard3.png")));
 			horse.add(ImageIO.read(new File("src/spriteBruinPaard4.png")));
+			drake.add(ImageIO.read(new File("src/spriteRodeDraak.png")));
+			drake.add(ImageIO.read(new File("src/spriteRodeDraak2.png")));
+			drake.add(ImageIO.read(new File("src/spriteRodeDraak3.png")));
+			drake.add(ImageIO.read(new File("src/spriteRodeDraak4.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -149,24 +155,38 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 		g.drawImage(img, 0, 0, null);
 		Graphics2D g2 = (Graphics2D) g;
 		// System.out.println(xTurns + " " + yTurns + " " + zTurns);
-		RawAcceleration rAcc = values.get(values.size() - 1);
 
 		int loop = 0;
 		for (Player p : players) {
 			g2.drawImage(p.getSkin(), p.getMovement(), p.getJump(), null);
+			RawAcceleration rAcc;
 			if (loop == 0) {
+				rAcc = values.get(values.size() - 1);
 				player1 = (xTurns * 3) + minimalSpeed;
 				p.setMovement(player1);
 			} else if (loop == 1) {
+				rAcc = values1.get(values.size() - 1);
 				player2 = (yTurns * 3) + minimalSpeed;
 				p.setMovement(player2);
 			} else if (loop == 2) {
+				rAcc = values2.get(values.size() - 1);
 				player3 = (zTurns * 3) + minimalSpeed;
 				p.setMovement(player3);
 			} else {
+				rAcc = values3.get(values.size() - 1);
 				player4 = (xTurns + yTurns + zTurns) + minimalSpeed;
 				p.setMovement(player4);
-
+			}
+			short yShort = rAcc.getY();
+			if (yTurned) {
+				if (yShort > 150) {
+					yTurns++;
+					yTurned = false;
+				}
+			} else {
+				if (yShort > 75) {
+					yTurned = true;
+				}
 			}
 			loop++;
 		}
@@ -186,45 +206,12 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 			}
 		}
 
-		short yShort = rAcc.getY();
-		if (yTurned) {
-			if (yShort > 150) {
-				yTurns++;
-				yTurned = false;
-			}
-		} else {
-			if (yShort > 75) {
-				yTurned = true;
-			}
-		}
-		short zShort = rAcc.getZ();
-		if (zTurned) {
-			if (zShort > 200) {
-				zTurns++;
-				zTurned = false;
-			}
-		} else {
-			if (zShort > 100) {
-				zTurned = true;
-			}
-		}
-		short xShort = rAcc.getX();
-		if (xTurned) {
-			if (xShort > 165) {
-				xTurns++;
-				xTurned = false;
-			}
-		} else {
-			if (xShort > 85) {
-				xTurned = true;
-			}
-		}
-
+		// x 165 85 z 200 100
 		repaintTimer++;
 		if (repaintTimer > 25) {
 			horseTimer++;
 			for (Player p : players) {
-				p.setSkin(horse.get(horseTimer));
+				p.setSkin(drake.get(horseTimer));
 			}
 			imgPlayer = horse.get(horseTimer);
 			imgPlayer2 = horseGray.get(horseTimer);
