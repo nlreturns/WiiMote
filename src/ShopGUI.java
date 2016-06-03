@@ -165,12 +165,16 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
         	if(!ready1) {
 	        	if(e.isButtonLeftJustPressed()) 
 	        		i1 = (i1 - 1) % skins.size();
+	        		if (i1 < 0 ){
+	        			i1 = skins.size()-1;
+	        		
+	        		}
 	        	
 	        	if(e.isButtonRightJustPressed()) 
 	        		i1 = (i1 + 1) % skins.size();
         	}
         	if(e.isButtonAJustPressed()) {
-        		if(skinUnlocked(accounts.get(0), skins.get(1))) {
+        		if(skinUnlocked(accounts.get(0), skins.get(i1))) {
         			accounts.get(0).setSelectedSkin(skins.get(i1));
         			ready1 = true;
         		} else {
@@ -184,12 +188,15 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
         	if(!ready2) {
 	        	if(e.isButtonLeftJustPressed()) 
 	        		i2 = (i2 - 1) % skins.size();
-	        	
+	        	if (i2 < 0 ){
+        			i2 = skins.size()-1;
+	        	}
+        			
 	        	if(e.isButtonRightJustPressed()) 
 	        		i2 = (i2 + 1) % skins.size();
         	}
         	if(e.isButtonAJustPressed()) {
-        		if(skinUnlocked(accounts.get(1), skins.get(1))) {
+        		if(skinUnlocked(accounts.get(1), skins.get(i2))) {
         			accounts.get(1).setSelectedSkin(skins.get(i2));
         			ready1 = true;
         		} else {
@@ -203,12 +210,15 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
         	if(!ready3) {
 	        	if(e.isButtonLeftJustPressed()) 
 	        		i3 = (i3 - 1) % skins.size();
+	        	if (i3 < 0 ){
+        			i3 = skins.size()-1;
+	        	}
 	        	
 	        	if(e.isButtonRightJustPressed()) 
 	        		i3 = (i3 + 1) % skins.size();
         	}
         	if(e.isButtonAJustPressed()) {
-        		if(skinUnlocked(accounts.get(2), skins.get(1))) {
+        		if(skinUnlocked(accounts.get(2), skins.get(i3))) {
         			accounts.get(2).setSelectedSkin(skins.get(i3));
         			ready1 = true;
         		} else {
