@@ -3,3 +3,11 @@
 .classpath
 .iml
 .dll
+*.java
+src/spriteRodeDraak4.png
+*.java
+src/Wissel.java
+*.png
+src/aantalscherm.java
+*.java
+src/RaceMap.java

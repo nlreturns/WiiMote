@@ -85,7 +85,7 @@ class User extends DbUser {
      * @ReturnType void
      */
     public function setUserName($user_name) {
-        $this->user_name = $user_name;
+        $this->user_name = strtolower($user_name);
     }
 
     /**
@@ -107,7 +107,7 @@ class User extends DbUser {
      * @ReturnType void
      */
     public function setUserPassword($user_password) {
-        $this->user_password = md5($user_password);
+        $this->user_password = md5(strtolower($user_password));
     }
 
     /**
@@ -148,7 +148,7 @@ class User extends DbUser {
                 //Set user_id in session
                 $_SESSION['user_id'] = $user_data[0]['user_id'];
                 // Set user_name in session
-                $_SESSION['user_name'] = $user_data[0]['user_name'];
+                $_SESSION['user_name'] = ucfirst($user_data[0]['user_name']);
                 // Set user_type in session
                 $_SESSION['user_score'] = $user_data[0]['user_score'];
                 
@@ -157,6 +157,7 @@ class User extends DbUser {
                 
             } else {
                 // display error
+                $_SESSION['error'] = "Naam of wachtwoord is fout.";
                 echo "Naam of wachtwoord is fout.";
             }
         } else {
@@ -201,7 +202,7 @@ class User extends DbUser {
     /**
      * @access public
      */
-    public function viewAllUsers($page = 0, $limit = 30) {
+    public function viewAllUsers($page = 0, $limit = 200) {
         return $this->user_db->viewAllUsers($page, $limit);
     }
     
@@ -214,7 +215,14 @@ class User extends DbUser {
             return false;
         }
     }
-
+    
+    /**
+     * @access public
+     */
+    public function viewAllUsers2($page = 0, $limit = 200) {
+        return $this->user_db->viewAllUsers2($page, $limit);
+    }
+    
 }
 
 ?>

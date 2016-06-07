@@ -58,6 +58,11 @@ public class Aantalscherm extends JFrame {
         setResizable(false);
         setVisible(true);
     }
+    
+    public int getAantall(){
+    	return ((Panel2) panel2).getAantal();
+    }
+    
 }
 
 class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteListener{
@@ -72,9 +77,9 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
     private boolean leftUp, rightUp, leftDown, rightDown, aHeld, bHeld, changeColors;
 
     public Panel2(){
-        wiimotes = WiiUseApiManager.getWiimotes(2, true);
+        wiimotes = WiiUseApiManager.getWiimotes(1, true);
         this.wiimote = wiimotes[0];
-     //   this.wiimote2 = wiimotes[1];
+      // this.wiimote2 = wiimotes[1];
 
         
    
@@ -83,6 +88,9 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 
 
         addMouseListener(this);
+    }
+    public int getAantal() {
+    	return aantal;
     }
 
     public void paintComponent(Graphics g){
@@ -152,7 +160,7 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
             if (e.isButtonAPressed()) {
             	if(x == 0) {
             		aantal = 2;
-            		this.wiimote2 = wiimotes[1];
+            //		this.wiimote2 = wiimotes[1];
             	}
             	if(x == 1) {
             		aantal = 3;
@@ -163,15 +171,19 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 
             	 
             	}
-            	while(wiimotes.length < aantal){
-            		System.out.println("Sluit controller aan");
-            	}
+            //	while(wiimotes.length < aantal){
+            //		System.out.println("Sluit controller aan");
+            //	}
+
             	
             	inlogScreens(aantal);
             	System.out.println(wiimotes.length);
+
+        		
+            	
             	
 
-            	
+          //  	Wissel wissel = new Wissel(3);
             	
             }
             if (e.isButtonAHeld())
@@ -209,6 +221,7 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 
 
     }
+ 
 
     @Override
     public void onIrEvent(IREvent irEvent) {
@@ -225,6 +238,7 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 
     }
 
+    
     @Override
     public void onStatusEvent(StatusEvent statusEvent) {
 
@@ -278,11 +292,19 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 			boolean ready = false;
 			while(ready == false) {
 				ready = temp.ready();
-				System.out.println("poep");
+				System.out.println("g");
+				
 			}
 			accounts.add(temp.getAccount());
+			
 		}
 		System.out.println(accounts.size());
+    	SwingUtilities.getWindowAncestor(this).dispose();
+		Wissel wissel = new Wissel(3);
+		System.out.println("SUPERDIKKESTRONT");
+		
+
+
 		return accounts;
 	}
 	
