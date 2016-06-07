@@ -1,16 +1,18 @@
 import java.awt.Image;
+import java.io.Serializable;
+
 import javax.swing.ImageIcon;
 
-public class Skin {
+public class Skin implements Serializable {
 
 	private String name;
 	private int cost;
-	private Image image;
+	private String image;
 	
 	public Skin(String name, int cost, String image) {
 		this.name = name;
 		this.cost = cost;
-		this.image = new ImageIcon(image).getImage();
+		this.image = image;
 	}
 	
 	public String getName() {
@@ -22,7 +24,7 @@ public class Skin {
 	}
 	
 	public Image getSkinImage() {
-		return image;
+		return new ImageIcon(image).getImage();
 	}
 	
 }

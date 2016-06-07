@@ -30,27 +30,15 @@ import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 	
 	private ArrayList<Skin> skins;
+	private Wissel wissel;
 	private ArrayList<Account> accounts;
 	private int i1 = 1, i2 = 0, i3 = 0, i4 = 0;
 	private boolean ready1 = false, ready2 = false, ready3 = false, ready4 = false;
 	private Wiimote wiimote, wiimote2, wiimote3, wiimote4;
 	private Wiimote[] wiimotes;
-	
-	public static void main(String s[]) {
-		JFrame frame = new JFrame("ShopGUI");
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		ArrayList<Account> temp = new ArrayList<Account>();
-		temp.add(new Account("Rico", "pass", 500));
-		temp.add(new Account("Justin", "pass", 500));
-		temp.add(new Account("Jairo", "pass", 500));
-		JPanel panel = new ShopGUI(temp);
-		frame.getContentPane().add(panel);
-		frame.pack();
-		frame.setVisible(true);
-	}
 
-	public ShopGUI(ArrayList<Account> accounts) {
-		setPreferredSize(new Dimension(1000,600));
+	public ShopGUI(ArrayList<Account> accounts, Wissel wissel) {
+		this.wissel = wissel;
 		Timer timer = new Timer(1000/50, this);
 		timer.start();
 		wiimotes = WiiUseApiManager.getWiimotes(accounts.size(), true);
@@ -68,7 +56,7 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 	*/
 	public void actionPerformed(ActionEvent arg0) {
 		if((ready1)&&(ready2)&&(ready3)&&(ready4)) {
-			new Wissel(4);
+			wissel.switchcase(4);
 		}
 			
 		repaint();

@@ -13,6 +13,8 @@ public class Account implements Serializable {
 		this.pass = pass;
 		this.points = points;
 		skins = new ArrayList<Skin>();
+		addSkin(new Skin("Paard", 0, "src/spriteGrijsPaard.png"));
+		selectedSkin = skins.get(0);
 	}
 	
 	public String getUser() {
