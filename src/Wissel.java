@@ -44,6 +44,9 @@ public class Wissel extends JFrame {
 
 		case 4:
 			RaceMap race = new RaceMap(1);
+			this.getContentPane().removeAll();
+			this.getContentPane().add(race);
+			this.pack();
 			break;
 
 		case 5:
