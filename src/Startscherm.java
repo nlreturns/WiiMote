@@ -1,3 +1,4 @@
+
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -10,7 +11,6 @@ import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
 import java.io.File;
 import java.io.IOException;
-import java.util.Timer;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -33,205 +33,175 @@ import wiiusej.wiiusejevents.wiiuseapievents.NunchukInsertedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
-
 public class Startscherm extends JFrame {
 
-    private JPanel panel;
+	private JPanel panel;
 
-    public static void main(String[] args) {
+	public static void main(String[] args) {
 
-        new Startscherm(); 
+		new Startscherm();
 
-        System.loadLibrary("WiiuseJ");
+		System.loadLibrary("WiiuseJ");
 
-    }
+	}
 
-    public Startscherm(){
-        super("Opgave 1");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
+	public Startscherm() {
+		super("Opgave 1");
+		setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        panel = new Panel();
-        add(panel);
+		panel = new Panel();
+		add(panel);
 
-        
-        
-        setSize(1920, 1080);
-        setResizable(false);
-        //panel.setBackground(Color.CYAN);
-        setVisible(true);
+		setSize(1920, 1080);
+		setResizable(false);
+		// panel.setBackground(Color.CYAN);
+		setVisible(true);
 
-        
-    }
+	}
 }
 
-class Panel extends JPanel implements ActionListener, MouseListener, WiimoteListener{
+class Panel extends JPanel implements ActionListener, MouseListener, WiimoteListener {
 
+	private Wiimote wiimote, wiimote2;
 
-    private Wiimote wiimote, wiimote2;
+	private Image img;
+	private int waarde = 1;
+	private boolean apres = false;
 
-    private Image img;
-    private int waarde = 1;
-    private boolean apres = false;
+	public Panel() {
+		Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, false);
+		this.wiimote = wiimotes[0];
 
-   
-    
-    
-  
+		wiimotes[0].addWiiMoteEventListeners(this);
 
-    public Panel(){
-        Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, false);
-        this.wiimote = wiimotes[0];
-  
-        wiimotes[0].addWiiMoteEventListeners(this);
+		addMouseListener(this);
 
-
-        addMouseListener(this);
-    
-       
-        
-        try {
+		try {
 			img = ImageIO.read(new File("C:/Users/wim/Documents/PERIODE4/Git/horses.jpg"));
-			
+
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-    }
+	}
 
-    
+	public void paintComponent(Graphics g) {
+		super.paintComponent(g);
+		Graphics2D g2D = (Graphics2D) g;
+		AffineTransform af = new AffineTransform();
 
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-        Graphics2D g2D = (Graphics2D)g;
-        AffineTransform af = new AffineTransform();
-      
-  
-        g2D.drawImage(img, af, null);
+		g2D.drawImage(img, af, null);
 
+		g2D.setFont(new Font("TimesRoman", Font.BOLD, 36));
+		g2D.setColor(Color.RED);
 
+		g2D.drawString("Press A to continue", getWidth() / 2 - 100, getHeight() * 0.9f);
 
-        g2D.setFont(new Font("TimesRoman", Font.BOLD, 36));
-        g2D.setColor(Color.RED);
-       
-        g2D.drawString("Press A to continue", getWidth()/2 - 100, getHeight()*0.9f);
-        
-        g2D.setFont(new Font("TimesRoman", Font.BOLD, 128));
-        g2D.drawString("NEED FOR BEAST", 350, 150);
+		g2D.setFont(new Font("TimesRoman", Font.BOLD, 128));
+		g2D.drawString("NEED FOR BEAST", 350, 150);
 
+		repaint();
+	}
 
+	@Override
+	public void actionPerformed(ActionEvent e) {
 
+	}
 
-     
-        repaint();
-    }
+	@Override
+	public void mouseClicked(MouseEvent e) {
 
+	}
 
+	@Override
+	public void mousePressed(MouseEvent e) {
 
+	}
 
- 
+	@Override
+	public void mouseReleased(MouseEvent e) {
 
-    @Override
-    public void actionPerformed(ActionEvent e) {
+	}
 
-    }
+	@Override
+	public void mouseEntered(MouseEvent e) {
 
-    @Override
-    public void mouseClicked(MouseEvent e) {
+	}
 
- 
-        }
+	@Override
+	public void mouseExited(MouseEvent e) {
 
-    
+	}
 
-    @Override
-    public void mousePressed(MouseEvent e) {
+	public void onIrEvent(IREvent irEvent) {
 
-    }
+	}
 
-    @Override
-    public void mouseReleased(MouseEvent e) {
+	@Override
+	public void onMotionSensingEvent(MotionSensingEvent motionSensingEvent) {
 
-    }
+	}
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
+	@Override
+	public void onExpansionEvent(ExpansionEvent expansionEvent) {
 
-    }
+	}
 
-    @Override
-    public void mouseExited(MouseEvent e) {
+	@Override
+	public void onStatusEvent(StatusEvent statusEvent) {
 
-    }
+	}
 
+	@Override
+	public void onDisconnectionEvent(DisconnectionEvent disconnectionEvent) {
 
-    public void onIrEvent(IREvent irEvent) {
+	}
 
-    }
+	@Override
+	public void onNunchukInsertedEvent(NunchukInsertedEvent nunchukInsertedEvent) {
 
-    @Override
-    public void onMotionSensingEvent(MotionSensingEvent motionSensingEvent) {
+	}
 
-    }
+	@Override
+	public void onNunchukRemovedEvent(NunchukRemovedEvent nunchukRemovedEvent) {
 
-    @Override
-    public void onExpansionEvent(ExpansionEvent expansionEvent) {
+	}
 
-    }
+	@Override
+	public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent guitarHeroInsertedEvent) {
 
-    @Override
-    public void onStatusEvent(StatusEvent statusEvent) {
+	}
 
-    }
+	@Override
+	public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent guitarHeroRemovedEvent) {
 
-    @Override
-    public void onDisconnectionEvent(DisconnectionEvent disconnectionEvent) {
+	}
 
-    }
+	@Override
+	public void onClassicControllerInsertedEvent(ClassicControllerInsertedEvent classicControllerInsertedEvent) {
 
-    @Override
-    public void onNunchukInsertedEvent(NunchukInsertedEvent nunchukInsertedEvent) {
+	}
 
-    }
+	@Override
+	public void onClassicControllerRemovedEvent(ClassicControllerRemovedEvent classicControllerRemovedEvent) {
 
-    @Override
-    public void onNunchukRemovedEvent(NunchukRemovedEvent nunchukRemovedEvent) {
-
-    }
-
-    @Override
-    public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent guitarHeroInsertedEvent) {
-
-    }
-
-    @Override
-    public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent guitarHeroRemovedEvent) {
-
-    }
-
-    @Override
-    public void onClassicControllerInsertedEvent(ClassicControllerInsertedEvent classicControllerInsertedEvent) {
-
-    }
-
-    @Override
-    public void onClassicControllerRemovedEvent(ClassicControllerRemovedEvent classicControllerRemovedEvent) {
-
-    }
+	}
 
 	@Override
 	public void onButtonsEvent(WiimoteButtonsEvent e) {
 		// TODO Auto-generated method stub
-	   
-	        if(e.getWiimoteId() == 1) {
 
-	            // A
-	            if (e.isButtonAPressed() && apres == false) {
-	            	waarde = 2;
-	            	Wissel swt = new Wissel(waarde);
-	            	SwingUtilities.getWindowAncestor(this).dispose();
-	            	apres = true;
-	            	   
-	            }
+		if (e.getWiimoteId() == 1) {
+
+			// A
+			if (e.isButtonAPressed() && apres == false) {
+				waarde = 2;
+				Wissel swt = new Wissel(waarde);
+				SwingUtilities.getWindowAncestor(this).dispose();
+				apres = true;
+
+			}
+		}
+
 	}
-	       
-}}
+}
