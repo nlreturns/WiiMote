@@ -6,6 +6,7 @@ public class Account implements Serializable {
 	private String user, pass;
 	private int points;
 	private ArrayList<Skin> skins;
+	private Skin selectedSkin;
 	
 	public Account(String user, String pass, int points) {
 		this.user = user;
@@ -40,6 +41,14 @@ public class Account implements Serializable {
 	
 	public void addSkin(Skin skin) {
 		skins.add(skin);
+	}
+	
+	public Skin getSelectedSkin() {
+		return selectedSkin;
+	}
+	
+	public void setSelectedSkin(Skin skin) {
+		selectedSkin = skin;
 	}
 	
 }

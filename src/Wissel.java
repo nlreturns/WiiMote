@@ -23,7 +23,7 @@ public class Wissel {
                  break;
         case 3: 
         		
-        		RaceMap race = new RaceMap(1);
+        		RaceMap race = new RaceMap();
         		System.out.println("HALOOOOOOOOOO");
         		
                  break;
