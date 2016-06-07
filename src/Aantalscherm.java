@@ -34,61 +34,27 @@ import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
 
-public class Aantalscherm extends JFrame {
-
-    private JPanel panel2;
-
-    public static void main(String[] args) {
-
-        new Aantalscherm();
-
-        System.loadLibrary("WiiuseJ");
-
-    }
-
-    public Aantalscherm(){
-        super("Selecteer aantal spelers");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        panel2 = new Panel2();
-        add(panel2);
-
-        
-        setSize(1920, 1080);
-        setResizable(false);
-        setVisible(true);
-    }
-    
-    public int getAantall(){
-    	return ((Panel2) panel2).getAantal();
-    }
-    
-}
-
-class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteListener{
+public class Aantalscherm extends JPanel implements ActionListener, WiimoteListener{
 
    private Wiimote wiimote, wiimote2, wiimote3, wiimote4;
     private int x = 0, y = 0;
     private int aantal;
     private Wiimote[] wiimotes;
+    private ArrayList<Account> accounts;
+    private Wissel wissel;
    
 
     private Random random = new Random();
     private boolean leftUp, rightUp, leftDown, rightDown, aHeld, bHeld, changeColors;
 
-    public Panel2(){
+    public Aantalscherm(Wissel wissel) {
+    	this.wissel = wissel;
+        System.loadLibrary("WiiuseJ");
         wiimotes = WiiUseApiManager.getWiimotes(1, true);
         this.wiimote = wiimotes[0];
-      // this.wiimote2 = wiimotes[1];
-
-        
-   
-
         wiimotes[0].addWiiMoteEventListeners(this);
-
-
-        addMouseListener(this);
     }
+    
     public int getAantal() {
     	return aantal;
     }
@@ -131,25 +97,6 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 
     }
 
-    @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseReleased(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
-
-    @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
 
     @Override
     public void onButtonsEvent(WiimoteButtonsEvent e) {
@@ -158,44 +105,19 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 
             // A
             if (e.isButtonAPressed()) {
-            	if(x == 0) {
+            	if(x == 0) 
             		aantal = 2;
-            //		this.wiimote2 = wiimotes[1];
-            	}
-            	if(x == 1) {
+            
+            	if(x == 1) 
             		aantal = 3;
  
-            	}
-            	if(x == 2) {
+            	if(x == 2) 
             		aantal = 4;
-
-            	 
-            	}
-            //	while(wiimotes.length < aantal){
-            //		System.out.println("Sluit controller aan");
-            //	}
-
             	
             	inlogScreens(aantal);
-            	System.out.println(wiimotes.length);
-
-        		
-            	
-            	
-
-          //  	Wissel wissel = new Wissel(3);
-            	
+            	System.out.println(wiimotes.length);	
             }
-            if (e.isButtonAHeld())
-                aHeld = true;
-            if (e.isButtonBHeld())
-                bHeld = true;
-            if (e.isButtonUpPressed()) {
-
-            }
-            if (e.isButtonDownPressed()) {
-
-            }
+            
             if (e.isButtonRightPressed()) {
                 x++;
                 if (x > 2)
@@ -209,17 +131,6 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
                 repaint();
             }
         }
-
-        if(e.getWiimoteId() == 2){
-
-            if(e.isButtonAHeld())
-                changeColors = true;
-
-            if(e.isButtonAJustReleased())
-                changeColors = false;
-        }
-
-
     }
  
 
@@ -279,32 +190,25 @@ class Panel2 extends JPanel implements ActionListener, MouseListener, WiimoteLis
 
     }
 
-	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
 	
-	public ArrayList<Account> inlogScreens(int aantal) {
+	public void inlogScreens(int aantal) {
 		ArrayList<Account> accounts = new ArrayList<Account>();
 		for(int i=0; i < aantal; i++) {
 			InlogGUI temp = new InlogGUI();
 			boolean ready = false;
 			while(ready == false) {
 				ready = temp.ready();
-				System.out.println("g");
-				
+				System.out.println("");
 			}
 			accounts.add(temp.getAccount());
 			
 		}
 		System.out.println(accounts.size());
-    	SwingUtilities.getWindowAncestor(this).dispose();
-		Wissel wissel = new Wissel(3);
-		System.out.println("SUPERDIKKESTRONT");
-		
-
-
+		wissel.switchcase(3);
+		this.accounts = new ArrayList<Account>(accounts);
+	}
+	
+	public ArrayList<Account> getAccounts() {
 		return accounts;
 	}
 	

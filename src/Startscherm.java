@@ -33,82 +33,36 @@ import wiiusej.wiiusejevents.wiiuseapievents.NunchukInsertedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
-
-public class Startscherm extends JFrame {
-
-    private JPanel panel;
-
-    public static void main(String[] args) {
-
-        new Startscherm(); 
-
-        System.loadLibrary("WiiuseJ");
-
-    }
-
-    public Startscherm(){
-        super("Opgave 1");
-        setDefaultCloseOperation(EXIT_ON_CLOSE);
-
-        panel = new Panel();
-        add(panel);
-
-        
-        
-        setSize(1920, 1080);
-        setResizable(false);
-        //panel.setBackground(Color.CYAN);
-        setVisible(true);
-
-        
-    }
-}
-
-class Panel extends JPanel implements ActionListener, MouseListener, WiimoteListener{
-
+public class Startscherm extends JPanel implements ActionListener, MouseListener, WiimoteListener{
 
     private Wiimote wiimote, wiimote2;
-
+    private Wissel wissel;
     private Image img;
     private int waarde = 1;
     private boolean apres = false;
 
-   
-    
-    
-  
-
-    public Panel(){
+    public Startscherm(Wissel wissel){
         Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, false);
         this.wiimote = wiimotes[0];
-  
+        this.wissel = wissel;
         wiimotes[0].addWiiMoteEventListeners(this);
 
-
         addMouseListener(this);
-    
-       
-        
+
         try {
 			img = ImageIO.read(new File("C:/Users/wim/Documents/PERIODE4/Git/horses.jpg"));
-			
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
     }
 
-    
-
     public void paintComponent(Graphics g){
         super.paintComponent(g);
         Graphics2D g2D = (Graphics2D)g;
-        AffineTransform af = new AffineTransform();
-      
+        AffineTransform af = new AffineTransform();   
   
         g2D.drawImage(img, af, null);
-
-
 
         g2D.setFont(new Font("TimesRoman", Font.BOLD, 36));
         g2D.setColor(Color.RED);
@@ -117,86 +71,49 @@ class Panel extends JPanel implements ActionListener, MouseListener, WiimoteList
         
         g2D.setFont(new Font("TimesRoman", Font.BOLD, 128));
         g2D.drawString("NEED FOR BEAST", 350, 150);
-
-
-
-
-     
+  
         repaint();
     }
 
-
-
-
- 
+    @Override
+    public void actionPerformed(ActionEvent e) {}
 
     @Override
-    public void actionPerformed(ActionEvent e) {
+    public void mouseClicked(MouseEvent e) {}
 
-    }
+   
+    @Override
+    public void mousePressed(MouseEvent e) {}
 
     @Override
-    public void mouseClicked(MouseEvent e) {
-
- 
-        }
-
-    
+    public void mouseReleased(MouseEvent e) {}
 
     @Override
-    public void mousePressed(MouseEvent e) {
-
-    }
+    public void mouseEntered(MouseEvent e) {}
 
     @Override
-    public void mouseReleased(MouseEvent e) {
+    public void mouseExited(MouseEvent e) {}
 
-    }
 
-    @Override
-    public void mouseEntered(MouseEvent e) {
-
-    }
+    public void onIrEvent(IREvent irEvent) {}
 
     @Override
-    public void mouseExited(MouseEvent e) {
-
-    }
-
-
-    public void onIrEvent(IREvent irEvent) {
-
-    }
+    public void onMotionSensingEvent(MotionSensingEvent motionSensingEvent) {}
 
     @Override
-    public void onMotionSensingEvent(MotionSensingEvent motionSensingEvent) {
-
-    }
+    public void onExpansionEvent(ExpansionEvent expansionEvent) {}
 
     @Override
-    public void onExpansionEvent(ExpansionEvent expansionEvent) {
-
-    }
+    public void onStatusEvent(StatusEvent statusEvent) {}
 
     @Override
-    public void onStatusEvent(StatusEvent statusEvent) {
-
-    }
+    public void onDisconnectionEvent(DisconnectionEvent disconnectionEvent) {}
 
     @Override
-    public void onDisconnectionEvent(DisconnectionEvent disconnectionEvent) {
-
-    }
+    public void onNunchukInsertedEvent(NunchukInsertedEvent nunchukInsertedEvent) {}
 
     @Override
-    public void onNunchukInsertedEvent(NunchukInsertedEvent nunchukInsertedEvent) {
-
-    }
-
-    @Override
-    public void onNunchukRemovedEvent(NunchukRemovedEvent nunchukRemovedEvent) {
-
-    }
+    public void onNunchukRemovedEvent(NunchukRemovedEvent nunchukRemovedEvent) {}
 
     @Override
     public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent guitarHeroInsertedEvent) {
@@ -222,16 +139,15 @@ class Panel extends JPanel implements ActionListener, MouseListener, WiimoteList
 	public void onButtonsEvent(WiimoteButtonsEvent e) {
 		// TODO Auto-generated method stub
 	   
-	        if(e.getWiimoteId() == 1) {
+        if(e.getWiimoteId() == 1) {
 
-	            // A
-	            if (e.isButtonAPressed() && apres == false) {
-	            	waarde = 2;
-	            	Wissel swt = new Wissel(waarde);
-	            	SwingUtilities.getWindowAncestor(this).dispose();
-	            	apres = true;
-	            	   
-	            }
-	}
+            // A
+            if (e.isButtonAPressed() && apres == false) {
+            	waarde = 2;
+            	wissel.switchcase(2);
+            	SwingUtilities.getWindowAncestor(this).dispose();
+            	apres = true;   
+            }
+        }
 	       
 }}

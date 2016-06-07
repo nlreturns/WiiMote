@@ -1,52 +1,52 @@
-<<<<<<< HEAD
+
 import java.util.ArrayList;
 
-=======
->>>>>>> master
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Wissel {
+public class Wissel extends JFrame {
 	private int waarde;
-	aantalscherm aantal;
+	private JPanel startPanel, shopPanel, racePanel;
+	private Aantalscherm aantalPanel;
+	
+	public static void main(String s[]) {
+		new Wissel();
+	}
 
-	public Wissel(int waarde){
-		this.waarde = waarde;
-		switchcase();
-		
+	public Wissel() {
+		super("Startscherm");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		switchcase(1);
 	}
 	
-	public void switchcase(){
+	public void switchcase(int waarde) {
 		
         switch (waarde) {
-        case 1:  Startscherm strt = new Startscherm();
-                 break;
-<<<<<<< HEAD
-        case 2:  Aantalscherm aantal = new Aantalscherm();
-                 break;
-        case 3:  JFrame frame = new JFrame("ShopGUI");
-				 frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-				 ArrayList<Account> temp = new ArrayList<Account>();
-				 temp.add(new Account("Rico", "pass", 500));
-				 temp.add(new Account("Justin", "pass", 500));
-				 temp.add(new Account("Jairo", "pass", 500));
-				 JPanel panel = new ShopGUI(temp);
-				 frame.getContentPane().add(panel);
-				 frame.pack();
-				 frame.setVisible(true);
-=======
-        case 2: 
-        		aantal = new aantalscherm();
-
-                 break;
-        case 3: 
-        		
-        		RaceMap race = new RaceMap();
-        		System.out.println("HALOOOOOOOOOO");
-        		
->>>>>>> master
-                 break;
-        case 4: 
-                 break;
+	        case 1:  startPanel = new Startscherm(this);
+	        		 this.getContentPane().add(startPanel);
+	        		 this.pack();
+	                 break;
+	
+	        case 2:  aantalPanel = new Aantalscherm(this);
+				     this.getContentPane().add(startPanel);
+			   		 this.pack();
+	                 break;
+	                 
+	        case 3:  shopPanel = new ShopGUI(aantalPanel.getAccounts(), this);
+				     this.getContentPane().add(shopPanel);
+			   		 this.pack();
+					 break;
+					 
+	        case 4: RaceMap race = new RaceMap();
+	        		System.out.println("HALOOOOOOOOOO");
+	        		break;
+	        		
+	        case 5: 
+	                break;
+	                 
+        }
+        
+	}
+	
 }
-}}
