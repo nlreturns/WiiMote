@@ -102,7 +102,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		setPreferredSize(new Dimension(1366, 768));
 		timer.start();
 		System.loadLibrary("WiiuseJ");
-		WiiUseApiManager.shutdown();
+		// WiiUseApiManager.shutdown();
 		wiimotes = WiiUseApiManager.getWiimotes(playerAmount, false);
 		for (int i = 0; i < playerAmount; i++) {
 			wiimote = wiimotes[i];
