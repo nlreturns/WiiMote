@@ -134,7 +134,7 @@ public class InlogGUI extends JFrame {
 			System.out.println("Ingelogd");
 			account = temp;
 			ready = true;
-			dispose();
+			// dispose();
 		} else
 			JOptionPane.showMessageDialog(null, "Wachtwoord en/of username klopt niet", "Error",
 					JOptionPane.INFORMATION_MESSAGE);

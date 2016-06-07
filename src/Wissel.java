@@ -18,20 +18,28 @@ public class Wissel extends JFrame {
 		switchcase(1);
 	}
 
+	public int getWaarde() {
+		return waarde;
+	}
+
 	public void switchcase(int waarde) {
 
-		switch (waarde) {
+		this.waarde = waarde;
+
+		switch (this.waarde) {
 		case 1:
 			startPanel = new Startscherm(this);
 			this.getContentPane().removeAll();
 			this.getContentPane().add(startPanel);
 			this.pack();
+			this.setSize(1920, 1080);
 			break;
 
 		case 2:
 			aantalPanel = new Aantalscherm(this);
 			this.getContentPane().removeAll();
-			this.getContentPane().add(startPanel);
+			this.getContentPane().add(aantalPanel);
+			this.setSize(1920, 1080);
 			this.pack();
 			break;
 
@@ -39,11 +47,12 @@ public class Wissel extends JFrame {
 			shopPanel = new ShopGUI(aantalPanel.getAccounts(), this);
 			this.getContentPane().removeAll();
 			this.getContentPane().add(shopPanel);
+			this.setSize(1920, 1080);
 			this.pack();
 			break;
 
 		case 4:
-			RaceMap race = new RaceMap(1);
+			RaceMap race = new RaceMap(aantalPanel.getAccounts().size());
 			this.getContentPane().removeAll();
 			this.getContentPane().add(race);
 			this.pack();

@@ -40,7 +40,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	public static void main(String args[]) {
 		JFrame frame = new JFrame("Need For Beast");
-		JPanel panel = new RaceMap(1);
+		JPanel panel = new RaceMap(2);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(panel);
@@ -51,8 +51,6 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private Wiimote[] wiimotes;
 	private AccelerationPanel aPanel;
 	private Wiimote wiimote;
-	private JPanel panel;
-	private RawAcceleration rawAcc;
 	private Timer timer = new Timer(1000 / 50, this);
 	private ArrayList<RawAcceleration> values;
 	private ArrayList<RawAcceleration> values1;
@@ -67,9 +65,6 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private int ticks = 0;
 	private boolean yTurned, yTurned2, yTurned3, yTurned4;
 	private Image img;
-	private Image imgPlayer;
-	private Image imgPlayer2;
-	private Image hurdle;
 	private ArrayList<Image> horse;
 	private ArrayList<Image> horseGray;
 	private ArrayList<Image> drake;
@@ -107,6 +102,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		setPreferredSize(new Dimension(1366, 768));
 		timer.start();
 		System.loadLibrary("WiiuseJ");
+		WiiUseApiManager.shutdown();
 		wiimotes = WiiUseApiManager.getWiimotes(playerAmount, false);
 		for (int i = 0; i < playerAmount; i++) {
 			wiimote = wiimotes[i];
@@ -120,7 +116,6 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		values3 = new ArrayList<>();
 		aPanel = new AccelerationWiimoteEventPanel();
 		try {
-			hurdle = ImageIO.read(new File("src/skins/hurdle.png"));
 			img = ImageIO.read(new File("src/skins/map.png"));
 			horseGray.add(ImageIO.read(new File("src/skins/spriteGrijsPaard.png")));
 			horseGray.add(ImageIO.read(new File("src/skins/spriteGrijsPaard2.png")));
@@ -264,8 +259,6 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 			for (Player p : players) {
 				p.setSkin(drake.get(horseTimer));
 			}
-			imgPlayer = horse.get(horseTimer);
-			imgPlayer2 = horseGray.get(horseTimer);
 			if (horseTimer >= (horse.size() - 1)) {
 				horseTimer = 0;
 			}
@@ -444,7 +437,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		repaint();
 		ticks++;
-		System.out.println(ticks);
+		// System.out.println(ticks);
 		if (ticks == 100) {
 			countdown = true;
 		}
