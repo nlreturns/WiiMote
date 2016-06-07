@@ -23,23 +23,25 @@ public class Wissel extends JFrame {
 	public void switchcase(int waarde) {
 		
         switch (waarde) {
-	        case 1:  startPanel = new Startscherm(this);
-	        		 this.getContentPane().add(startPanel);
-	        		 this.pack();
-	                 break;
+	        case 1: startPanel = new Startscherm(this);
+	        		this.getContentPane().removeAll();
+	        		this.getContentPane().add(startPanel);
+	        		this.pack();
+	        		break;
 	
-	        case 2:  aantalPanel = new Aantalscherm(this);
-				     this.getContentPane().add(startPanel);
-			   		 this.pack();
-	                 break;
+	        case 2: aantalPanel = new Aantalscherm(this);
+			 	 	this.getContentPane().removeAll();
+			 	 	this.getContentPane().add(startPanel);
+		   		 	this.pack();
+		   		 	break;
 	                 
-	        case 3:  shopPanel = new ShopGUI(aantalPanel.getAccounts(), this);
-				     this.getContentPane().add(shopPanel);
-			   		 this.pack();
-					 break;
-					 
+	        case 3: shopPanel = new ShopGUI(aantalPanel.getAccounts(), this);
+	        		this.getContentPane().removeAll();
+	        		this.getContentPane().add(shopPanel);
+	        		this.pack();
+	        		break;
+						 
 	        case 4: RaceMap race = new RaceMap();
-	        		System.out.println("HALOOOOOOOOOO");
 	        		break;
 	        		
 	        case 5: 
