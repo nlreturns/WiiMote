@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
 import wiiusej.wiiusejevents.physicalevents.IREvent;
@@ -31,7 +32,7 @@ import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
 public class ScoreScherm extends JPanel implements ActionListener, WiimoteListener {
-	
+
 	private ArrayList<Account> accounts;
 	private Wissel wissel;
 	private Wiimote[] wiimotes;
@@ -39,28 +40,30 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 	private boolean ready1 = false, ready2 = false, ready3 = false, ready4 = false;
 	private AccountBase base;
 	private short count = 0;
-	
+
 	public ScoreScherm(ArrayList<Account> accounts, Wissel wissel) {
 		this.accounts = new ArrayList<Account>(accounts);
 		this.wissel = wissel;
 		Timer timer = new Timer(1000 / 50, this);
-//		WiiUseApiManager.shutdown();
-//		wiimotes = WiiUseApiManager.getWiimotes(accounts.size(), false);
-//		for (int i = 0; i < wiimotes.length; i++) {
-//			wiimote = wiimotes[i];
-//			wiimote.addWiiMoteEventListeners(this);
-//		}
-//		addPoints();
+		WiiUseApiManager.shutdown();
+		wiimotes = WiiUseApiManager.getWiimotes(accounts.size(), false);
+		for (int i = 0; i < wiimotes.length; i++) {
+			wiimote = wiimotes[i];
+			wiimote.addWiiMoteEventListeners(this);
+		}
+		addPoints();
 		setVisible(true);
 	}
-	
+
 	// Timer 20 FPS
 	public void actionPerformed(ActionEvent e) {
-		if(count == accounts.size())
-			wissel.switchcase(2);
-		repaint();
+		if (wissel.getWaarde() == 5) {
+			if (count == accounts.size())
+				wissel.switchcase(2);
+			repaint();
+		}
 	}
-	
+
 	// Paint scherm
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
@@ -70,83 +73,105 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 		g2d.drawString("Eerste plek: " + accounts.get(0).getUser() + "   +500 punten", 250, 200);
 		g2d.setColor(Color.RED);
 		g2d.drawOval(200, 170, 30, 30);
-		if(ready1) 
+		if (ready1)
 			g2d.fillOval(200, 170, 30, 30);
 		// Second place
 		g2d.setColor(Color.BLACK);
 		g2d.drawString("Tweede plek: " + accounts.get(1).getUser() + "   +250 punten", 250, 275);
 		g2d.setColor(Color.RED);
 		g2d.drawOval(200, 245, 30, 30);
-		if(ready2) 
+		if (ready2)
 			g2d.fillOval(200, 245, 30, 30);
 		// Third place
-		if(accounts.size() > 2) {
+		if (accounts.size() > 2) {
 			g2d.setColor(Color.BLACK);
-			g2d.drawString("Derde plek: " + accounts.get(2).getUser()  + "   +100 punten", 250, 350);
+			g2d.drawString("Derde plek: " + accounts.get(2).getUser() + "   +100 punten", 250, 350);
 			g2d.setColor(Color.RED);
 			g2d.drawOval(200, 320, 30, 30);
-			if(ready3) 
+			if (ready3)
 				g2d.fillOval(200, 320, 30, 30);
 		}
 		// Fourth place
-		if(accounts.size() > 3) {
+		if (accounts.size() > 3) {
 			g2d.setColor(Color.BLACK);
 			g2d.drawString("Vierde plek: " + accounts.get(3).getUser(), 250, 425);
 			g2d.setColor(Color.RED);
 			g2d.drawOval(200, 395, 30, 30);
-			if(ready2) 
+			if (ready2)
 				g2d.fillOval(200, 395, 30, 30);
 		}
 	}
 
 	// Wiimote actions
 	public void onButtonsEvent(WiimoteButtonsEvent e) {
-		
-		if (e.getWiimoteId() == 1) {
-			if (e.isButtonAJustPressed()) {
-				if (!ready1)
-					count++;
-				ready1 = true;
+		if (wissel.getWaarde() == 5) {
+			if (e.getWiimoteId() == 1) {
+				if (e.isButtonAJustPressed()) {
+					if (!ready1)
+						count++;
+					ready1 = true;
+				}
 			}
-		}
-		
-		if (e.getWiimoteId() == 2) {
-			if (e.isButtonAJustPressed()) {
-				if (!ready2)
-					count++;
-				ready2 = true;
+
+			if (e.getWiimoteId() == 2) {
+				if (e.isButtonAJustPressed()) {
+					if (!ready2)
+						count++;
+					ready2 = true;
+				}
 			}
-		}
-		
-		if (e.getWiimoteId() == 3) {
-			if (e.isButtonAJustPressed()) {
-				if (!ready3)
-					count++;
-				ready3 = true;
+
+			if (e.getWiimoteId() == 3) {
+				if (e.isButtonAJustPressed()) {
+					if (!ready3)
+						count++;
+					ready3 = true;
+				}
 			}
-		}
-		
-		if (e.getWiimoteId() == 4) {
-			if (e.isButtonAJustPressed()) {
-				if (!ready4)
-					count++;
-				ready4 = true;
+
+			if (e.getWiimoteId() == 4) {
+				if (e.isButtonAJustPressed()) {
+					if (!ready4)
+						count++;
+					ready4 = true;
+				}
 			}
 		}
 	}
 
-	public void onClassicControllerInsertedEvent(ClassicControllerInsertedEvent arg0) {}
-	public void onClassicControllerRemovedEvent(ClassicControllerRemovedEvent arg0) {}
-	public void onDisconnectionEvent(DisconnectionEvent arg0) {}
-	public void onExpansionEvent(ExpansionEvent arg0) {}
-	public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent arg0) {}
-	public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent arg0) {}
-	public void onIrEvent(IREvent arg0) {}
-	public void onMotionSensingEvent(MotionSensingEvent arg0) {}
-	public void onNunchukInsertedEvent(NunchukInsertedEvent arg0) {}
-	public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) {}
-	public void onStatusEvent(StatusEvent arg0) {}
-	
+	public void onClassicControllerInsertedEvent(ClassicControllerInsertedEvent arg0) {
+	}
+
+	public void onClassicControllerRemovedEvent(ClassicControllerRemovedEvent arg0) {
+	}
+
+	public void onDisconnectionEvent(DisconnectionEvent arg0) {
+	}
+
+	public void onExpansionEvent(ExpansionEvent arg0) {
+	}
+
+	public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent arg0) {
+	}
+
+	public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent arg0) {
+	}
+
+	public void onIrEvent(IREvent arg0) {
+	}
+
+	public void onMotionSensingEvent(MotionSensingEvent arg0) {
+	}
+
+	public void onNunchukInsertedEvent(NunchukInsertedEvent arg0) {
+	}
+
+	public void onNunchukRemovedEvent(NunchukRemovedEvent arg0) {
+	}
+
+	public void onStatusEvent(StatusEvent arg0) {
+	}
+
 	// Save accounts database
 	public void saveAccounts() throws FileSystemNotFoundException {
 		try {
@@ -178,23 +203,23 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 		}
 		return null;
 	}
-	
+
 	// Voegt punten toe aan accounts
 	public void addPoints() {
 		accounts.get(0).addPoints(500);
 		accounts.get(1).addPoints(250);
-		if(accounts.size() > 2)
+		if (accounts.size() > 2)
 			accounts.get(2).addPoints(100);
-		
+
 		// Saved de nieuwe account gegevens in de account base
 		try {
 			base = loadAccounts();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		for(Account a : accounts) {
-			for(int i = 0; i < base.getAccounts().size(); i++) {
-				if(base.getAccounts().get(i).getUser().equals(a.getUser()))
+		for (Account a : accounts) {
+			for (int i = 0; i < base.getAccounts().size(); i++) {
+				if (base.getAccounts().get(i).getUser().equals(a.getUser()))
 					base.getAccounts().set(i, a);
 			}
 		}

@@ -60,13 +60,16 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 	 * Timer actionperformed. (20 fps)
 	 */
 	public void actionPerformed(ActionEvent arg0) {
-		boolean temp = true;
-		if (count == accounts.size()) {
-			wissel.switchcase(4);
-			count = 0;
-		}
+		if (wissel.getWaarde() == 3) {
 
-		repaint();
+			boolean temp = true;
+			if (count == accounts.size()) {
+				wissel.switchcase(4);
+				count = 0;
+			}
+
+			repaint();
+		}
 	}
 
 	public void paintComponent(Graphics g) {
@@ -255,16 +258,37 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		}
 	}
 
-	public void onIrEvent(IREvent irEvent) {}
-	public void onMotionSensingEvent(MotionSensingEvent motionSensingEvent) {}
-	public void onExpansionEvent(ExpansionEvent expansionEvent) {}
-	public void onStatusEvent(StatusEvent statusEvent) {}
-	public void onDisconnectionEvent(DisconnectionEvent disconnectionEvent) {}
-	public void onNunchukInsertedEvent(NunchukInsertedEvent nunchukInsertedEvent) {}
-	public void onNunchukRemovedEvent(NunchukRemovedEvent nunchukRemovedEvent) {}
-	public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent guitarHeroInsertedEvent) {}
-	public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent guitarHeroRemovedEvent) {}
-	public void onClassicControllerInsertedEvent(ClassicControllerInsertedEvent classicControllerInsertedEvent) {}
-	public void onClassicControllerRemovedEvent(ClassicControllerRemovedEvent classicControllerRemovedEvent) {}
+	public void onIrEvent(IREvent irEvent) {
+	}
+
+	public void onMotionSensingEvent(MotionSensingEvent motionSensingEvent) {
+	}
+
+	public void onExpansionEvent(ExpansionEvent expansionEvent) {
+	}
+
+	public void onStatusEvent(StatusEvent statusEvent) {
+	}
+
+	public void onDisconnectionEvent(DisconnectionEvent disconnectionEvent) {
+	}
+
+	public void onNunchukInsertedEvent(NunchukInsertedEvent nunchukInsertedEvent) {
+	}
+
+	public void onNunchukRemovedEvent(NunchukRemovedEvent nunchukRemovedEvent) {
+	}
+
+	public void onGuitarHeroInsertedEvent(GuitarHeroInsertedEvent guitarHeroInsertedEvent) {
+	}
+
+	public void onGuitarHeroRemovedEvent(GuitarHeroRemovedEvent guitarHeroRemovedEvent) {
+	}
+
+	public void onClassicControllerInsertedEvent(ClassicControllerInsertedEvent classicControllerInsertedEvent) {
+	}
+
+	public void onClassicControllerRemovedEvent(ClassicControllerRemovedEvent classicControllerRemovedEvent) {
+	}
 
 }
