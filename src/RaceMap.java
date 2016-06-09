@@ -40,7 +40,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	public static void main(String args[]) {
 		JFrame frame = new JFrame("Need For Beast");
-		JPanel panel = new RaceMap(2);
+		JPanel panel = new RaceMap(2, new ArrayList<Account>(), new Wissel());
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(panel);
@@ -73,19 +73,26 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private int minimalSpeed = 100;
 	private ArrayList<Player> players;
 	private ArrayList<String> placement;
+	private ArrayList<Account> accounts;
+	private ArrayList<Account> sortedAccounts;
 	private int newCX;
 	private int newCY;
 	private boolean countdown;
+	private boolean switchedScreen;
+	private Wissel wissel;
 
 	int playerAmount;
 
-	public RaceMap(int playerAmount) {
+	public RaceMap(int playerAmount, ArrayList<Account> accounts, Wissel wissel) {
+		this.wissel = wissel;
 		countdown = false;
 		players = new ArrayList<>();
 		horse = new ArrayList<>();
 		horseGray = new ArrayList<>();
 		drake = new ArrayList<>();
 		placement = new ArrayList<>();
+		this.accounts = accounts;
+		sortedAccounts = new ArrayList<>();
 		placement.add("eerste");
 		placement.add("tweede");
 		placement.add("derde");
@@ -99,7 +106,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		yTurns2 = 0;
 		yTurns3 = 0;
 		yTurns4 = 0;
-		setPreferredSize(new Dimension(1366, 768));
+		setPreferredSize(new Dimension(1024, 768));
 		timer.start();
 		System.loadLibrary("WiiuseJ");
 		// WiiUseApiManager.shutdown();
@@ -266,10 +273,12 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		}
 
 		winner(g2);
+		switchScreen();
 	}
 
 	public void winner(Graphics2D g2) {
 		g2.setColor(Color.RED);
+		int i = 0;
 		for (Player p : players) {
 			if (p.getMovement() > 4550 && p.isFinished == false) {
 				p.setPlace(placement.get(place));
@@ -277,7 +286,8 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 				place++;
 			}
 			if (p.isFinished()) {
-				g2.drawString(p.getName() + " is " + p.getPlace(), 4600 - 700, p.getRaceHeight());
+				sortedAccounts.add(accounts.get(i));
+				g2.drawString(accounts.get(i).getUser() + " is " + p.getPlace(), 4600 - 700, p.getRaceHeight());
 			}
 		}
 	}
@@ -292,8 +302,15 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		return leader;
 	}
 
-	public void makeHurdles(Graphics2D g2) {
+	public void switchScreen() {
+		if (playerAmount == sortedAccounts.size() && switchedScreen == false) {
+			wissel.switchcase(5);
+			switchedScreen = true;
+		}
+	}
 
+	public ArrayList<Account> getSortedAccounts() {
+		return sortedAccounts;
 	}
 
 	public AffineTransform getCamera() {
@@ -315,16 +332,19 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	@Override
 	public void onButtonsEvent(WiimoteButtonsEvent arg0) {
-		if (arg0.isButtonTwoJustPressed() || arg0.isButtonAJustPressed()) {
-			int wiimoteID = arg0.getWiimoteId();
-			Player p = players.get(wiimoteID - 1);
-			int jump = p.getJump();
-			for (int i = 0; jump >= p.getMaxHeight(); i++)
-				jump--;
-			p.setJump(jump);
+		if (wissel.getWaarde() == 4) {
 
-			repaint();
+			if (arg0.isButtonTwoJustPressed() || arg0.isButtonAJustPressed()) {
+				int wiimoteID = arg0.getWiimoteId();
+				Player p = players.get(wiimoteID - 1);
+				int jump = p.getJump();
+				for (int i = 0; jump >= p.getMaxHeight(); i++)
+					jump--;
+				p.setJump(jump);
 
+				repaint();
+
+			}
 		}
 	}
 
@@ -349,7 +369,9 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	@Override
 	public void onExpansionEvent(ExpansionEvent arg0) {
-		draw(arg0);
+		if (wissel.getWaarde() == 4) {
+			draw(arg0);
+		}
 	}
 
 	@Override
@@ -369,7 +391,9 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	@Override
 	public void onMotionSensingEvent(MotionSensingEvent arg0) {
-		draw(arg0);
+		if (wissel.getWaarde() == 4) {
+			draw(arg0);
+		}
 	}
 
 	@Override
@@ -435,13 +459,14 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		repaint();
-		ticks++;
-		// System.out.println(ticks);
-		if (ticks == 100) {
-			countdown = true;
+		if (wissel.getWaarde() == 4) {
+			repaint();
+			ticks++;
+			if (ticks == 100) {
+				countdown = true;
+			}
+			timer.restart();
 		}
-		timer.restart();
 	}
 
 }

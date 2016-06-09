@@ -41,7 +41,7 @@ public class Aantalscherm extends JPanel implements ActionListener, WiimoteListe
 	public Aantalscherm(Wissel wissel) {
 		this.wissel = wissel;
 		System.loadLibrary("WiiuseJ");
-		wiimotes = WiiUseApiManager.getWiimotes(1, true);
+	//	wiimotes = WiiUseApiManager.getWiimotes(1, true);
 		this.wiimote = wiimotes[0];
 		wiimotes[0].addWiiMoteEventListeners(this);
 	}
