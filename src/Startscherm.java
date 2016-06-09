@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -14,6 +15,7 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
+import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
 import wiiusej.wiiusejevents.physicalevents.IREvent;
@@ -38,10 +40,11 @@ public class Startscherm extends JPanel implements ActionListener, MouseListener
 	private boolean apres = false;
 
 	public Startscherm(Wissel wissel) {
-		//Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, false);
-	//	this.wiimote = wiimotes[0];
+		Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, false);
+		this.wiimote = wiimotes[0];
 		this.wissel = wissel;
-		//wiimotes[0].addWiiMoteEventListeners(this);
+		wiimotes[0].addWiiMoteEventListeners(this);
+		setPreferredSize(new Dimension(1024, 768));
 
 		addMouseListener(this);
 

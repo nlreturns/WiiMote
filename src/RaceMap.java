@@ -83,7 +83,9 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	public RaceMap(int playerAmount, ArrayList<Account> accounts, Wissel wissel) {
 		this.wissel = wissel;
+		this.playerAmount = playerAmount;
 		countdown = false;
+		switchedScreen = false;
 		players = new ArrayList<>();
 		horse = new ArrayList<>();
 		horseGray = new ArrayList<>();
@@ -194,70 +196,75 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 			// RawAcceleration rAcc;
 
 			if (countdown) {
+				
+				try {
 
-				if (loop == 0) {
-					RawAcceleration rAcc = values.get(values.size() - 1);
-					short yShort = rAcc.getY();
-					if (yTurned) {
-						if (yShort > 150) {
-							yTurns++;
-							yTurned = false;
+					if (loop == 0) {
+						RawAcceleration rAcc = values.get(values.size() - 1);
+						short yShort = rAcc.getY();
+						if (yTurned) {
+							if (yShort > 150) {
+								yTurns++;
+								yTurned = false;
+							}
+						} else {
+							if (yShort > 75) {
+								yTurned = true;
+							}
 						}
+						player1 = (yTurns * 25) + minimalSpeed;
+						p.setMovement(player1);
+					} else if (loop == 1) {
+						RawAcceleration rAcc = values1.get(values1.size() - 1);
+						short yShort = rAcc.getY();
+						if (yTurned2) {
+							if (yShort > 150) {
+								yTurns2++;
+								yTurned2 = false;
+							}
+						} else {
+							if (yShort > 75) {
+								yTurned2 = true;
+							}
+						}
+						player2 = (yTurns2 * 25) + minimalSpeed;
+						p.setMovement(player2);
+					} else if (loop == 2) {
+						RawAcceleration rAcc = values2.get(values2.size() - 1);
+						short yShort = rAcc.getY();
+						if (yTurned3) {
+							if (yShort > 150) {
+								yTurns3++;
+								yTurned3 = false;
+							}
+						} else {
+							if (yShort > 75) {
+								yTurned3 = true;
+							}
+						}
+						player3 = (yTurns3 * 25) + minimalSpeed;
+						p.setMovement(player3);
 					} else {
-						if (yShort > 75) {
-							yTurned = true;
+						RawAcceleration rAcc = values3.get(values3.size() - 1);
+						short yShort = rAcc.getY();
+						if (yTurned4) {
+							if (yShort > 150) {
+								yTurns4++;
+								yTurned4 = false;
+							}
+						} else {
+							if (yShort > 75) {
+								yTurned4 = true;
+							}
 						}
+						player4 = (yTurns4 * 25) + minimalSpeed;
+						p.setMovement(player4);
 					}
-					player1 = (yTurns * 25) + minimalSpeed;
-					p.setMovement(player1);
-				} else if (loop == 1) {
-					RawAcceleration rAcc = values1.get(values1.size() - 1);
-					short yShort = rAcc.getY();
-					if (yTurned2) {
-						if (yShort > 150) {
-							yTurns2++;
-							yTurned2 = false;
-						}
-					} else {
-						if (yShort > 75) {
-							yTurned2 = true;
-						}
-					}
-					player2 = (yTurns2 * 25) + minimalSpeed;
-					p.setMovement(player2);
-				} else if (loop == 2) {
-					RawAcceleration rAcc = values2.get(values2.size() - 1);
-					short yShort = rAcc.getY();
-					if (yTurned3) {
-						if (yShort > 150) {
-							yTurns3++;
-							yTurned3 = false;
-						}
-					} else {
-						if (yShort > 75) {
-							yTurned3 = true;
-						}
-					}
-					player3 = (yTurns3 * 25) + minimalSpeed;
-					p.setMovement(player3);
-				} else {
-					RawAcceleration rAcc = values3.get(values3.size() - 1);
-					short yShort = rAcc.getY();
-					if (yTurned4) {
-						if (yShort > 150) {
-							yTurns4++;
-							yTurned4 = false;
-						}
-					} else {
-						if (yShort > 75) {
-							yTurned4 = true;
-						}
-					}
-					player4 = (yTurns4 * 25) + minimalSpeed;
-					p.setMovement(player4);
+	
+					loop++;
+				}catch(Exception e) {
+					e.printStackTrace();
 				}
-
-				loop++;
 			}
 		}
 
@@ -299,15 +306,19 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		g2.setColor(Color.RED);
 		int i = 0;
 		for (Player p : players) {
-			if (p.getMovement() > 4550 && p.isFinished == false) {
+			if (p.getMovement() > 4300 && p.isFinished == false) {
 				p.setPlace(placement.get(place));
 				p.setFinished(true);
 				place++;
 			}
 			if (p.isFinished()) {
-				sortedAccounts.add(accounts.get(i));
 				g2.drawString(accounts.get(i).getUser() + " is " + p.getPlace(), 4600 - 700, p.getRaceHeight());
 			}
+			if(p.isSwitched() == false && p.isFinished()){
+				sortedAccounts.add(accounts.get(i));
+				p.setSwitched(true);
+			}
+			i++;
 		}
 	}
 
@@ -340,7 +351,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 			cameraMovement = true;
 		}
 
-		if (newCX > -3300 && cameraMovement) {
+		if (newCX > -3450 && cameraMovement) {
 			newCX = -getLeader() + getWidth() / 2;
 
 		}
@@ -433,46 +444,54 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private void draw(GenericEvent arg0) {
 		if (countdown) {
 			int wiimoteID = arg0.getWiimoteId();
-			// System.out.println(arg0.getWiimoteId());
-			RawAcceleration rawAcceleration = aPanel.getRawAccelerationValue(arg0);
-			if (wiimoteID == 1) {
-				if (values.size() >= getWidth()) {
-					values.clear();
-				}
+			try{
+				RawAcceleration rawAcceleration = aPanel.getRawAccelerationValue(arg0);
+				if (wiimoteID == 1) {
+					if (values.size() >= getWidth()) {
+						values.clear();
+					}
 
-				if (rawAcceleration != null) {
-					values.add(rawAcceleration);
+					if (rawAcceleration != null) {
+						values.add(rawAcceleration);
+					}
 				}
+				if (wiimoteID == 2) {
+					if (values1.size() >= getWidth()) {
+						values1.clear();
+					}
+
+					if (rawAcceleration != null) {
+						values1.add(rawAcceleration);
+					}
+				}
+				if (wiimoteID == 3) {
+					if (values2.size() >= getWidth()) {
+						values2.clear();
+					}
+
+					if (rawAcceleration != null) {
+						values2.add(rawAcceleration);
+					}
+				}
+				if (wiimoteID == 4) {
+					if (values3.size() >= getWidth()) {
+						values3.clear();
+					}
+
+					if (rawAcceleration != null) {
+						values3.add(rawAcceleration);
+					}
+				}
+				repaint();
 			}
-			if (wiimoteID == 2) {
-				if (values1.size() >= getWidth()) {
-					values1.clear();
-				}
+			
+			
+			catch(Exception e){
+				e.printStackTrace();
 
-				if (rawAcceleration != null) {
-					values1.add(rawAcceleration);
-				}
-			}
-			if (wiimoteID == 3) {
-				if (values2.size() >= getWidth()) {
-					values2.clear();
-				}
-
-				if (rawAcceleration != null) {
-					values2.add(rawAcceleration);
-				}
-			}
-			if (wiimoteID == 4) {
-				if (values3.size() >= getWidth()) {
-					values3.clear();
-				}
-
-				if (rawAcceleration != null) {
-					values3.add(rawAcceleration);
-				}
 			}
 		}
-		repaint();
+			
 
 	}
 

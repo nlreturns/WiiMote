@@ -13,10 +13,12 @@ public class Player {
 	String name;
 	boolean isFinished;
 	String place;
+	boolean switchedScreen;
 
 	public Player(Image skin, int player) {
 		name = "Player " + (player + 1);
 		isFinished = false;
+		switchedScreen = false;
 		if (player == 0) {
 			jump = 100;
 			raceHeight = 100;
@@ -97,6 +99,14 @@ public class Player {
 
 	public void setFinished(boolean finished) {
 		isFinished = finished;
+	}
+	
+	public boolean isSwitched() {
+		return switchedScreen;
+	}
+
+	public void setSwitched(boolean switched) {
+		switchedScreen = switched;
 	}
 
 	public void setPlace(String endPlace) {
