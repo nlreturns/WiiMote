@@ -1,33 +1,80 @@
+
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class Wissel {
+public class Wissel extends JFrame {
 	private int waarde;
-	aantalscherm aantal;
+	private JPanel startPanel, shopPanel, racePanel;
+	private Aantalscherm aantalPanel;
+	private int playerAmount;
+	private ArrayList<Account> accounts;
+	private ArrayList<Account> sortedAccounts;
+	private RaceMap race;
 
-	public Wissel(int waarde){
-		this.waarde = waarde;
-		switchcase();
-		
+	public static void main(String s[]) {
+		new Wissel();
 	}
-	
-	public void switchcase(){
-		
-        switch (waarde) {
-        case 1:  Startscherm strt = new Startscherm();
-        		 
-                 break;
-        case 2: 
-        		aantal = new aantalscherm();
 
-                 break;
-        case 3: 
-        		
-        		RaceMap race = new RaceMap(1);
-        		System.out.println("HALOOOOOOOOOO");
-        		
-                 break;
-        case 4: 
-                 break;
+	public Wissel() {
+		super("Startscherm");
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setVisible(true);
+		switchcase(1);
+	}
+
+	public int getWaarde() {
+		return waarde;
+	}
+
+	public void switchcase(int waarde) {
+
+		this.waarde = waarde;
+
+		switch (this.waarde) {
+		case 1:
+			startPanel = new Startscherm(this);
+			this.getContentPane().removeAll();
+			this.getContentPane().add(startPanel);
+			this.pack();
+			this.setSize(1920, 1080);
+			break;
+
+		case 2:
+			startPanel = null;
+			aantalPanel = new Aantalscherm(this);
+			this.getContentPane().removeAll();
+			this.getContentPane().add(aantalPanel);
+			this.setSize(1920, 1080);
+			this.pack();
+			break;
+
+		case 3:
+			shopPanel = new ShopGUI(aantalPanel.getAccounts(), this);
+			playerAmount = aantalPanel.getAccounts().size();
+			accounts = aantalPanel.getAccounts();
+			aantalPanel = null;
+			this.getContentPane().removeAll();
+			this.getContentPane().add(shopPanel);
+			this.setSize(1920, 1080);
+			this.pack();
+			break;
+
+		case 4:
+			shopPanel = null;
+			race = new RaceMap(playerAmount, accounts);
+			this.getContentPane().removeAll();
+			this.getContentPane().add(race);
+			this.pack();
+			break;
+
+		case 5:
+			sortedAccounts = race.getSortedAccounts();
+			break;
+
+		}
+
+	}
+
 }
-}}
