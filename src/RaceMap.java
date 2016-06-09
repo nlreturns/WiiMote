@@ -36,11 +36,11 @@ import wiiusej.wiiusejevents.wiiuseapievents.NunchukInsertedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.NunchukRemovedEvent;
 import wiiusej.wiiusejevents.wiiuseapievents.StatusEvent;
 
-public class RaceMap extends JFrame {
+public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	public static void main(String args[]) {
 		JFrame frame = new JFrame("Need For Beast");
-		JPanel panel = new RacePanel(2);
+		JPanel panel = new RaceMap(2);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(panel);
@@ -48,48 +48,39 @@ public class RaceMap extends JFrame {
 		frame.setVisible(true);
 	}
 
-	public RaceMap() {
-
-	}
-
-}
-
-class RacePanel extends JPanel implements WiimoteListener, ActionListener {
-	Wiimote[] wiimotes;
-	AccelerationPanel aPanel;
-	Wiimote wiimote;
-	JPanel panel;
-	RawAcceleration rawAcc;
-	Timer timer = new Timer(1, this);
-	ArrayList<RawAcceleration> values;
-	ArrayList<RawAcceleration> values1;
-	ArrayList<RawAcceleration> values2;
-	ArrayList<RawAcceleration> values3;
-	int player1;
-	int player2;
-	int player3;
-	int player4;
-	int yTurns, yTurns2, yTurns3, yTurns4;
-	int place;
-	boolean yTurned, yTurned2, yTurned3, yTurned4;
-	Image img;
-	Image imgPlayer;
-	Image imgPlayer2;
-	Image hurdle;
-	ArrayList<Image> horse;
-	ArrayList<Image> horseGray;
-	ArrayList<Image> drake;
-	int horseTimer;
-	int repaintTimer;
-	int minimalSpeed = 100;
-	ArrayList<Player> players;
-	ArrayList<String> placement;
-	int newCX;
-	int newCY;
+	private Wiimote[] wiimotes;
+	private AccelerationPanel aPanel;
+	private Wiimote wiimote;
+	private Timer timer = new Timer(1000 / 50, this);
+	private ArrayList<RawAcceleration> values;
+	private ArrayList<RawAcceleration> values1;
+	private ArrayList<RawAcceleration> values2;
+	private ArrayList<RawAcceleration> values3;
+	private int player1;
+	private int player2;
+	private int player3;
+	private int player4;
+	private int yTurns, yTurns2, yTurns3, yTurns4;
+	private int place;
+	private int ticks = 0;
+	private boolean yTurned, yTurned2, yTurned3, yTurned4;
+	private Image img;
+	private ArrayList<Image> horse;
+	private ArrayList<Image> horseGray;
+	private ArrayList<Image> drake;
+	private int horseTimer;
+	private int repaintTimer;
+	private int minimalSpeed = 100;
+	private ArrayList<Player> players;
+	private ArrayList<String> placement;
+	private int newCX;
+	private int newCY;
+	private boolean countdown;
 
 	int playerAmount;
 
-	public RacePanel(int playerAmount) {
+	public RaceMap(int playerAmount) {
+		countdown = false;
 		players = new ArrayList<>();
 		horse = new ArrayList<>();
 		horseGray = new ArrayList<>();
@@ -111,6 +102,7 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 		setPreferredSize(new Dimension(1366, 768));
 		timer.start();
 		System.loadLibrary("WiiuseJ");
+		// WiiUseApiManager.shutdown();
 		wiimotes = WiiUseApiManager.getWiimotes(playerAmount, false);
 		for (int i = 0; i < playerAmount; i++) {
 			wiimote = wiimotes[i];
@@ -124,20 +116,19 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 		values3 = new ArrayList<>();
 		aPanel = new AccelerationWiimoteEventPanel();
 		try {
-			hurdle = ImageIO.read(new File("src/hurdle.png"));
-			img = ImageIO.read(new File("src/map.png"));
-			horseGray.add(ImageIO.read(new File("src/spriteGrijsPaard.png")));
-			horseGray.add(ImageIO.read(new File("src/spriteGrijsPaard2.png")));
-			horseGray.add(ImageIO.read(new File("src/spriteGrijsPaard3.png")));
-			horseGray.add(ImageIO.read(new File("src/spriteGrijsPaard4.png")));
-			horse.add(ImageIO.read(new File("src/spriteBruinPaard.png")));
-			horse.add(ImageIO.read(new File("src/spriteBruinPaard2.png")));
-			horse.add(ImageIO.read(new File("src/spriteBruinPaard3.png")));
-			horse.add(ImageIO.read(new File("src/spriteBruinPaard4.png")));
-			drake.add(ImageIO.read(new File("src/spriteRodeDraak.png")));
-			drake.add(ImageIO.read(new File("src/spriteRodeDraak2.png")));
-			drake.add(ImageIO.read(new File("src/spriteRodeDraak3.png")));
-			drake.add(ImageIO.read(new File("src/spriteRodeDraak4.png")));
+			img = ImageIO.read(new File("src/skins/map.png"));
+			horseGray.add(ImageIO.read(new File("src/skins/spriteGrijsPaard.png")));
+			horseGray.add(ImageIO.read(new File("src/skins/spriteGrijsPaard2.png")));
+			horseGray.add(ImageIO.read(new File("src/skins/spriteGrijsPaard3.png")));
+			horseGray.add(ImageIO.read(new File("src/skins/spriteGrijsPaard4.png")));
+			horse.add(ImageIO.read(new File("src/skins/spriteBruinPaard.png")));
+			horse.add(ImageIO.read(new File("src/skins/spriteBruinPaard2.png")));
+			horse.add(ImageIO.read(new File("src/skins/spriteBruinPaard3.png")));
+			horse.add(ImageIO.read(new File("src/skins/spriteBruinPaard4.png")));
+			drake.add(ImageIO.read(new File("src/skins/spriteRodeDraak.png")));
+			drake.add(ImageIO.read(new File("src/skins/spriteRodeDraak2.png")));
+			drake.add(ImageIO.read(new File("src/skins/spriteRodeDraak3.png")));
+			drake.add(ImageIO.read(new File("src/skins/spriteRodeDraak4.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -145,14 +136,27 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 			players.add(new Player(horse.get(0), i));
 		}
 		horseTimer = 0;
-		imgPlayer = horse.get(horseTimer);
-		imgPlayer2 = horseGray.get(horseTimer);
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
 		// System.out.println(xTurns + " " + yTurns + " " + zTurns);
+		if (ticks == 20) {
+			g2.drawString("4 seconde voor de start", getWidth() / 2, getHeight() / 2);
+		}
+		if (ticks == 40) {
+			g2.drawString("3 seconde voor de start", getWidth() / 2, getHeight() / 2);
+		}
+		if (ticks == 60) {
+			g2.drawString("2 seconde voor de start", getWidth() / 2, getHeight() / 2);
+		}
+		if (ticks == 80) {
+			g2.drawString("1 seconde voor de start", getWidth() / 2, getHeight() / 2);
+		}
+		if (ticks == 100) {
+			g2.drawString("GO", getWidth() / 2, getHeight() / 2);
+		}
 
 		AffineTransform camera = getCamera();
 		g2.setTransform(camera);
@@ -163,69 +167,72 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 			g2.drawImage(p.getSkin(), p.getMovement(), p.getJump(), null);
 			// RawAcceleration rAcc;
 
-			if (loop == 0) {
-				RawAcceleration rAcc = values.get(values.size() - 1);
-				short yShort = rAcc.getY();
-				if (yTurned) {
-					if (yShort > 150) {
-						yTurns++;
-						yTurned = false;
-					}
-				} else {
-					if (yShort > 75) {
-						yTurned = true;
-					}
-				}
-				player1 = (yTurns * 25) + minimalSpeed;
-				p.setMovement(player1);
-			} else if (loop == 1) {
-				RawAcceleration rAcc = values1.get(values1.size() - 1);
-				short yShort = rAcc.getY();
-				if (yTurned2) {
-					if (yShort > 150) {
-						yTurns2++;
-						yTurned2 = false;
-					}
-				} else {
-					if (yShort > 75) {
-						yTurned2 = true;
-					}
-				}
-				player2 = (yTurns2 * 25) + minimalSpeed;
-				p.setMovement(player2);
-			} else if (loop == 2) {
-				RawAcceleration rAcc = values2.get(values2.size() - 1);
-				short yShort = rAcc.getY();
-				if (yTurned3) {
-					if (yShort > 150) {
-						yTurns3++;
-						yTurned3 = false;
-					}
-				} else {
-					if (yShort > 75) {
-						yTurned3 = true;
-					}
-				}
-				player3 = (yTurns3 * 25) + minimalSpeed;
-				p.setMovement(player3);
-			} else {
-				RawAcceleration rAcc = values3.get(values3.size() - 1);
-				short yShort = rAcc.getY();
-				if (yTurned4) {
-					if (yShort > 150) {
-						yTurns4++;
-						yTurned4 = false;
-					}
-				} else {
-					if (yShort > 75) {
-						yTurned4 = true;
-					}
-				}
-				player4 = (yTurns4 * 25) + minimalSpeed;
-				p.setMovement(player4);
-			}
+			if (countdown) {
 
-			loop++;
+				if (loop == 0) {
+					RawAcceleration rAcc = values.get(values.size() - 1);
+					short yShort = rAcc.getY();
+					if (yTurned) {
+						if (yShort > 150) {
+							yTurns++;
+							yTurned = false;
+						}
+					} else {
+						if (yShort > 75) {
+							yTurned = true;
+						}
+					}
+					player1 = (yTurns * 25) + minimalSpeed;
+					p.setMovement(player1);
+				} else if (loop == 1) {
+					RawAcceleration rAcc = values1.get(values1.size() - 1);
+					short yShort = rAcc.getY();
+					if (yTurned2) {
+						if (yShort > 150) {
+							yTurns2++;
+							yTurned2 = false;
+						}
+					} else {
+						if (yShort > 75) {
+							yTurned2 = true;
+						}
+					}
+					player2 = (yTurns2 * 25) + minimalSpeed;
+					p.setMovement(player2);
+				} else if (loop == 2) {
+					RawAcceleration rAcc = values2.get(values2.size() - 1);
+					short yShort = rAcc.getY();
+					if (yTurned3) {
+						if (yShort > 150) {
+							yTurns3++;
+							yTurned3 = false;
+						}
+					} else {
+						if (yShort > 75) {
+							yTurned3 = true;
+						}
+					}
+					player3 = (yTurns3 * 25) + minimalSpeed;
+					p.setMovement(player3);
+				} else {
+					RawAcceleration rAcc = values3.get(values3.size() - 1);
+					short yShort = rAcc.getY();
+					if (yTurned4) {
+						if (yShort > 150) {
+							yTurns4++;
+							yTurned4 = false;
+						}
+					} else {
+						if (yShort > 75) {
+							yTurned4 = true;
+						}
+					}
+					player4 = (yTurns4 * 25) + minimalSpeed;
+					p.setMovement(player4);
+				}
+
+				loop++;
+			}
 		}
 
 		for (Player p : players) {
@@ -252,8 +259,6 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 			for (Player p : players) {
 				p.setSkin(drake.get(horseTimer));
 			}
-			imgPlayer = horse.get(horseTimer);
-			imgPlayer2 = horseGray.get(horseTimer);
 			if (horseTimer >= (horse.size() - 1)) {
 				horseTimer = 0;
 			}
@@ -383,46 +388,47 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 	}
 
 	private void draw(GenericEvent arg0) {
-		int wiimoteID = arg0.getWiimoteId();
-		// System.out.println(arg0.getWiimoteId());
-		RawAcceleration rawAcceleration = aPanel.getRawAccelerationValue(arg0);
-		if (wiimoteID == 1) {
-			if (values.size() >= getWidth()) {
-				values.clear();
-			}
+		if (countdown) {
+			int wiimoteID = arg0.getWiimoteId();
+			// System.out.println(arg0.getWiimoteId());
+			RawAcceleration rawAcceleration = aPanel.getRawAccelerationValue(arg0);
+			if (wiimoteID == 1) {
+				if (values.size() >= getWidth()) {
+					values.clear();
+				}
 
-			if (rawAcceleration != null) {
-				values.add(rawAcceleration);
+				if (rawAcceleration != null) {
+					values.add(rawAcceleration);
+				}
+			}
+			if (wiimoteID == 2) {
+				if (values1.size() >= getWidth()) {
+					values1.clear();
+				}
+
+				if (rawAcceleration != null) {
+					values1.add(rawAcceleration);
+				}
+			}
+			if (wiimoteID == 3) {
+				if (values2.size() >= getWidth()) {
+					values2.clear();
+				}
+
+				if (rawAcceleration != null) {
+					values2.add(rawAcceleration);
+				}
+			}
+			if (wiimoteID == 4) {
+				if (values3.size() >= getWidth()) {
+					values3.clear();
+				}
+
+				if (rawAcceleration != null) {
+					values3.add(rawAcceleration);
+				}
 			}
 		}
-		if (wiimoteID == 2) {
-			if (values1.size() >= getWidth()) {
-				values1.clear();
-			}
-
-			if (rawAcceleration != null) {
-				values1.add(rawAcceleration);
-			}
-		}
-		if (wiimoteID == 3) {
-			if (values2.size() >= getWidth()) {
-				values2.clear();
-			}
-
-			if (rawAcceleration != null) {
-				values2.add(rawAcceleration);
-			}
-		}
-		if (wiimoteID == 4) {
-			if (values3.size() >= getWidth()) {
-				values3.clear();
-			}
-
-			if (rawAcceleration != null) {
-				values3.add(rawAcceleration);
-			}
-		}
-
 		repaint();
 
 	}
@@ -430,6 +436,11 @@ class RacePanel extends JPanel implements WiimoteListener, ActionListener {
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		repaint();
+		ticks++;
+		// System.out.println(ticks);
+		if (ticks == 100) {
+			countdown = true;
+		}
 		timer.restart();
 	}
 

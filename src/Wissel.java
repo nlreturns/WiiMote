@@ -1,6 +1,4 @@
 
-import java.util.ArrayList;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -8,7 +6,8 @@ public class Wissel extends JFrame {
 	private int waarde;
 	private JPanel startPanel, shopPanel, racePanel;
 	private Aantalscherm aantalPanel;
-	
+	private int playerAmount;
+
 	public static void main(String s[]) {
 		new Wissel();
 	}
@@ -19,34 +18,56 @@ public class Wissel extends JFrame {
 		setVisible(true);
 		switchcase(1);
 	}
-	
-	public void switchcase(int waarde) {
-		
-        switch (waarde) {
-	        case 1:  startPanel = new Startscherm(this);
-	        		 this.getContentPane().add(startPanel);
-	        		 this.pack();
-	                 break;
-	
-	        case 2:  aantalPanel = new Aantalscherm(this);
-				     this.getContentPane().add(startPanel);
-			   		 this.pack();
-	                 break;
-	                 
-	        case 3:  shopPanel = new ShopGUI(aantalPanel.getAccounts(), this);
-				     this.getContentPane().add(shopPanel);
-			   		 this.pack();
-					 break;
-					 
-	        case 4: RaceMap race = new RaceMap();
-	        		System.out.println("HALOOOOOOOOOO");
-	        		break;
-	        		
-	        case 5: 
-	                break;
-	                 
-        }
-        
+
+	public int getWaarde() {
+		return waarde;
 	}
-	
+
+	public void switchcase(int waarde) {
+
+		this.waarde = waarde;
+
+		switch (this.waarde) {
+		case 1:
+			startPanel = new Startscherm(this);
+			this.getContentPane().removeAll();
+			this.getContentPane().add(startPanel);
+			this.pack();
+			this.setSize(1920, 1080);
+			break;
+
+		case 2:
+			startPanel = null;
+			aantalPanel = new Aantalscherm(this);
+			this.getContentPane().removeAll();
+			this.getContentPane().add(aantalPanel);
+			this.setSize(1920, 1080);
+			this.pack();
+			break;
+
+		case 3:
+			shopPanel = new ShopGUI(aantalPanel.getAccounts(), this);
+			playerAmount = aantalPanel.getAccounts().size();
+			aantalPanel = null;
+			this.getContentPane().removeAll();
+			this.getContentPane().add(shopPanel);
+			this.setSize(1920, 1080);
+			this.pack();
+			break;
+
+		case 4:
+			shopPanel = null;
+			RaceMap race = new RaceMap(playerAmount);
+			this.getContentPane().removeAll();
+			this.getContentPane().add(race);
+			this.pack();
+			break;
+
+		case 5:
+			break;
+
+		}
+
+	}
+
 }
