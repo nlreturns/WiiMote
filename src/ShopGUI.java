@@ -7,10 +7,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import javax.swing.Timer;
 
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 
+import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
 import wiiusej.wiiusejevents.physicalevents.IREvent;
@@ -40,17 +41,17 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 	public ShopGUI(ArrayList<Account> accounts, Wissel wissel) {
 		this.wissel = wissel;
 		setPreferredSize(new Dimension(1024, 768));
-//		Timer timer = new Timer(1000 / 50, this);
-//		timer.start();
+		Timer timer = new Timer(1000 / 50, this);
+		timer.start();
 		this.accounts = new ArrayList<Account>(accounts);
-//		System.loadLibrary("WiiuseJ");
-//		WiiUseApiManager.shutdown();
-//		wiimotes = WiiUseApiManager.getWiimotes(accounts.size(), false);
-//		System.out.println(wiimotes.length);
-//		for (int i = 0; i < wiimotes.length; i++) {
-//			wiimote = wiimotes[i];
-//			wiimote.addWiiMoteEventListeners(this);
-//		}
+		System.loadLibrary("WiiuseJ");
+		WiiUseApiManager.shutdown();
+		wiimotes = WiiUseApiManager.getWiimotes(accounts.size(), false);
+		System.out.println(wiimotes.length);
+		for (int i = 0; i < wiimotes.length; i++) {
+			wiimote = wiimotes[i];
+			wiimote.addWiiMoteEventListeners(this);
+		}
 		setVisible(true);
 		ready1 = false;
 		ready2 = false;
