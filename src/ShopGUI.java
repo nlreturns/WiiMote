@@ -61,8 +61,10 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 	 */
 	public void actionPerformed(ActionEvent arg0) {
 		boolean temp = true;
-		if (count == accounts.size())
+		if (count == accounts.size()) {
 			wissel.switchcase(4);
+			count = 0;
+		}
 
 		repaint();
 	}
