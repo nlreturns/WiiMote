@@ -1,4 +1,6 @@
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
@@ -7,6 +9,9 @@ public class Wissel extends JFrame {
 	private JPanel startPanel, shopPanel, racePanel;
 	private Aantalscherm aantalPanel;
 	private int playerAmount;
+	private ArrayList<Account> accounts;
+	private ArrayList<Account> sortedAccounts;
+	private RaceMap race;
 
 	public static void main(String s[]) {
 		new Wissel();
@@ -48,6 +53,7 @@ public class Wissel extends JFrame {
 		case 3:
 			shopPanel = new ShopGUI(aantalPanel.getAccounts(), this);
 			playerAmount = aantalPanel.getAccounts().size();
+			accounts = aantalPanel.getAccounts();
 			aantalPanel = null;
 			this.getContentPane().removeAll();
 			this.getContentPane().add(shopPanel);
@@ -57,13 +63,14 @@ public class Wissel extends JFrame {
 
 		case 4:
 			shopPanel = null;
-			RaceMap race = new RaceMap(playerAmount);
+			race = new RaceMap(playerAmount, accounts);
 			this.getContentPane().removeAll();
 			this.getContentPane().add(race);
 			this.pack();
 			break;
 
 		case 5:
+			sortedAccounts = race.getSortedAccounts();
 			break;
 
 		}

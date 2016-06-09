@@ -40,7 +40,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	public static void main(String args[]) {
 		JFrame frame = new JFrame("Need For Beast");
-		JPanel panel = new RaceMap(2);
+		JPanel panel = new RaceMap(2, new ArrayList<Account>());
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(panel);
@@ -73,19 +73,23 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private int minimalSpeed = 100;
 	private ArrayList<Player> players;
 	private ArrayList<String> placement;
+	private ArrayList<Account> accounts;
+	private ArrayList<Account> sortedAccounts;
 	private int newCX;
 	private int newCY;
 	private boolean countdown;
 
 	int playerAmount;
 
-	public RaceMap(int playerAmount) {
+	public RaceMap(int playerAmount, ArrayList<Account> accounts) {
 		countdown = false;
 		players = new ArrayList<>();
 		horse = new ArrayList<>();
 		horseGray = new ArrayList<>();
 		drake = new ArrayList<>();
 		placement = new ArrayList<>();
+		this.accounts = accounts;
+		sortedAccounts = new ArrayList<>();
 		placement.add("eerste");
 		placement.add("tweede");
 		placement.add("derde");
@@ -99,7 +103,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		yTurns2 = 0;
 		yTurns3 = 0;
 		yTurns4 = 0;
-		setPreferredSize(new Dimension(1366, 768));
+		setPreferredSize(new Dimension(1024, 768));
 		timer.start();
 		System.loadLibrary("WiiuseJ");
 		// WiiUseApiManager.shutdown();
@@ -270,6 +274,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	public void winner(Graphics2D g2) {
 		g2.setColor(Color.RED);
+		int i = 0;
 		for (Player p : players) {
 			if (p.getMovement() > 4550 && p.isFinished == false) {
 				p.setPlace(placement.get(place));
@@ -277,7 +282,8 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 				place++;
 			}
 			if (p.isFinished()) {
-				g2.drawString(p.getName() + " is " + p.getPlace(), 4600 - 700, p.getRaceHeight());
+				sortedAccounts.add(accounts.get(i));
+				g2.drawString(accounts.get(i).getUser() + " is " + p.getPlace(), 4600 - 700, p.getRaceHeight());
 			}
 		}
 	}
@@ -292,8 +298,15 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		return leader;
 	}
 
-	public void makeHurdles(Graphics2D g2) {
+	public void switchScreen() {
+		if (playerAmount == sortedAccounts.size()) {
+			Wissel wissel = new Wissel();
+			wissel.switchcase(5);
+		}
+	}
 
+	public ArrayList<Account> getSortedAccounts() {
+		return sortedAccounts;
 	}
 
 	public AffineTransform getCamera() {
