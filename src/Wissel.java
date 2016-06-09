@@ -1,22 +1,24 @@
 
+import java.util.ArrayList;
+
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class Wissel extends JFrame {
 	private int waarde;
-	private JPanel startPanel, shopPanel, racePanel;
+	private JPanel startPanel, shopPanel, racePanel, scorePanel;
 	private Aantalscherm aantalPanel;
 	private int playerAmount;
 
 	public static void main(String s[]) {
-		new Wissel();
+		Wissel wissel = new Wissel();
 	}
 
 	public Wissel() {
-		super("Startscherm");
+		super("Need for Beast");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setVisible(true);
-		switchcase(1);
+		switchcase(5);
 	}
 
 	public int getWaarde() {
@@ -57,13 +59,24 @@ public class Wissel extends JFrame {
 
 		case 4:
 			shopPanel = null;
-			RaceMap race = new RaceMap(playerAmount);
+			racePanel = new RaceMap(playerAmount);
 			this.getContentPane().removeAll();
-			this.getContentPane().add(race);
+			this.getContentPane().add(racePanel);
 			this.pack();
 			break;
 
 		case 5:
+			shopPanel = null;
+			ArrayList<Account> accounts = new ArrayList<Account>();
+			accounts.add(new Account("Rico", "poep", 500));
+			accounts.add(new Account("Justin", "poep", 500));
+			accounts.add(new Account("Jairo", "poep", 500));
+			accounts.add(new Account("Wim", "poep", 500));
+			scorePanel = new ScoreScherm(accounts, this);
+			this.getContentPane().removeAll();
+			this.getContentPane().add(scorePanel);
+			this.pack();
+			this.setSize(1024, 768);
 			break;
 
 		}
