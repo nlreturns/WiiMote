@@ -1,5 +1,6 @@
 import java.awt.BasicStroke;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -40,8 +41,9 @@ public class Aantalscherm extends JPanel implements ActionListener, WiimoteListe
 
 	public Aantalscherm(Wissel wissel) {
 		this.wissel = wissel;
+		setPreferredSize(new Dimension(1024, 768));
 		System.loadLibrary("WiiuseJ");
-	//	wiimotes = WiiUseApiManager.getWiimotes(1, true);
+		wiimotes = WiiUseApiManager.getWiimotes(1, true);
 		this.wiimote = wiimotes[0];
 		wiimotes[0].addWiiMoteEventListeners(this);
 	}
@@ -186,6 +188,11 @@ public class Aantalscherm extends JPanel implements ActionListener, WiimoteListe
 			boolean ready = false;
 			while (ready == false) {
 				ready = temp.ready();
+				try {
+					Thread.sleep(1);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
 			}
 			accounts.add(temp.getAccount());
 			temp.dispose();
