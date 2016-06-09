@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 
 public class Wissel extends JFrame {
 	private int waarde;
-	private JPanel startPanel, shopPanel, racePanel;
+	private JPanel startPanel, shopPanel, racePanel, scorePanel;
 	private Aantalscherm aantalPanel;
 	private int playerAmount;
 	private ArrayList<Account> accounts;
@@ -14,12 +14,13 @@ public class Wissel extends JFrame {
 	private RaceMap race;
 
 	public static void main(String s[]) {
-		new Wissel();
+		Wissel wissel = new Wissel();
 	}
 
 	public Wissel() {
-		super("Startscherm");
+		super("Need for Beast");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setSize(1024, 768);
 		setVisible(true);
 		switchcase(1);
 	}
@@ -38,7 +39,7 @@ public class Wissel extends JFrame {
 			this.getContentPane().removeAll();
 			this.getContentPane().add(startPanel);
 			this.pack();
-			this.setSize(1920, 1080);
+			// this.setSize(1920, 1080);
 			break;
 
 		case 2:
@@ -46,33 +47,38 @@ public class Wissel extends JFrame {
 			aantalPanel = new Aantalscherm(this);
 			this.getContentPane().removeAll();
 			this.getContentPane().add(aantalPanel);
-			this.setSize(1920, 1080);
+			// this.setSize(1920, 1080);
 			this.pack();
 			break;
 
 		case 3:
 			shopPanel = new ShopGUI(aantalPanel.getAccounts(), this);
 			playerAmount = aantalPanel.getAccounts().size();
-			accounts = aantalPanel.getAccounts();
+			accounts = new ArrayList<Account>(aantalPanel.getAccounts());
 			aantalPanel = null;
 			this.getContentPane().removeAll();
 			this.getContentPane().add(shopPanel);
-			this.setSize(1920, 1080);
+			// this.setSize(1920, 1080);
 			this.pack();
 			break;
 
 		case 4:
 			shopPanel = null;
-			race = new RaceMap(playerAmount, accounts);
+			race = new RaceMap(playerAmount, accounts, this);
 			this.getContentPane().removeAll();
-			this.getContentPane().add(race);
+			this.getContentPane().add(racePanel);
 			this.pack();
 			break;
 
 		case 5:
-			sortedAccounts = race.getSortedAccounts();
+			sortedAccounts = new ArrayList<Account>(race.getSortedAccounts());
+			shopPanel = null;
+			scorePanel = new ScoreScherm(sortedAccounts, this);
+			this.getContentPane().removeAll();
+			this.getContentPane().add(scorePanel);
+			this.pack();
+			this.setSize(1024, 768);
 			break;
-
 		}
 
 	}

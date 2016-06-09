@@ -60,13 +60,16 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 	 * Timer actionperformed. (20 fps)
 	 */
 	public void actionPerformed(ActionEvent arg0) {
-		boolean temp = true;
-		if (count == accounts.size()) {
-			wissel.switchcase(4);
-			count = 0;
-		}
+		if (wissel.getWaarde() == 3) {
 
-		repaint();
+			boolean temp = true;
+			if (count == accounts.size()) {
+				wissel.switchcase(4);
+				count = 0;
+			}
+
+			repaint();
+		}
 	}
 
 	public void paintComponent(Graphics g) {
@@ -150,9 +153,13 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 	}
 
 	public void makeSkins() {
-		skins.add(new Skin("Paard", 0, "src/spriteGrijsPaard.png"));
-		skins.add(new Skin("Mooi paard", 500, "src/spriteBruinPaard.png"));
-		skins.add(new Skin("Rode draak", 10000, "src/spriteRodeDraak3.png"));
+		skins.add(new Skin("Paard", 0, "src/skins/spriteGrijsPaard.png"));
+		skins.add(new Skin("Mooi paard", 500, "src/skins/spriteBruinPaard.png"));
+		skins.add(new Skin("Rode draak", 1000, "src/skins/spriteRodeDraak3.png"));
+		skins.add(new Skin("Lucio", 1000, "src/skins/spriteLucioEen.png"));
+		skins.add(new Skin("Explosie", 5000, "src/skins/spriteExplosieEen.png"));
+		skins.add(new Skin("Pikachu", 2000, "src/skins/spritepikatsjoe1.png"));
+		skins.add(new Skin("Rode draak", 1000, "src/skins/spritePhoenixEen.png"));
 	}
 
 	public void onButtonsEvent(WiimoteButtonsEvent e) {

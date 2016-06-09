@@ -40,7 +40,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	public static void main(String args[]) {
 		JFrame frame = new JFrame("Need For Beast");
-		JPanel panel = new RaceMap(2, new ArrayList<Account>());
+		JPanel panel = new RaceMap(2, new ArrayList<Account>(), new Wissel());
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(panel);
@@ -65,9 +65,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private int ticks = 0;
 	private boolean yTurned, yTurned2, yTurned3, yTurned4;
 	private Image img;
-	private ArrayList<Image> horse;
-	private ArrayList<Image> horseGray;
-	private ArrayList<Image> drake;
+	private ArrayList<Image> horse, horseGray, drake, lucio, explosion, phoenix, pikachu;
 	private int horseTimer;
 	private int repaintTimer;
 	private int minimalSpeed = 100;
@@ -78,15 +76,22 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private int newCX;
 	private int newCY;
 	private boolean countdown;
+	private boolean switchedScreen;
+	private Wissel wissel;
 
 	int playerAmount;
 
-	public RaceMap(int playerAmount, ArrayList<Account> accounts) {
+	public RaceMap(int playerAmount, ArrayList<Account> accounts, Wissel wissel) {
+		this.wissel = wissel;
 		countdown = false;
 		players = new ArrayList<>();
 		horse = new ArrayList<>();
 		horseGray = new ArrayList<>();
 		drake = new ArrayList<>();
+		lucio = new ArrayList<>();
+		pikachu = new ArrayList<>();
+		explosion = new ArrayList<>();
+		phoenix = new ArrayList<>();
 		placement = new ArrayList<>();
 		this.accounts = accounts;
 		sortedAccounts = new ArrayList<>();
@@ -134,6 +139,22 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 			drake.add(ImageIO.read(new File("src/skins/spriteRodeDraak2.png")));
 			drake.add(ImageIO.read(new File("src/skins/spriteRodeDraak3.png")));
 			drake.add(ImageIO.read(new File("src/skins/spriteRodeDraak4.png")));
+			lucio.add(ImageIO.read(new File("src/skins/spriteLucioEen.png")));
+			lucio.add(ImageIO.read(new File("src/skins/spriteLucioTwee.png")));
+			lucio.add(ImageIO.read(new File("src/skins/spriteLucioDrie.png")));
+			lucio.add(ImageIO.read(new File("src/skins/spriteLucioVier.png")));
+			explosion.add(ImageIO.read(new File("src/skins/spriteExplosionEen.png")));
+			explosion.add(ImageIO.read(new File("src/skins/spriteExplosionTwee.png")));
+			explosion.add(ImageIO.read(new File("src/skins/spriteExplosionDrie.png")));
+			explosion.add(ImageIO.read(new File("src/skins/spriteExplosionVier.png")));
+			pikachu.add(ImageIO.read(new File("src/skins/pikatsjoe1.png")));
+			pikachu.add(ImageIO.read(new File("src/skins/pikatsjoe2.png")));
+			pikachu.add(ImageIO.read(new File("src/skins/pikatsjoe3.png")));
+			pikachu.add(ImageIO.read(new File("src/skins/pikatsjoe4.png")));
+			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixEen.png")));
+			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixTwee.png")));
+			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixDrie.png")));
+			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixVier.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -271,6 +292,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		}
 
 		winner(g2);
+		switchScreen();
 	}
 
 	public void winner(Graphics2D g2) {
@@ -300,9 +322,9 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	}
 
 	public void switchScreen() {
-		if (playerAmount == sortedAccounts.size()) {
-			Wissel wissel = new Wissel();
+		if (playerAmount == sortedAccounts.size() && switchedScreen == false) {
 			wissel.switchcase(5);
+			switchedScreen = true;
 		}
 	}
 
@@ -329,16 +351,19 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	@Override
 	public void onButtonsEvent(WiimoteButtonsEvent arg0) {
-		if (arg0.isButtonTwoJustPressed() || arg0.isButtonAJustPressed()) {
-			int wiimoteID = arg0.getWiimoteId();
-			Player p = players.get(wiimoteID - 1);
-			int jump = p.getJump();
-			for (int i = 0; jump >= p.getMaxHeight(); i++)
-				jump--;
-			p.setJump(jump);
+		if (wissel.getWaarde() == 4) {
 
-			repaint();
+			if (arg0.isButtonTwoJustPressed() || arg0.isButtonAJustPressed()) {
+				int wiimoteID = arg0.getWiimoteId();
+				Player p = players.get(wiimoteID - 1);
+				int jump = p.getJump();
+				for (int i = 0; jump >= p.getMaxHeight(); i++)
+					jump--;
+				p.setJump(jump);
 
+				repaint();
+
+			}
 		}
 	}
 
@@ -363,7 +388,9 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	@Override
 	public void onExpansionEvent(ExpansionEvent arg0) {
-		draw(arg0);
+		if (wissel.getWaarde() == 4) {
+			draw(arg0);
+		}
 	}
 
 	@Override
@@ -383,7 +410,9 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	@Override
 	public void onMotionSensingEvent(MotionSensingEvent arg0) {
-		draw(arg0);
+		if (wissel.getWaarde() == 4) {
+			draw(arg0);
+		}
 	}
 
 	@Override
@@ -449,13 +478,14 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		repaint();
-		ticks++;
-		// System.out.println(ticks);
-		if (ticks == 100) {
-			countdown = true;
+		if (wissel.getWaarde() == 4) {
+			repaint();
+			ticks++;
+			if (ticks == 100) {
+				countdown = true;
+			}
+			timer.restart();
 		}
-		timer.restart();
 	}
 
 }
