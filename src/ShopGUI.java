@@ -90,9 +90,11 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		g2d.drawString(accounts.get(0).getUser() + " punten: " + accounts.get(0).getPoints(), 150, 120);
 		g2d.drawString(skins.get(i1).getName(), 150, 140);
 		if (skinUnlocked(accounts.get(0), skins.get(i1))) {
-			if (ready1)
+			if (ready1) {
+				g2d.setColor(Color.GREEN);
 				g2d.drawString("Klaar!", 200, 320);
-			else
+				g2d.setColor(Color.BLACK);
+			} else
 				g2d.drawString("Selecteer", 200, 320);
 		} else
 			g2d.drawString("Kost: " + skins.get(i1).getCost(), 200, 320);
@@ -108,9 +110,11 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		g2d.drawString(accounts.get(1).getUser() + " punten: " + accounts.get(1).getPoints(), 650, 120);
 		g2d.drawString(skins.get(i2).getName(), 650, 140);
 		if (skinUnlocked(accounts.get(1), skins.get(i2))) {
-			if (ready2)
+			if (ready2) {
+				g2d.setColor(Color.GREEN);
 				g2d.drawString("Klaar!", 700, 320);
-			else
+				g2d.setColor(Color.BLACK);
+			} else
 				g2d.drawString("Selecteer", 695, 320);
 		} else
 			g2d.drawString("Kost: " + skins.get(i2).getCost(), 695, 320);
@@ -127,9 +131,11 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 			g2d.drawString(accounts.get(2).getUser() + " punten: " + accounts.get(2).getPoints(), 150, 470);
 			g2d.drawString(skins.get(i3).getName(), 150, 490);
 			if (skinUnlocked(accounts.get(2), skins.get(i3))) {
-				if (ready3)
+				if (ready3) {
+					g2d.setColor(Color.GREEN);
 					g2d.drawString("Klaar!", 200, 670);
-				else
+					g2d.setColor(Color.BLACK);
+				} else
 					g2d.drawString("Selecteer", 195, 670);
 			} else
 				g2d.drawString("Kost: " + skins.get(i3).getCost(), 195, 670);
@@ -147,9 +153,11 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 			g2d.drawString(accounts.get(3).getUser() + " punten: " + accounts.get(3).getPoints(), 650, 470);
 			g2d.drawString(skins.get(i4).getName(), 650, 490);
 			if (skinUnlocked(accounts.get(3), skins.get(i4))) {
-				if (ready4)
+				if (ready4) {
+					g2d.setColor(Color.GREEN);
 					g2d.drawString("Klaar!", 700, 670);
-				else
+					g2d.setColor(Color.BLACK);
+				} else
 					g2d.drawString("Selecteer", 695, 670);
 			} else
 				g2d.drawString("Kost: " + skins.get(i4).getCost(), 695, 670);
@@ -187,11 +195,8 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 				if (!ready1) {
 					if (e.isButtonLeftJustPressed())
 						i1 = (i1 - 1) % skins.size();
-					if (i1 < 0) {
+					if (i1 < 0)
 						i1 = skins.size() - 1;
-
-					}
-
 					if (e.isButtonRightJustPressed())
 						i1 = (i1 + 1) % skins.size();
 				}
@@ -201,10 +206,14 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 						if (!ready1)
 							count++;
 						ready1 = true;
-					} else {
+					} else if(accounts.get(0).getPoints() >= skins.get(i1).getCost()) {
 						accounts.get(0).addSkin(skins.get(i1));
 						accounts.get(0).subtractPoints(skins.get(i1).getCost());
 					}
+				}
+				if(e.isButtonBJustPressed()) {
+					if(ready1)
+						ready1 = false;
 				}
 			}
 
@@ -225,10 +234,14 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 						if (!ready2)
 							count++;
 						ready2 = true;
-					} else {
+					} else if(accounts.get(1).getPoints() >= skins.get(i2).getCost()){
 						accounts.get(1).addSkin(skins.get(i2));
 						accounts.get(1).subtractPoints(skins.get(i2).getCost());
 					}
+				}
+				if(e.isButtonBJustPressed()) {
+					if(ready2)
+						ready2 = false;
 				}
 			}
 
@@ -249,10 +262,14 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 						if (!ready3)
 							count++;
 						ready3 = true;
-					} else {
+					} else if(accounts.get(2).getPoints() >= skins.get(i3).getCost()) {
 						accounts.get(2).addSkin(skins.get(i3));
 						accounts.get(2).subtractPoints(skins.get(i3).getCost());
 					}
+				}
+				if(e.isButtonBJustPressed()) {
+					if(ready3)
+						ready3 = false;
 				}
 			}
 
@@ -270,10 +287,14 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 						if (!ready4)
 							count++;
 						ready4 = true;
-					} else {
+					} else if(accounts.get(3).getPoints() >= skins.get(i4).getCost()) {
 						accounts.get(3).addSkin(skins.get(i4));
 						accounts.get(3).subtractPoints(skins.get(i4).getCost());
 					}
+				}
+				if(e.isButtonBJustPressed()) {
+					if(ready4)
+						ready4 = false;
 				}
 			}
 		}

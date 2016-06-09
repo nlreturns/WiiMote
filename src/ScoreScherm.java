@@ -234,5 +234,9 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 			e.printStackTrace();
 		}
 	}
+	
+	public ArrayList<Account> getAccounts() {
+		return accounts;
+	}
 
 }
