@@ -46,7 +46,7 @@ public class Startscherm extends JPanel implements ActionListener, MouseListener
 		addMouseListener(this);
 
 		 try {
-		 img = ImageIO.read(new File("WiiMote/src/skins/background.png"));
+		 img = ImageIO.read(new File("src/skins/background.png"));
 		 } catch (IOException e) {
 		 // TODO Auto-generated catch block
 		 e.printStackTrace();
