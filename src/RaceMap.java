@@ -117,6 +117,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 			wiimote = wiimotes[i];
 			wiimote.activateMotionSensing();
 			wiimote.addWiiMoteEventListeners(this);
+			SoundEffect.MUSIC.play();
 		}
 
 		values = new ArrayList<>();
