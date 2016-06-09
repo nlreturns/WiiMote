@@ -8,10 +8,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.geom.AffineTransform;
+import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
-import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
 import wiiusej.wiiusejevents.physicalevents.IREvent;
@@ -36,25 +38,25 @@ public class Startscherm extends JPanel implements ActionListener, MouseListener
 	private boolean apres = false;
 
 	public Startscherm(Wissel wissel) {
-		Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, false);
-		this.wiimote = wiimotes[0];
+		//Wiimote[] wiimotes = WiiUseApiManager.getWiimotes(1, false);
+	//	this.wiimote = wiimotes[0];
 		this.wissel = wissel;
-		wiimotes[0].addWiiMoteEventListeners(this);
+		//wiimotes[0].addWiiMoteEventListeners(this);
 
 		addMouseListener(this);
 
-		// try {
-		// img = ImageIO.read(new
-		// File("C:/Users/wim/Documents/PERIODE4/Git/horses.jpg"));
-		// } catch (IOException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
+		 try {
+		 img = ImageIO.read(new File("WiiMote/src/skins/background.png"));
+		 } catch (IOException e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D) g;
+		
 		AffineTransform af = new AffineTransform();
 
 		g2D.drawImage(img, af, null);
