@@ -53,7 +53,7 @@ public class Wissel extends JFrame {
 		case 3:
 			shopPanel = new ShopGUI(aantalPanel.getAccounts(), this);
 			playerAmount = aantalPanel.getAccounts().size();
-			accounts = aantalPanel.getAccounts();
+			accounts = new ArrayList<Account>(aantalPanel.getAccounts());
 			aantalPanel = null;
 			this.getContentPane().removeAll();
 			this.getContentPane().add(shopPanel);
@@ -63,34 +63,21 @@ public class Wissel extends JFrame {
 
 		case 4:
 			shopPanel = null;
-<<<<<<< HEAD
 			race = new RaceMap(playerAmount, accounts);
-=======
-			racePanel = new RaceMap(playerAmount);
->>>>>>> RicoBrancheJoepie
 			this.getContentPane().removeAll();
 			this.getContentPane().add(racePanel);
 			this.pack();
 			break;
 
 		case 5:
-<<<<<<< HEAD
-			sortedAccounts = race.getSortedAccounts();
-=======
+			sortedAccounts = new ArrayList<Account>(race.getSortedAccounts());
 			shopPanel = null;
-			ArrayList<Account> accounts = new ArrayList<Account>();
-			accounts.add(new Account("Rico", "poep", 500));
-			accounts.add(new Account("Justin", "poep", 500));
-			accounts.add(new Account("Jairo", "poep", 500));
-			accounts.add(new Account("Wim", "poep", 500));
-			scorePanel = new ScoreScherm(accounts, this);
+			scorePanel = new ScoreScherm(sortedAccounts, this);
 			this.getContentPane().removeAll();
 			this.getContentPane().add(scorePanel);
 			this.pack();
 			this.setSize(1024, 768);
->>>>>>> RicoBrancheJoepie
 			break;
-
 		}
 
 	}
