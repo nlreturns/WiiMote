@@ -52,9 +52,11 @@ public class Wissel extends JFrame {
 			break;
 
 		case 3:
-			shopPanel = new ShopGUI(aantalPanel.getAccounts(), this);
-			playerAmount = aantalPanel.getAccounts().size();
-			accounts = new ArrayList<Account>(aantalPanel.getAccounts());
+			scorePanel = null;
+			if(accounts == null)
+				accounts = new ArrayList<Account>(aantalPanel.getAccounts());
+			playerAmount = accounts.size();
+			shopPanel = new ShopGUI(accounts, this);
 			aantalPanel = null;
 			this.getContentPane().removeAll();
 			this.getContentPane().add(shopPanel);
@@ -66,7 +68,7 @@ public class Wissel extends JFrame {
 			shopPanel = null;
 			race = new RaceMap(playerAmount, accounts, this);
 			this.getContentPane().removeAll();
-			this.getContentPane().add(racePanel);
+			this.getContentPane().add(race);
 			this.pack();
 			break;
 

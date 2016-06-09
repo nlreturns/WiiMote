@@ -1,3 +1,4 @@
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -38,6 +39,7 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 
 	public ShopGUI(ArrayList<Account> accounts, Wissel wissel) {
 		this.wissel = wissel;
+		setPreferredSize(new Dimension(1024, 768));
 		Timer timer = new Timer(1000 / 50, this);
 		timer.start();
 		this.accounts = new ArrayList<Account>(accounts);
@@ -51,7 +53,10 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		}
 
 		setVisible(true);
-
+		ready1 = false;
+		ready2 = false;
+		ready3 = false;
+		ready4 = false;
 		skins = new ArrayList<Skin>();
 		makeSkins();
 	}
@@ -153,9 +158,13 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 	}
 
 	public void makeSkins() {
-		skins.add(new Skin("Paard", 0, "src/spriteGrijsPaard.png"));
-		skins.add(new Skin("Mooi paard", 500, "src/spriteBruinPaard.png"));
-		skins.add(new Skin("Rode draak", 10000, "src/spriteRodeDraak3.png"));
+		skins.add(new Skin("Paard", 0, "src/skins/spriteGrijsPaard.png"));
+		skins.add(new Skin("Mooi paard", 500, "src/skins/spriteBruinPaard.png"));
+		skins.add(new Skin("Rode draak", 1000, "src/skins/spriteRodeDraak3.png"));
+		skins.add(new Skin("Lucio", 1000, "src/skins/spriteLucioEen.png"));
+		skins.add(new Skin("Explosie", 5000, "src/skins/spriteExplosionEen.png"));
+		skins.add(new Skin("Pikachu", 2000, "src/skins/pikatsjoe1.png"));
+		skins.add(new Skin("Rode draak", 1000, "src/skins/spritePhoenixEen.png"));
 	}
 
 	public void onButtonsEvent(WiimoteButtonsEvent e) {
