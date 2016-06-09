@@ -36,8 +36,10 @@ public class InlogGUI extends JFrame {
 		setSize(300, 140);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		makeFrame();
-		// accounts = new AccountBase();
-		// accounts.addAccount(new Account("admin", "admin", 10000));
+//		 accounts = new AccountBase();
+//		 accounts.addAccount(new Account("p", "p", 10000));
+//		 accounts.addAccount(new Account("r", "r", 10000));
+//		 saveAccounts();
 		try {
 			accounts = loadAccounts();
 		} catch (FileNotFoundException e) {

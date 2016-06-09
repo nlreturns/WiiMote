@@ -40,17 +40,24 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 	private boolean ready1 = false, ready2 = false, ready3 = false, ready4 = false;
 	private AccountBase base;
 	private short count = 0;
+	private Timer timer;
 
 	public ScoreScherm(ArrayList<Account> accounts, Wissel wissel) {
 		this.accounts = new ArrayList<Account>(accounts);
 		this.wissel = wissel;
-		Timer timer = new Timer(1000 / 50, this);
+		timer = new Timer(1000 / 50, this);
+		timer.start();
 		WiiUseApiManager.shutdown();
 		wiimotes = WiiUseApiManager.getWiimotes(accounts.size(), false);
 		for (int i = 0; i < wiimotes.length; i++) {
 			wiimote = wiimotes[i];
 			wiimote.addWiiMoteEventListeners(this);
 		}
+		ready1 = false;
+		ready2 = false;
+		ready3 = false;
+		ready4 = false;
+		count = 0;
 		addPoints();
 		setVisible(true);
 	}
@@ -59,7 +66,7 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 	public void actionPerformed(ActionEvent e) {
 		if (wissel.getWaarde() == 5) {
 			if (count == accounts.size())
-				wissel.switchcase(2);
+				wissel.switchcase(3);
 			repaint();
 		}
 	}
@@ -73,8 +80,10 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 		g2d.drawString("Eerste plek: " + accounts.get(0).getUser() + "   +500 punten", 250, 200);
 		g2d.setColor(Color.RED);
 		g2d.drawOval(200, 170, 30, 30);
-		if (ready1)
+		if (ready1) {
+			System.out.println("poepdi ng");
 			g2d.fillOval(200, 170, 30, 30);
+		}
 		// Second place
 		g2d.setColor(Color.BLACK);
 		g2d.drawString("Tweede plek: " + accounts.get(1).getUser() + "   +250 punten", 250, 275);
@@ -105,6 +114,7 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 	// Wiimote actions
 	public void onButtonsEvent(WiimoteButtonsEvent e) {
 		if (wissel.getWaarde() == 5) {
+			System.out.println(ready2);
 			if (e.getWiimoteId() == 1) {
 				if (e.isButtonAJustPressed()) {
 					if (!ready1)
@@ -210,20 +220,19 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 		accounts.get(1).addPoints(250);
 		if (accounts.size() > 2)
 			accounts.get(2).addPoints(100);
-
 		// Saved de nieuwe account gegevens in de account base
 		try {
 			base = loadAccounts();
+			for (Account a : accounts) {
+				for (int i = 0; i < base.getAccounts().size(); i++) {
+					if (base.getAccounts().get(i).getUser().equals(a.getUser()))
+						base.getAccounts().set(i, a);
+				}
+			}
+			//saveAccounts();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}
-		for (Account a : accounts) {
-			for (int i = 0; i < base.getAccounts().size(); i++) {
-				if (base.getAccounts().get(i).getUser().equals(a.getUser()))
-					base.getAccounts().set(i, a);
-			}
-		}
-		saveAccounts();
 	}
 
 }

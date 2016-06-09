@@ -16,8 +16,8 @@ public enum SoundEffect {
 	   EXPLODE("src/geluiden/bam.wav"),   // explosion
 	   BONUSMUSIC("src/geluiden/hoi.wav"),
 	   MUSICMAIN("src/geluiden/mainMenu.wav"),
-	   MUSICRACE1("src/geluiden/RaceMuziek"),
-	   MUSICRACE2("src/geluiden/RaceMuziek2");
+	   MUSICRACE1("src/geluiden/RaceMuziek.wav"),
+	   MUSICRACE2("src/geluiden/RaceMuziek2.wav");
 	   
   
    // Nested class for specifying volume
