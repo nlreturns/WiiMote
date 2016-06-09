@@ -229,7 +229,7 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 						base.getAccounts().set(i, a);
 				}
 			}
-			//saveAccounts();
+			saveAccounts();
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		}

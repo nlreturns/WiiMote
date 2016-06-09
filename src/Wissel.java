@@ -22,7 +22,7 @@ public class Wissel extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setSize(1024, 768);
 		setVisible(true);
-		switchcase(1);
+		switchcase(3);
 	}
 
 	public int getWaarde() {
@@ -53,9 +53,14 @@ public class Wissel extends JFrame {
 
 		case 3:
 			scorePanel = null;
-			if(accounts == null)
-				accounts = new ArrayList<Account>(aantalPanel.getAccounts());
-			playerAmount = accounts.size();
+//			if(accounts == null)
+//				accounts = new ArrayList<Account>(aantalPanel.getAccounts());
+//			playerAmount = accounts.size();
+			accounts = new ArrayList<Account>();
+			accounts.add(new Account("Rico", "poep", 500));
+			accounts.add(new Account("Wim", "poep", 500));
+			accounts.add(new Account("Jairo", "poep", 500));
+			accounts.add(new Account("JW", "poep", 500));
 			shopPanel = new ShopGUI(accounts, this);
 			aantalPanel = null;
 			this.getContentPane().removeAll();

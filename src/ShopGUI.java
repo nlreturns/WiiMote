@@ -1,3 +1,4 @@
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
@@ -7,10 +8,9 @@ import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.Timer;
 
-import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
 import wiiusej.wiiusejevents.physicalevents.ExpansionEvent;
 import wiiusej.wiiusejevents.physicalevents.IREvent;
@@ -40,18 +40,17 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 	public ShopGUI(ArrayList<Account> accounts, Wissel wissel) {
 		this.wissel = wissel;
 		setPreferredSize(new Dimension(1024, 768));
-		Timer timer = new Timer(1000 / 50, this);
-		timer.start();
+//		Timer timer = new Timer(1000 / 50, this);
+//		timer.start();
 		this.accounts = new ArrayList<Account>(accounts);
-		System.loadLibrary("WiiuseJ");
-		WiiUseApiManager.shutdown();
-		wiimotes = WiiUseApiManager.getWiimotes(accounts.size(), false);
-		System.out.println(wiimotes.length);
-		for (int i = 0; i < wiimotes.length; i++) {
-			wiimote = wiimotes[i];
-			wiimote.addWiiMoteEventListeners(this);
-		}
-
+//		System.loadLibrary("WiiuseJ");
+//		WiiUseApiManager.shutdown();
+//		wiimotes = WiiUseApiManager.getWiimotes(accounts.size(), false);
+//		System.out.println(wiimotes.length);
+//		for (int i = 0; i < wiimotes.length; i++) {
+//			wiimote = wiimotes[i];
+//			wiimote.addWiiMoteEventListeners(this);
+//		}
 		setVisible(true);
 		ready1 = false;
 		ready2 = false;
@@ -83,67 +82,79 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		g2d.setFont(new Font("Arial", Font.BOLD, 13));
 
 		// Player 1 skin
-		g2d.drawRect(100, 100, 150, 150);
-		g2d.drawString(accounts.get(0).getUser() + " punten: " + accounts.get(0).getPoints(), 100, 70);
-		g2d.drawString(skins.get(i1).getName(), 100, 90);
+		g2d.drawRect(150, 150, 150, 150);
+		g2d.setColor(Color.WHITE);
+		g2d.fillRect(150, 150, 150, 150);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(accounts.get(0).getUser() + " punten: " + accounts.get(0).getPoints(), 150, 120);
+		g2d.drawString(skins.get(i1).getName(), 150, 140);
 		if (skinUnlocked(accounts.get(0), skins.get(i1))) {
 			if (ready1)
-				g2d.drawString("Klaar!", 150, 270);
+				g2d.drawString("Klaar!", 200, 320);
 			else
-				g2d.drawString("Selecteer", 145, 270);
+				g2d.drawString("Selecteer", 200, 320);
 		} else
-			g2d.drawString("Kost: " + skins.get(i1).getCost(), 145, 270);
+			g2d.drawString("Kost: " + skins.get(i1).getCost(), 200, 320);
 		AffineTransform skin1 = new AffineTransform();
-		skin1.translate(175 - skins.get(i1).getSkinImage().getWidth(getFocusCycleRootAncestor()) / 2,
-				175 - skins.get(i1).getSkinImage().getHeight(getFocusCycleRootAncestor()) / 2);
+		skin1.translate(225 - skins.get(i1).getSkinImage().getWidth(getFocusCycleRootAncestor()) / 2,
+				225 - skins.get(i1).getSkinImage().getHeight(getFocusCycleRootAncestor()) / 2);
 		g2d.drawImage(skins.get(i1).getSkinImage(), skin1, null);
 		// Player 2 skin
-		g2d.drawRect(400, 100, 150, 150);
-		g2d.drawString(accounts.get(1).getUser() + " punten: " + accounts.get(1).getPoints(), 400, 70);
-		g2d.drawString(skins.get(i2).getName(), 400, 90);
+		g2d.drawRect(650, 150, 150, 150);
+		g2d.setColor(Color.WHITE);
+		g2d.fillRect(650, 150, 150, 150);
+		g2d.setColor(Color.BLACK);
+		g2d.drawString(accounts.get(1).getUser() + " punten: " + accounts.get(1).getPoints(), 650, 120);
+		g2d.drawString(skins.get(i2).getName(), 650, 140);
 		if (skinUnlocked(accounts.get(1), skins.get(i2))) {
 			if (ready2)
-				g2d.drawString("Klaar!", 450, 270);
+				g2d.drawString("Klaar!", 700, 320);
 			else
-				g2d.drawString("Selecteer", 445, 270);
+				g2d.drawString("Selecteer", 695, 320);
 		} else
-			g2d.drawString("Kost: " + skins.get(i2).getCost(), 445, 270);
+			g2d.drawString("Kost: " + skins.get(i2).getCost(), 695, 320);
 		AffineTransform skin2 = new AffineTransform();
-		skin2.translate(475 - skins.get(i2).getSkinImage().getWidth(getFocusCycleRootAncestor()) / 2,
-				175 - skins.get(i2).getSkinImage().getHeight(getFocusCycleRootAncestor()) / 2);
+		skin2.translate(725 - (skins.get(i2).getSkinImage().getWidth(getFocusCycleRootAncestor()) / 2),
+				225 - skins.get(i2).getSkinImage().getHeight(getFocusCycleRootAncestor()) / 2);
 		g2d.drawImage(skins.get(i2).getSkinImage(), skin2, null);
 		// Player 3 skin
 		if (accounts.size() > 2) {
-			g2d.drawRect(100, 400, 150, 150);
-			g2d.drawString(accounts.get(2).getUser() + " punten: " + accounts.get(2).getPoints(), 100, 370);
-			g2d.drawString(skins.get(i3).getName(), 100, 390);
+			g2d.drawRect(150, 500, 150, 150);
+			g2d.setColor(Color.WHITE);
+			g2d.fillRect(150, 500, 150, 150);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(accounts.get(2).getUser() + " punten: " + accounts.get(2).getPoints(), 150, 470);
+			g2d.drawString(skins.get(i3).getName(), 150, 490);
 			if (skinUnlocked(accounts.get(2), skins.get(i3))) {
 				if (ready3)
-					g2d.drawString("Klaar!", 150, 570);
+					g2d.drawString("Klaar!", 200, 670);
 				else
-					g2d.drawString("Selecteer", 145, 570);
+					g2d.drawString("Selecteer", 195, 670);
 			} else
-				g2d.drawString("Kost: " + skins.get(i3).getCost(), 145, 570);
+				g2d.drawString("Kost: " + skins.get(i3).getCost(), 195, 670);
 			AffineTransform skin3 = new AffineTransform();
-			skin3.translate(175 - skins.get(i3).getSkinImage().getWidth(getFocusCycleRootAncestor()) / 2,
-					475 - skins.get(i3).getSkinImage().getHeight(getFocusCycleRootAncestor()) / 2);
+			skin3.translate(225 - skins.get(i3).getSkinImage().getWidth(getFocusCycleRootAncestor()) / 2,
+					575 - skins.get(i3).getSkinImage().getHeight(getFocusCycleRootAncestor()) / 2);
 			g2d.drawImage(skins.get(i3).getSkinImage(), skin3, null);
 		}
 		// Player 4 skin
 		if (accounts.size() > 3) {
-			g2d.drawRect(400, 400, 150, 150);
-			g2d.drawString(accounts.get(3).getUser() + " punten: " + accounts.get(3).getPoints(), 400, 370);
-			g2d.drawString(skins.get(i4).getName(), 400, 390);
+			g2d.drawRect(650, 500, 150, 150);
+			g2d.setColor(Color.WHITE);
+			g2d.fillRect(650, 500, 150, 150);
+			g2d.setColor(Color.BLACK);
+			g2d.drawString(accounts.get(3).getUser() + " punten: " + accounts.get(3).getPoints(), 650, 470);
+			g2d.drawString(skins.get(i4).getName(), 650, 490);
 			if (skinUnlocked(accounts.get(3), skins.get(i4))) {
 				if (ready4)
-					g2d.drawString("Klaar!", 450, 570);
+					g2d.drawString("Klaar!", 700, 670);
 				else
-					g2d.drawString("Selecteer", 445, 570);
+					g2d.drawString("Selecteer", 695, 670);
 			} else
-				g2d.drawString("Kost: " + skins.get(i4).getCost(), 445, 570);
+				g2d.drawString("Kost: " + skins.get(i4).getCost(), 695, 670);
 			AffineTransform skin4 = new AffineTransform();
-			skin4.translate(475 - skins.get(i4).getSkinImage().getWidth(getFocusCycleRootAncestor()) / 2,
-					475 - skins.get(i4).getSkinImage().getHeight(getFocusCycleRootAncestor()) / 2);
+			skin4.translate(725 - skins.get(i4).getSkinImage().getWidth(getFocusCycleRootAncestor()) / 2,
+					575 - skins.get(i4).getSkinImage().getHeight(getFocusCycleRootAncestor()) / 2);
 			g2d.drawImage(skins.get(i4).getSkinImage(), skin4, null);
 		}
 	}
