@@ -65,9 +65,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private int ticks = 0;
 	private boolean yTurned, yTurned2, yTurned3, yTurned4;
 	private Image img;
-	private ArrayList<Image> horse;
-	private ArrayList<Image> horseGray;
-	private ArrayList<Image> drake;
+	private ArrayList<Image> horse, horseGray, drake, lucio, explosion, phoenix, pikachu;
 	private int horseTimer;
 	private int repaintTimer;
 	private int minimalSpeed = 100;
@@ -90,6 +88,10 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		horse = new ArrayList<>();
 		horseGray = new ArrayList<>();
 		drake = new ArrayList<>();
+		lucio = new ArrayList<>();
+		pikachu = new ArrayList<>();
+		explosion = new ArrayList<>();
+		phoenix = new ArrayList<>();
 		placement = new ArrayList<>();
 		this.accounts = accounts;
 		sortedAccounts = new ArrayList<>();
@@ -136,6 +138,22 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 			drake.add(ImageIO.read(new File("src/skins/spriteRodeDraak2.png")));
 			drake.add(ImageIO.read(new File("src/skins/spriteRodeDraak3.png")));
 			drake.add(ImageIO.read(new File("src/skins/spriteRodeDraak4.png")));
+			lucio.add(ImageIO.read(new File("src/skins/spriteLucioEen.png")));
+			lucio.add(ImageIO.read(new File("src/skins/spriteLucioTwee.png")));
+			lucio.add(ImageIO.read(new File("src/skins/spriteLucioDrie.png")));
+			lucio.add(ImageIO.read(new File("src/skins/spriteLucioVier.png")));
+			explosion.add(ImageIO.read(new File("src/skins/spriteExplosionEen.png")));
+			explosion.add(ImageIO.read(new File("src/skins/spriteExplosionTwee.png")));
+			explosion.add(ImageIO.read(new File("src/skins/spriteExplosionDrie.png")));
+			explosion.add(ImageIO.read(new File("src/skins/spriteExplosionVier.png")));
+			pikachu.add(ImageIO.read(new File("src/skins/pikatsjoe1.png")));
+			pikachu.add(ImageIO.read(new File("src/skins/pikatsjoe2.png")));
+			pikachu.add(ImageIO.read(new File("src/skins/pikatsjoe3.png")));
+			pikachu.add(ImageIO.read(new File("src/skins/pikatsjoe4.png")));
+			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixEen.png")));
+			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixTwee.png")));
+			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixDrie.png")));
+			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixVier.png")));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
