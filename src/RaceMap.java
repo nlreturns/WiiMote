@@ -334,6 +334,11 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	public void switchScreen() {
 		if (playerAmount == sortedAccounts.size() && switchedScreen == false) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			wissel.switchcase(5);
 			switchedScreen = true;
 		}
