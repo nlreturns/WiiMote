@@ -185,24 +185,24 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		g2.drawImage(img, camera, this);
 
 		if (ticks > 20 && ticks < 40) {
-			g2.drawImage(counter.get(0), (counter.get(0).getWidth(null) / 2) - getWidth() / 2,
-					(counter.get(0).getWidth(null) / 2) - getHeight() / 2, null);
+			g2.drawImage(counter.get(0), (getWidth() / 2 - counter.get(0).getWidth(null) / 2),
+					(getHeight() / 2 - counter.get(0).getWidth(null) / 2), null);
 		}
 		if (ticks > 40 && ticks < 60) {
-			g2.drawImage(counter.get(1), (counter.get(1).getWidth(null) / 2) - getWidth() / 2,
-					(counter.get(1).getWidth(null) / 2) - getHeight() / 2, null);
+			g2.drawImage(counter.get(1), (getWidth() / 2 - counter.get(1).getWidth(null) / 2),
+					(getHeight() / 2 - counter.get(1).getWidth(null) / 2), null);
 		}
 		if (ticks > 60 && ticks < 80) {
-			g2.drawImage(counter.get(2), (counter.get(2).getWidth(null) / 2) - getWidth() / 2,
-					(counter.get(2).getWidth(null) / 2) - getHeight() / 2, null);
+			g2.drawImage(counter.get(2), (getWidth() / 2 - counter.get(2).getWidth(null) / 2),
+					(getHeight() / 2 - counter.get(2).getWidth(null) / 2), null);
 		}
 		if (ticks > 80 && ticks < 100) {
-			g2.drawImage(counter.get(3), (counter.get(3).getWidth(null) / 2) - getWidth() / 2,
-					(counter.get(3).getWidth(null) / 2) - getHeight() / 2, null);
+			g2.drawImage(counter.get(3), (getWidth() / 2 - counter.get(3).getWidth(null) / 2),
+					(getHeight() / 2 - counter.get(3).getWidth(null) / 2), null);
 		}
 		if (ticks > 100 && ticks < 120) {
-			g2.drawImage(counter.get(4), (counter.get(4).getWidth(null) / 2) - getWidth() / 2,
-					(counter.get(4).getWidth(null) / 2) - getHeight() / 2, null);
+			g2.drawImage(counter.get(4), (getWidth() / 2 - counter.get(4).getWidth(null) / 2),
+					(getHeight() / 2 - counter.get(4).getWidth(null) / 2), null);
 		}
 
 		int loop = 0;
