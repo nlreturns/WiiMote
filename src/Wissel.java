@@ -74,7 +74,7 @@ public class Wissel extends JFrame {
 		case 5:
 			sortedAccounts = new ArrayList<Account>(race.getSortedAccounts());
 			shopPanel = null;
-			scorePanel = new ScoreScherm(sortedAccounts, this);
+			scorePanel = new ScoreScherm(sortedAccounts, accounts, this);
 			this.getContentPane().removeAll();
 			this.getContentPane().add(scorePanel);
 			this.pack();
