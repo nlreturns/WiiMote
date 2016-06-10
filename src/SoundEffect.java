@@ -15,6 +15,9 @@ import javax.sound.sampled.*;
 public enum SoundEffect {
 	   EXPLODE("src/geluiden/bam.wav"),   // explosion
 	   BONUSMUSIC("src/geluiden/hoi.wav"),
+	   BEEP("src/geluiden/beep.wav"),
+	   CLICK("src/geluiden/click.wav"),
+	   SELECT("src/geluiden/select.wav"),
 	   MUSICMAIN("src/geluiden/mainMenu.wav"),
 	   MUSICRACE1("src/geluiden/RaceMuziek.wav"),
 	   MUSICRACE2("src/geluiden/RaceMuziek2.wav");
@@ -25,7 +28,7 @@ public enum SoundEffect {
       MUTE, LOW, MEDIUM, HIGH
    }
    
-   public static Volume volume = Volume.LOW;
+   public static Volume volume = Volume.MEDIUM;
    
    // Each sound effect has its own clip, loaded with its own sound file.
    private Clip clip;
@@ -53,11 +56,17 @@ public enum SoundEffect {
    // Play or Re-play the sound effect from the beginning, by rewinding.
    public void play() {
       if (volume != Volume.MUTE) {
-         if (clip.isRunning())
+        if (!clip.isRunning())
             clip.stop();   // Stop the player if it is still running
-         clip.setFramePosition(0); // rewind to the beginning
-         clip.start();     // Start playing
+        	clip.setFramePosition(0); // rewind to the beginning
+         	clip.start();     // Start playing
       }
+      
+   }
+   
+   public void stop() {
+	   if (clip.isRunning())
+           clip.stop();   // Stop the player if it is still running
    }
    
    // Optional static method to pre-load all the sound files.
