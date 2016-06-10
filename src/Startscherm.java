@@ -54,6 +54,8 @@ public class Startscherm extends JPanel implements ActionListener, MouseListener
 		 // TODO Auto-generated catch block
 		 e.printStackTrace();
 		 }
+		 
+		 SoundEffect.MUSICMAIN.play();
 	}
 
 	public void paintComponent(Graphics g) {
