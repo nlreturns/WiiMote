@@ -184,7 +184,7 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		skins.add(new Skin("Lucio", 1000, "src/skins/spriteLucioEen.png"));
 		skins.add(new Skin("Explosie", 5000, "src/skins/spriteExplosionEen.png"));
 		skins.add(new Skin("Pikachu", 2000, "src/skins/pikatsjoe1.png"));
-		skins.add(new Skin("Rode draak", 1000, "src/skins/spritePhoenixEen.png"));
+		skins.add(new Skin("Phoenix", 1000, "src/skins/spritePhoenixEen.png"));
 	}
 
 	public void onButtonsEvent(WiimoteButtonsEvent e) {
