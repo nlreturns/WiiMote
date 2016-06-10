@@ -34,6 +34,7 @@ public class InlogGUI extends JFrame {
 	public InlogGUI() {
 		super("Log in");
 		setSize(300, 140);
+		setLocation(300, 250);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		makeFrame();
 //		 accounts = new AccountBase();
