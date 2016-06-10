@@ -50,12 +50,12 @@ public class Wissel extends JFrame {
 			break;
 
 		case 3:
-			scorePanel = null;
 			if (accounts == null)
 				accounts = new ArrayList<Account>(aantalPanel.getAccounts());
 			else
 				accounts = new ArrayList<Account>(scorePanel.getAccounts());
 			playerAmount = accounts.size();
+			scorePanel = null;
 			shopPanel = new ShopGUI(accounts, this);
 			aantalPanel = null;
 			this.getContentPane().removeAll();
@@ -79,7 +79,7 @@ public class Wissel extends JFrame {
 			this.getContentPane().add(scorePanel);
 			this.pack();
 			break;
-			
+
 		}
 
 	}

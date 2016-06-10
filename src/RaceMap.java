@@ -178,7 +178,6 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		System.out.println(ticks + " " + counter.size() + " " + getWidth() + " " + getHeight());
 
 		AffineTransform camera = getCamera();
 		g2.setTransform(camera);
@@ -335,7 +334,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		g2.setColor(Color.RED);
 		int i = 0;
 		for (Player p : players) {
-			if (p.getMovement() > 4300 && p.isFinished == false) {
+			if (p.getMovement() > 4350 && p.isFinished == false) {
 				p.setPlace(placement.get(place));
 				p.setFinished(true);
 				place++;
