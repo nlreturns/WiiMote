@@ -40,7 +40,10 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	public static void main(String args[]) {
 		JFrame frame = new JFrame("Need For Beast");
-		JPanel panel = new RaceMap(2, new ArrayList<Account>(), new Wissel());
+		ArrayList<Account> accountsTest = new ArrayList<Account>();
+		accountsTest.add(new Account("p", "p", 10000));
+		accountsTest.get(0).setSelectedSkin((new Skin("Rode draak", 1000, "src/skins/spritePhoenixEen.png")));
+		JPanel panel = new RaceMap(1, accountsTest, null);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(panel);
@@ -114,7 +117,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		setPreferredSize(new Dimension(1024, 768));
 		timer.start();
 		System.loadLibrary("WiiuseJ");
-		// WiiUseApiManager.shutdown();
+		WiiUseApiManager.shutdown();
 		wiimotes = WiiUseApiManager.getWiimotes(playerAmount, false);
 		for (int i = 0; i < playerAmount; i++) {
 			wiimote = wiimotes[i];
@@ -175,6 +178,12 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
+		System.out.println(ticks + " " + counter.size() + " " + getWidth() + " " + getHeight());
+
+		AffineTransform camera = getCamera();
+		g2.setTransform(camera);
+		g2.drawImage(img, camera, this);
+
 		if (ticks > 20 && ticks < 40) {
 			g2.drawImage(counter.get(0), getWidth() / 2, getHeight() / 2, null);
 		}
@@ -190,10 +199,6 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		if (ticks > 100 && ticks < 120) {
 			g2.drawImage(counter.get(4), getWidth() / 2, getHeight() / 2, null);
 		}
-
-		AffineTransform camera = getCamera();
-		g2.setTransform(camera);
-		g2.drawImage(img, camera, this);
 
 		int loop = 0;
 		for (Player p : players) {
@@ -291,8 +296,30 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		repaintTimer++;
 		if (repaintTimer > 10) {
 			horseTimer++;
-			for (Player p : players) {
-				p.setSkin(drake.get(horseTimer));
+			int i = 0;
+			for (Account a : accounts) {
+				if (a.getSelectedSkin().getName().equals("Paard")) {
+					players.get(i).setSkin(horseGray.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Phoenix")) {
+					players.get(i).setSkin(phoenix.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Mooi paard")) {
+					players.get(i).setSkin(horse.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Explosie")) {
+					players.get(i).setSkin(explosion.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Lucio")) {
+					players.get(i).setSkin(lucio.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Pikachu")) {
+					players.get(i).setSkin(pikachu.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Rode draak")) {
+					players.get(i).setSkin(drake.get(horseTimer));
+				}
+				i++;
 			}
 			if (horseTimer >= (horse.size() - 1)) {
 				horseTimer = 0;
@@ -378,6 +405,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 			}
 		}
+
 	}
 
 	@Override
