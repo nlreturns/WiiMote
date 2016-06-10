@@ -1,4 +1,5 @@
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
@@ -41,9 +42,12 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 	private AccountBase base;
 	private short count = 0;
 	private Timer timer;
+	private ArrayList<Account> volgordeAccounts;
 
-	public ScoreScherm(ArrayList<Account> accounts, Wissel wissel) {
+	public ScoreScherm(ArrayList<Account> accounts, ArrayList<Account> volgordeAccounts, Wissel wissel) {
 		this.accounts = new ArrayList<Account>(accounts);
+		this.volgordeAccounts = new ArrayList<Account>(volgordeAccounts);
+		setPreferredSize(new Dimension(1024, 768));
 		this.wissel = wissel;
 		timer = new Timer(1000 / 50, this);
 		timer.start();
@@ -216,14 +220,14 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 
 	// Voegt punten toe aan accounts
 	public void addPoints() {
-		accounts.get(0).addPoints(500);
-		accounts.get(1).addPoints(250);
-		if (accounts.size() > 2)
-			accounts.get(2).addPoints(100);
+		volgordeAccounts.get(0).addPoints(500);
+		volgordeAccounts.get(1).addPoints(250);
+		if (volgordeAccounts.size() > 2)
+			volgordeAccounts.get(2).addPoints(100);
 		// Saved de nieuwe account gegevens in de account base
 		try {
 			base = loadAccounts();
-			for (Account a : accounts) {
+			for (Account a : volgordeAccounts) {
 				for (int i = 0; i < base.getAccounts().size(); i++) {
 					if (base.getAccounts().get(i).getUser().equals(a.getUser()))
 						base.getAccounts().set(i, a);
@@ -236,7 +240,7 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 	}
 	
 	public ArrayList<Account> getAccounts() {
-		return accounts;
+		return volgordeAccounts;
 	}
 
 }
