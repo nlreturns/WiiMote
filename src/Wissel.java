@@ -43,6 +43,7 @@ public class Wissel extends JFrame {
 
 		case 2:
 			startPanel = null;
+			scorePanel = null;
 			aantalPanel = new Aantalscherm(this);
 			this.getContentPane().removeAll();
 			this.getContentPane().add(aantalPanel);
@@ -50,12 +51,8 @@ public class Wissel extends JFrame {
 			break;
 
 		case 3:
-			if (accounts == null)
-				accounts = new ArrayList<Account>(aantalPanel.getAccounts());
-			else
-				accounts = new ArrayList<Account>(scorePanel.getAccounts());
+			accounts = new ArrayList<Account>(aantalPanel.getAccounts());
 			playerAmount = accounts.size();
-			scorePanel = null;
 			shopPanel = new ShopGUI(accounts, this);
 			aantalPanel = null;
 			this.getContentPane().removeAll();

@@ -43,6 +43,7 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 	private short count = 0;
 	private Timer timer;
 	private ArrayList<Account> volgordeAccounts;
+	private boolean neverReady = true;
 
 	public ScoreScherm(ArrayList<Account> accounts, ArrayList<Account> volgordeAccounts, Wissel wissel) {
 		this.accounts = new ArrayList<Account>(accounts);
@@ -69,12 +70,13 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 	// Timer 20 FPS
 	public void actionPerformed(ActionEvent e) {
 		if (wissel.getWaarde() == 5) {
-			if (count == accounts.size()) {
-				wissel.switchcase(3);
+			if (count == accounts.size() && (neverReady)) {
+				wissel.switchcase(2);
 				ready1 = false;
 				ready2 = false;
 				ready3 = false;
 				ready4 = false;
+				neverReady = false;
 			}
 			repaint();
 		}
@@ -224,14 +226,14 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 
 	// Voegt punten toe aan accounts
 	public void addPoints() {
-		volgordeAccounts.get(0).addPoints(500);
-		volgordeAccounts.get(1).addPoints(250);
-		if (volgordeAccounts.size() > 2)
-			volgordeAccounts.get(2).addPoints(100);
+		accounts.get(0).addPoints(500);
+		accounts.get(1).addPoints(250);
+		if (accounts.size() > 2)
+			accounts.get(2).addPoints(100);
 		// Saved de nieuwe account gegevens in de account base
 		try {
 			base = loadAccounts();
-			for (Account a : volgordeAccounts) {
+			for (Account a : accounts) {
 				for (int i = 0; i < base.getAccounts().size(); i++) {
 					if (base.getAccounts().get(i).getUser().equals(a.getUser()))
 						base.getAccounts().set(i, a);

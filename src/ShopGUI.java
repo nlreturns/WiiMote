@@ -3,12 +3,15 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import javax.swing.Timer;
-
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import wiiusej.WiiUseApiManager;
@@ -37,6 +40,7 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 	private boolean ready1, ready2, ready3, ready4 = false;
 	private Wiimote[] wiimotes;
 	private Wiimote wiimote;
+	private Image img;
 
 	public ShopGUI(ArrayList<Account> accounts, Wissel wissel) {
 		this.wissel = wissel;
@@ -57,6 +61,13 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		SoundEffect.MUSICRACE2.stop();
 		SoundEffect.MUSICMAIN.stop();
 		SoundEffect.SELECT.play();
+		try {
+			img = ImageIO.read(new File("src/skins/bck.png"));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		setVisible(true);
 		ready1 = false;
@@ -87,6 +98,9 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setFont(new Font("Arial", Font.BOLD, 13));
+		AffineTransform af = new AffineTransform();
+
+		g2d.drawImage(img, af, null);
 
 		// Player 1 skin
 		g2d.drawRect(150, 150, 150, 150);
@@ -191,6 +205,9 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		skins.add(new Skin("Explosie", 5000, "src/skins/spriteExplosionEen.png"));
 		skins.add(new Skin("Pikachu", 2000, "src/skins/pikatsjoe1.png"));
 		skins.add(new Skin("Phoenix", 1000, "src/skins/spritePhoenixEen.png"));
+		skins.add(new Skin("Oeloeloe", 10000, "src/skins/spriteOeloeloeEen.png"));
+		skins.add(new Skin("Sonic", 100, "src/skins/spriteSonicEen.png"));
+		skins.add(new Skin("Racebird", 2500, "src/skins/spriteRacebirdEen.png"));
 	}
 
 	public void onButtonsEvent(WiimoteButtonsEvent e) {
