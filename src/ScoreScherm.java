@@ -191,7 +191,7 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 		try {
 			FileOutputStream fos = new FileOutputStream("accounts");
 			ObjectOutputStream oos = new ObjectOutputStream(fos);
-			oos.writeObject(accounts);
+			oos.writeObject(base);
 			oos.close();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -208,7 +208,6 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 			if (object instanceof AccountBase) {
 				System.out.println("Accounts have been loaded.");
 				AccountBase temp = (AccountBase) object;
-
 				return temp;
 			}
 			return null;
