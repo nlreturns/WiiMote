@@ -81,8 +81,8 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private boolean countdown;
 	private boolean switchedScreen;
 	private Wissel wissel;
-
-	int playerAmount;
+	private int endCount;
+	private int playerAmount;
 
 	public RaceMap(int playerAmount, ArrayList<Account> accounts, Wissel wissel) {
 		this.wissel = wissel;
@@ -106,6 +106,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		placement.add("derde");
 		placement.add("vierde");
 		place = 0;
+		endCount = 0;
 		yTurned = false;
 		yTurned2 = false;
 		yTurned3 = false;
@@ -178,26 +179,30 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		System.out.println(ticks + " " + counter.size() + " " + getWidth() + " " + getHeight());
 
 		AffineTransform camera = getCamera();
 		g2.setTransform(camera);
 		g2.drawImage(img, camera, this);
 
 		if (ticks > 20 && ticks < 40) {
-			g2.drawImage(counter.get(0), getWidth() / 2, getHeight() / 2, null);
+			g2.drawImage(counter.get(0), (counter.get(0).getWidth(null) / 2) - getWidth() / 2,
+					(counter.get(0).getWidth(null) / 2) - getHeight() / 2, null);
 		}
 		if (ticks > 40 && ticks < 60) {
-			g2.drawImage(counter.get(1), getWidth() / 2, getHeight() / 2, null);
+			g2.drawImage(counter.get(1), (counter.get(1).getWidth(null) / 2) - getWidth() / 2,
+					(counter.get(1).getWidth(null) / 2) - getHeight() / 2, null);
 		}
 		if (ticks > 60 && ticks < 80) {
-			g2.drawImage(counter.get(2), getWidth() / 2, getHeight() / 2, null);
+			g2.drawImage(counter.get(2), (counter.get(2).getWidth(null) / 2) - getWidth() / 2,
+					(counter.get(2).getWidth(null) / 2) - getHeight() / 2, null);
 		}
 		if (ticks > 80 && ticks < 100) {
-			g2.drawImage(counter.get(3), getWidth() / 2, getHeight() / 2, null);
+			g2.drawImage(counter.get(3), (counter.get(3).getWidth(null) / 2) - getWidth() / 2,
+					(counter.get(3).getWidth(null) / 2) - getHeight() / 2, null);
 		}
 		if (ticks > 100 && ticks < 120) {
-			g2.drawImage(counter.get(4), getWidth() / 2, getHeight() / 2, null);
+			g2.drawImage(counter.get(4), (counter.get(4).getWidth(null) / 2) - getWidth() / 2,
+					(counter.get(4).getWidth(null) / 2) - getHeight() / 2, null);
 		}
 
 		int loop = 0;
@@ -271,6 +276,14 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 					loop++;
 				} catch (Exception e) {
 					e.printStackTrace();
+					WiiUseApiManager.shutdown();
+					wiimotes = WiiUseApiManager.getWiimotes(playerAmount, false);
+					for (int i = 0; i < playerAmount; i++) {
+						wiimote = wiimotes[i];
+						wiimote.activateMotionSensing();
+						wiimote.addWiiMoteEventListeners(this);
+					}
+
 				}
 			}
 		}
@@ -335,7 +348,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		g2.setColor(Color.RED);
 		int i = 0;
 		for (Player p : players) {
-			if (p.getMovement() > 4300 && p.isFinished == false) {
+			if (p.getMovement() > 4350 && p.isFinished == false) {
 				p.setPlace(placement.get(place));
 				p.setFinished(true);
 				place++;
@@ -362,14 +375,12 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	}
 
 	public void switchScreen() {
-		if (playerAmount == sortedAccounts.size() && switchedScreen == false) {
-			try {
-				Thread.sleep(2000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-			wissel.switchcase(5);
+		if (playerAmount == sortedAccounts.size()) {
 			switchedScreen = true;
+			if (endCount > 200) {
+				wissel.switchcase(5);
+			}
+
 		}
 	}
 
@@ -522,6 +533,13 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 			catch (Exception e) {
 				e.printStackTrace();
+				WiiUseApiManager.shutdown();
+				wiimotes = WiiUseApiManager.getWiimotes(playerAmount, false);
+				for (int i = 0; i < playerAmount; i++) {
+					wiimote = wiimotes[i];
+					wiimote.activateMotionSensing();
+					wiimote.addWiiMoteEventListeners(this);
+				}
 
 			}
 		}
@@ -533,6 +551,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		if (wissel.getWaarde() == 4) {
 			repaint();
 			ticks++;
+			endCount++;
 			if (ticks == 100) {
 				countdown = true;
 			}

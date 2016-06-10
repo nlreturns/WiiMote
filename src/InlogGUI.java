@@ -37,10 +37,10 @@ public class InlogGUI extends JFrame {
 		setLocation(300, 250);
 		setDefaultCloseOperation(EXIT_ON_CLOSE);
 		makeFrame();
-//		 accounts = new AccountBase();
-//		 accounts.addAccount(new Account("p", "p", 10000));
-//		 accounts.addAccount(new Account("r", "r", 10000));
-//		 saveAccounts();
+		// accounts = new AccountBase();
+		// accounts.addAccount(new Account("p", "p", 10000));
+		// accounts.addAccount(new Account("r", "r", 10000));
+		// saveAccounts();
 		try {
 			accounts = loadAccounts();
 		} catch (FileNotFoundException e) {
