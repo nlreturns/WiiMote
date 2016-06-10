@@ -69,8 +69,13 @@ public class ScoreScherm extends JPanel implements ActionListener, WiimoteListen
 	// Timer 20 FPS
 	public void actionPerformed(ActionEvent e) {
 		if (wissel.getWaarde() == 5) {
-			if (count == accounts.size())
+			if (count == accounts.size()) {
 				wissel.switchcase(3);
+				ready1 = false;
+				ready2 = false;
+				ready3 = false;
+				ready4 = false;
+			}
 			repaint();
 		}
 	}
