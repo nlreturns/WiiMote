@@ -40,7 +40,10 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	public static void main(String args[]) {
 		JFrame frame = new JFrame("Need For Beast");
-		JPanel panel = new RaceMap(2, new ArrayList<Account>(), new Wissel());
+		ArrayList<Account> accountsTest = new ArrayList<Account>();
+		accountsTest.add(new Account("p", "p", 10000));
+		accountsTest.get(0).setSelectedSkin((new Skin("Rode draak", 1000, "src/skins/spritePhoenixEen.png")));
+		JPanel panel = new RaceMap(1, accountsTest, null);
 
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(panel);
@@ -65,7 +68,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private int ticks = 0;
 	private boolean yTurned, yTurned2, yTurned3, yTurned4;
 	private Image img;
-	private ArrayList<Image> horse, horseGray, drake, lucio, explosion, phoenix, pikachu;
+	private ArrayList<Image> horse, horseGray, drake, lucio, explosion, phoenix, pikachu, counter;
 	private int horseTimer;
 	private int repaintTimer;
 	private int minimalSpeed = 100;
@@ -94,6 +97,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		pikachu = new ArrayList<>();
 		explosion = new ArrayList<>();
 		phoenix = new ArrayList<>();
+		counter = new ArrayList<>();
 		placement = new ArrayList<>();
 		this.accounts = accounts;
 		sortedAccounts = new ArrayList<>();
@@ -113,7 +117,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		setPreferredSize(new Dimension(1024, 768));
 		timer.start();
 		System.loadLibrary("WiiuseJ");
-		// WiiUseApiManager.shutdown();
+		WiiUseApiManager.shutdown();
 		wiimotes = WiiUseApiManager.getWiimotes(playerAmount, false);
 		for (int i = 0; i < playerAmount; i++) {
 			wiimote = wiimotes[i];
@@ -157,8 +161,16 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixTwee.png")));
 			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixDrie.png")));
 			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixVier.png")));
+<<<<<<< HEAD
 			SoundEffect.MUSICMAIN.stop();
 			SoundEffect.MUSICRACE1.play();
+=======
+			counter.add(ImageIO.read(new File("src/skins/vier.png")));
+			counter.add(ImageIO.read(new File("src/skins/drie.png")));
+			counter.add(ImageIO.read(new File("src/skins/twee.png")));
+			counter.add(ImageIO.read(new File("src/skins/een.png")));
+			counter.add(ImageIO.read(new File("src/skins/go.png")));
+>>>>>>> refs/remotes/origin/master
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -171,34 +183,31 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2 = (Graphics2D) g;
-		// System.out.println(xTurns + " " + yTurns + " " + zTurns);
-		if (ticks == 20) {
-			g2.drawString("4 seconde voor de start", getWidth() / 2, getHeight() / 2);
-		}
-		if (ticks == 40) {
-			g2.drawString("3 seconde voor de start", getWidth() / 2, getHeight() / 2);
-		}
-		if (ticks == 60) {
-			g2.drawString("2 seconde voor de start", getWidth() / 2, getHeight() / 2);
-		}
-		if (ticks == 80) {
-			g2.drawString("1 seconde voor de start", getWidth() / 2, getHeight() / 2);
-		}
-		if (ticks == 100) {
-			g2.drawString("GO", getWidth() / 2, getHeight() / 2);
-		}
 
 		AffineTransform camera = getCamera();
 		g2.setTransform(camera);
 		g2.drawImage(img, camera, this);
 
+		if (ticks > 20 && ticks < 40) {
+			g2.drawImage(counter.get(0), getWidth() / 2, getHeight() / 2, null);
+		}
+		if (ticks > 40 && ticks < 60) {
+			g2.drawImage(counter.get(1), getWidth() / 2, getHeight() / 2, null);
+		}
+		if (ticks > 60 && ticks < 80) {
+			g2.drawImage(counter.get(2), getWidth() / 2, getHeight() / 2, null);
+		}
+		if (ticks > 80 && ticks < 100) {
+			g2.drawImage(counter.get(3), getWidth() / 2, getHeight() / 2, null);
+		}
+		if (ticks > 100 && ticks < 120) {
+			g2.drawImage(counter.get(4), getWidth() / 2, getHeight() / 2, null);
+		}
+
 		int loop = 0;
 		for (Player p : players) {
 			g2.drawImage(p.getSkin(), p.getMovement(), p.getJump(), null);
-			// RawAcceleration rAcc;
-
 			if (countdown) {
-				
 				try {
 
 					if (loop == 0) {
@@ -262,9 +271,9 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 						player4 = (yTurns4 * 25) + minimalSpeed;
 						p.setMovement(player4);
 					}
-	
+
 					loop++;
-				}catch(Exception e) {
+				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
@@ -291,8 +300,30 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		repaintTimer++;
 		if (repaintTimer > 10) {
 			horseTimer++;
-			for (Player p : players) {
-				p.setSkin(drake.get(horseTimer));
+			int i = 0;
+			for (Account a : accounts) {
+				if (a.getSelectedSkin().getName().equals("Paard")) {
+					players.get(i).setSkin(horseGray.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Phoenix")) {
+					players.get(i).setSkin(phoenix.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Mooi paard")) {
+					players.get(i).setSkin(horse.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Explosie")) {
+					players.get(i).setSkin(explosion.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Lucio")) {
+					players.get(i).setSkin(lucio.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Pikachu")) {
+					players.get(i).setSkin(pikachu.get(horseTimer));
+				}
+				if (a.getSelectedSkin().getName().equals("Rode draak")) {
+					players.get(i).setSkin(drake.get(horseTimer));
+				}
+				i++;
 			}
 			if (horseTimer >= (horse.size() - 1)) {
 				horseTimer = 0;
@@ -308,7 +339,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 		g2.setColor(Color.RED);
 		int i = 0;
 		for (Player p : players) {
-			if (p.getMovement() > 4300 && p.isFinished == false) {
+			if (p.getMovement() > 4350 && p.isFinished == false) {
 				p.setPlace(placement.get(place));
 				p.setFinished(true);
 				place++;
@@ -316,7 +347,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 			if (p.isFinished()) {
 				g2.drawString(accounts.get(i).getUser() + " is " + p.getPlace(), 4600 - 700, p.getRaceHeight());
 			}
-			if(p.isSwitched() == false && p.isFinished()){
+			if (p.isSwitched() == false && p.isFinished()) {
 				sortedAccounts.add(accounts.get(i));
 				p.setSwitched(true);
 			}
@@ -336,6 +367,11 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 	public void switchScreen() {
 		if (playerAmount == sortedAccounts.size() && switchedScreen == false) {
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
 			wissel.switchcase(5);
 			switchedScreen = true;
 		}
@@ -378,6 +414,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 
 			}
 		}
+
 	}
 
 	@Override
@@ -446,7 +483,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private void draw(GenericEvent arg0) {
 		if (countdown) {
 			int wiimoteID = arg0.getWiimoteId();
-			try{
+			try {
 				RawAcceleration rawAcceleration = aPanel.getRawAccelerationValue(arg0);
 				if (wiimoteID == 1) {
 					if (values.size() >= getWidth()) {
@@ -486,14 +523,12 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 				}
 				repaint();
 			}
-			
-			
-			catch(Exception e){
+
+			catch (Exception e) {
 				e.printStackTrace();
 
 			}
 		}
-			
 
 	}
 

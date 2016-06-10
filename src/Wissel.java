@@ -6,11 +6,11 @@ import javax.swing.JPanel;
 
 public class Wissel extends JFrame {
 	private int waarde;
-	private JPanel startPanel, shopPanel, racePanel, scorePanel;
+	private JPanel startPanel, shopPanel, racePanel;
 	private Aantalscherm aantalPanel;
+	private ScoreScherm scorePanel;
 	private int playerAmount;
-	private ArrayList<Account> accounts;
-	private ArrayList<Account> sortedAccounts;
+	private ArrayList<Account> accounts, sortedAccounts;
 	private RaceMap race;
 
 	public static void main(String s[]) {
@@ -39,7 +39,6 @@ public class Wissel extends JFrame {
 			this.getContentPane().removeAll();
 			this.getContentPane().add(startPanel);
 			this.pack();
-			// this.setSize(1920, 1080);
 			break;
 
 		case 2:
@@ -47,20 +46,24 @@ public class Wissel extends JFrame {
 			aantalPanel = new Aantalscherm(this);
 			this.getContentPane().removeAll();
 			this.getContentPane().add(aantalPanel);
-			// this.setSize(1920, 1080);
 			this.pack();
 			break;
 
 		case 3:
-			scorePanel = null;
-			if(accounts == null)
+			if (accounts == null)
 				accounts = new ArrayList<Account>(aantalPanel.getAccounts());
+			else
+				accounts = new ArrayList<Account>(scorePanel.getAccounts());
 			playerAmount = accounts.size();
+			scorePanel = null;
 			shopPanel = new ShopGUI(accounts, this);
 			aantalPanel = null;
 			this.getContentPane().removeAll();
 			this.getContentPane().add(shopPanel);
+<<<<<<< HEAD
 			
+=======
+>>>>>>> refs/remotes/origin/master
 			this.pack();
 			break;
 
@@ -75,12 +78,12 @@ public class Wissel extends JFrame {
 		case 5:
 			sortedAccounts = new ArrayList<Account>(race.getSortedAccounts());
 			shopPanel = null;
-			scorePanel = new ScoreScherm(sortedAccounts, this);
+			scorePanel = new ScoreScherm(sortedAccounts, accounts, this);
 			this.getContentPane().removeAll();
 			this.getContentPane().add(scorePanel);
 			this.pack();
-			this.setSize(1024, 768);
 			break;
+
 		}
 
 	}
