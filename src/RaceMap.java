@@ -86,6 +86,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 	private int endCount;
 	private int playerAmount;
 	private Font font;
+	private int speed = 12;
 
 	public RaceMap(int playerAmount, ArrayList<Account> accounts, Wissel wissel) {
 		this.wissel = wissel;
@@ -249,7 +250,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 								yTurned = true;
 							}
 						}
-						player1 = (yTurns * 25) + minimalSpeed;
+						player1 = (yTurns * speed) + minimalSpeed;
 						p.setMovement(player1);
 					} else if (loop == 1) {
 						RawAcceleration rAcc = values1.get(values1.size() - 1);
@@ -264,7 +265,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 								yTurned2 = true;
 							}
 						}
-						player2 = (yTurns2 * 25) + minimalSpeed;
+						player2 = (yTurns2 * speed) + minimalSpeed;
 						p.setMovement(player2);
 					} else if (loop == 2) {
 						RawAcceleration rAcc = values2.get(values2.size() - 1);
@@ -279,7 +280,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 								yTurned3 = true;
 							}
 						}
-						player3 = (yTurns3 * 25) + minimalSpeed;
+						player3 = (yTurns3 * speed) + minimalSpeed;
 						p.setMovement(player3);
 					} else {
 						RawAcceleration rAcc = values3.get(values3.size() - 1);
@@ -294,7 +295,7 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 								yTurned4 = true;
 							}
 						}
-						player4 = (yTurns4 * 25) + minimalSpeed;
+						player4 = (yTurns4 * speed) + minimalSpeed;
 						p.setMovement(player4);
 					}
 
