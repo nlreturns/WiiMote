@@ -65,7 +65,7 @@ public class Wissel extends JFrame {
 			break;
 
 		case 4:
-			shopPanel = null;		 
+			shopPanel = null;
 			race = new RaceMap(playerAmount, accounts, this);
 			this.getContentPane().removeAll();
 			this.getContentPane().add(race);
@@ -74,6 +74,7 @@ public class Wissel extends JFrame {
 
 		case 5:
 			sortedAccounts = new ArrayList<Account>(race.getSortedAccounts());
+			race = null;
 			shopPanel = null;
 			scorePanel = new ScoreScherm(sortedAccounts, accounts, this);
 			this.getContentPane().removeAll();

@@ -4,11 +4,16 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.geom.AffineTransform;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 
 import wiiusej.WiiUseApiManager;
@@ -35,7 +40,7 @@ public class Aantalscherm extends JPanel implements ActionListener, WiimoteListe
 	private Wiimote[] wiimotes;
 	private ArrayList<Account> accounts;
 	private Wissel wissel;
-
+	private Image img;
 	private Random random = new Random();
 	private boolean leftUp, rightUp, leftDown, rightDown, aHeld, bHeld, changeColors;
 
@@ -46,6 +51,13 @@ public class Aantalscherm extends JPanel implements ActionListener, WiimoteListe
 		wiimotes = WiiUseApiManager.getWiimotes(1, true);
 		this.wiimote = wiimotes[0];
 		wiimotes[0].addWiiMoteEventListeners(this);
+		 try {
+		 img = ImageIO.read(new File("src/skins/bck.png"));
+	
+		 } catch (IOException e) {
+		 // TODO Auto-generated catch block
+		 e.printStackTrace();
+		 }
 	}
 
 	public int getAantal() {
@@ -55,32 +67,30 @@ public class Aantalscherm extends JPanel implements ActionListener, WiimoteListe
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D) g;
-
-		if (changeColors) {
-
-			g2D.setColor(Color.RED);
-			wiimote2.setLeds(true, true, true, true);
-		} else
-			g2D.setColor(Color.RED);
-
-		g2D.fillRect(100, 100, 250, 100);
-		g2D.setColor(Color.GREEN);
-		g2D.fillRect(450, 100, 250, 100);
-		g2D.setColor(Color.BLUE);
-		g2D.fillRect(800, 100, 250, 100);
+		AffineTransform af = new AffineTransform();
+		g2D.drawImage(img, af, null);
 		g2D.setColor(Color.BLACK);
+
+		g2D.fillRect(60, 300, 250, 100);
+
+		g2D.fillRect(380, 300, 250, 100);
+	
+		g2D.fillRect(700, 300, 250, 100);
+	
 		g2D.setFont(new Font("Arial", Font.BOLD, 18));
-		g2D.drawString("2 Spelers", 150, 150);
-		g2D.drawString("3 Spelers", 500, 150);
-		g2D.drawString("4 Spelers", 850, 150);
+		g2D.setColor(Color.WHITE);
+		g2D.drawString("2 Spelers", 130, 350);
+		g2D.drawString("3 Spelers", 450, 350);
+		g2D.drawString("4 Spelers", 775, 350);
+		
 		g2D.setStroke(new BasicStroke(5));
 
 		if (x == 0)
-			g2D.drawRect(100, 100, 250, 100);
+			g2D.drawRect(60, 300, 250, 100);
 		if (x == 1)
-			g2D.drawRect(450, 100, 250, 100);
+			g2D.drawRect(380, 300, 250, 100);
 		if (x == 2)
-			g2D.drawRect(800, 100, 250, 100);
+			g2D.drawRect(700, 300, 250, 100);
 	}
 
 	@Override

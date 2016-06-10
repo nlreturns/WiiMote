@@ -1,6 +1,4 @@
-import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
@@ -36,6 +34,7 @@ public class Startscherm extends JPanel implements ActionListener, MouseListener
 	private Wiimote wiimote, wiimote2;
 	private Wissel wissel;
 	private Image img;
+	private Image img2;
 	private int waarde = 1;
 	private boolean apres = false;
 
@@ -45,34 +44,25 @@ public class Startscherm extends JPanel implements ActionListener, MouseListener
 		this.wissel = wissel;
 		wiimotes[0].addWiiMoteEventListeners(this);
 		setPreferredSize(new Dimension(1024, 768));
-
 		addMouseListener(this);
+		SoundEffect.MUSICMAIN.play();
 
-		 try {
-		 img = ImageIO.read(new File("src/skins/background.png"));
-		 } catch (IOException e) {
-		 // TODO Auto-generated catch block
-		 e.printStackTrace();
-		 }
-		 
-		 SoundEffect.MUSICMAIN.play();
+		try {
+			img = ImageIO.read(new File("src/skins/newNFB.png"));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	public void paintComponent(Graphics g) {
 		super.paintComponent(g);
 		Graphics2D g2D = (Graphics2D) g;
-		
+
 		AffineTransform af = new AffineTransform();
 
 		g2D.drawImage(img, af, null);
-
-		g2D.setFont(new Font("TimesRoman", Font.BOLD, 36));
-		g2D.setColor(Color.RED);
-
-		g2D.drawString("Press A to continue", getWidth() / 2 - 100, getHeight() * 0.9f);
-
-		g2D.setFont(new Font("TimesRoman", Font.BOLD, 128));
-		g2D.drawString("NEED FOR BEAST", 350, 150);
 
 		repaint();
 	}

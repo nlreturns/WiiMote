@@ -3,13 +3,17 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.geom.AffineTransform;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
-import javax.swing.Timer;
 
+import javax.imageio.ImageIO;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 
 import wiiusej.WiiUseApiManager;
 import wiiusej.Wiimote;
@@ -37,6 +41,7 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 	private boolean ready1, ready2, ready3, ready4 = false;
 	private Wiimote[] wiimotes;
 	private Wiimote wiimote;
+	private Image img;
 
 	public ShopGUI(ArrayList<Account> accounts, Wissel wissel) {
 		this.wissel = wissel;
@@ -48,16 +53,21 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		WiiUseApiManager.shutdown();
 		wiimotes = WiiUseApiManager.getWiimotes(accounts.size(), false);
 		System.out.println(wiimotes.length);
+		try {
+			img = ImageIO.read(new File("src/skins/bck.png"));
+
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		for (int i = 0; i < wiimotes.length; i++) {
 			wiimote = wiimotes[i];
 			wiimote.addWiiMoteEventListeners(this);
-			SoundEffect.MUSICRACE1.stop();
-			SoundEffect.MUSICRACE2.stop();
-			SoundEffect.MUSICMAIN.stop();
-			SoundEffect.SELECT.play();
-			
-			
 		}
+		SoundEffect.MUSICRACE1.stop();
+		SoundEffect.MUSICRACE2.stop();
+		SoundEffect.MUSICMAIN.stop();
+		SoundEffect.SELECT.play();
 		setVisible(true);
 		ready1 = false;
 		ready2 = false;
@@ -87,7 +97,8 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		super.paintComponent(g);
 		Graphics2D g2d = (Graphics2D) g;
 		g2d.setFont(new Font("Arial", Font.BOLD, 13));
-
+		AffineTransform af = new AffineTransform();
+		g2d.drawImage(img, af, null);
 		// Player 1 skin
 		g2d.drawRect(150, 150, 150, 150);
 		g2d.setColor(Color.WHITE);
@@ -191,6 +202,9 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 		skins.add(new Skin("Explosie", 5000, "src/skins/spriteExplosionEen.png"));
 		skins.add(new Skin("Pikachu", 2000, "src/skins/pikatsjoe1.png"));
 		skins.add(new Skin("Phoenix", 1000, "src/skins/spritePhoenixEen.png"));
+		skins.add(new Skin("Oeloeloe", 10000, "src/skins/spriteOeloeloeEen.png"));
+		skins.add(new Skin("Sonic", 100, "src/skins/spriteSonicEen.png"));
+		skins.add(new Skin("Racebird", 2500, "src/skins/spriteRacebirdEen.png"));
 	}
 
 	public void onButtonsEvent(WiimoteButtonsEvent e) {
@@ -212,13 +226,13 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 						if (!ready1)
 							count++;
 						ready1 = true;
-					} else if(accounts.get(0).getPoints() >= skins.get(i1).getCost()) {
+					} else if (accounts.get(0).getPoints() >= skins.get(i1).getCost()) {
 						accounts.get(0).addSkin(skins.get(i1));
 						accounts.get(0).subtractPoints(skins.get(i1).getCost());
 					}
 				}
-				if(e.isButtonBJustPressed()) {
-					if(ready1)
+				if (e.isButtonBJustPressed()) {
+					if (ready1)
 						ready1 = false;
 				}
 			}
@@ -240,13 +254,13 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 						if (!ready2)
 							count++;
 						ready2 = true;
-					} else if(accounts.get(1).getPoints() >= skins.get(i2).getCost()){
+					} else if (accounts.get(1).getPoints() >= skins.get(i2).getCost()) {
 						accounts.get(1).addSkin(skins.get(i2));
 						accounts.get(1).subtractPoints(skins.get(i2).getCost());
 					}
 				}
-				if(e.isButtonBJustPressed()) {
-					if(ready2)
+				if (e.isButtonBJustPressed()) {
+					if (ready2)
 						ready2 = false;
 				}
 			}
@@ -268,13 +282,13 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 						if (!ready3)
 							count++;
 						ready3 = true;
-					} else if(accounts.get(2).getPoints() >= skins.get(i3).getCost()) {
+					} else if (accounts.get(2).getPoints() >= skins.get(i3).getCost()) {
 						accounts.get(2).addSkin(skins.get(i3));
 						accounts.get(2).subtractPoints(skins.get(i3).getCost());
 					}
 				}
-				if(e.isButtonBJustPressed()) {
-					if(ready3)
+				if (e.isButtonBJustPressed()) {
+					if (ready3)
 						ready3 = false;
 				}
 			}
@@ -293,13 +307,13 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 						if (!ready4)
 							count++;
 						ready4 = true;
-					} else if(accounts.get(3).getPoints() >= skins.get(i4).getCost()) {
+					} else if (accounts.get(3).getPoints() >= skins.get(i4).getCost()) {
 						accounts.get(3).addSkin(skins.get(i4));
 						accounts.get(3).subtractPoints(skins.get(i4).getCost());
 					}
 				}
-				if(e.isButtonBJustPressed()) {
-					if(ready4)
+				if (e.isButtonBJustPressed()) {
+					if (ready4)
 						ready4 = false;
 				}
 			}
