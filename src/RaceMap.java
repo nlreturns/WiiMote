@@ -161,16 +161,16 @@ public class RaceMap extends JPanel implements WiimoteListener, ActionListener {
 			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixTwee.png")));
 			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixDrie.png")));
 			phoenix.add(ImageIO.read(new File("src/skins/spritePhoenixVier.png")));
-<<<<<<< HEAD
+
 			SoundEffect.MUSICMAIN.stop();
 			SoundEffect.MUSICRACE1.play();
-=======
+
 			counter.add(ImageIO.read(new File("src/skins/vier.png")));
 			counter.add(ImageIO.read(new File("src/skins/drie.png")));
 			counter.add(ImageIO.read(new File("src/skins/twee.png")));
 			counter.add(ImageIO.read(new File("src/skins/een.png")));
 			counter.add(ImageIO.read(new File("src/skins/go.png")));
->>>>>>> refs/remotes/origin/master
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

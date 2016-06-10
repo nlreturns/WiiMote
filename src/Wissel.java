@@ -60,10 +60,7 @@ public class Wissel extends JFrame {
 			aantalPanel = null;
 			this.getContentPane().removeAll();
 			this.getContentPane().add(shopPanel);
-<<<<<<< HEAD
-			
-=======
->>>>>>> refs/remotes/origin/master
+
 			this.pack();
 			break;
 

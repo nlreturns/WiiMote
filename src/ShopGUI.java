@@ -53,7 +53,9 @@ public class ShopGUI extends JPanel implements ActionListener, WiimoteListener {
 			wiimote.addWiiMoteEventListeners(this);
 			SoundEffect.MUSICRACE1.stop();
 			SoundEffect.MUSICRACE2.stop();
-			SoundEffect.MUSICMAIN.play();
+			SoundEffect.MUSICMAIN.stop();
+			SoundEffect.SELECT.play();
+			
 			
 		}
 		setVisible(true);
