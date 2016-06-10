@@ -60,11 +60,12 @@ public class Wissel extends JFrame {
 			aantalPanel = null;
 			this.getContentPane().removeAll();
 			this.getContentPane().add(shopPanel);
+
 			this.pack();
 			break;
 
 		case 4:
-			shopPanel = null;
+			shopPanel = null;		 
 			race = new RaceMap(playerAmount, accounts, this);
 			this.getContentPane().removeAll();
 			this.getContentPane().add(race);
