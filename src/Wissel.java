@@ -51,7 +51,7 @@ public class Wissel extends JFrame {
 
 		case 3:
 			scorePanel = null;
-			if(accounts == null)
+			if (accounts == null)
 				accounts = new ArrayList<Account>(aantalPanel.getAccounts());
 			else
 				accounts = new ArrayList<Account>(scorePanel.getAccounts());
